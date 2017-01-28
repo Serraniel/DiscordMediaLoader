@@ -61,6 +61,7 @@
             this.tbxEmail.Name = "tbxEmail";
             this.tbxEmail.Size = new System.Drawing.Size(204, 20);
             this.tbxEmail.TabIndex = 2;
+            this.tbxEmail.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbx_KeyUp);
             // 
             // tbxPassword
             // 
@@ -69,6 +70,7 @@
             this.tbxPassword.PasswordChar = '•';
             this.tbxPassword.Size = new System.Drawing.Size(204, 20);
             this.tbxPassword.TabIndex = 3;
+            this.tbxPassword.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbx_KeyUp);
             // 
             // btnLogin
             // 

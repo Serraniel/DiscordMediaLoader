@@ -41,5 +41,13 @@ namespace Discord_Media_Loader
         {
             DialogResult = DialogResult.OK;
         }
+
+        private void tbx_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                DialogResult = DialogResult.OK;
+            else if (e.KeyCode == Keys.Escape)
+                DialogResult = DialogResult.Abort;
+        }
     }
 }
