@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ using Discord;
 using Discord.Net;
 using Nito.AsyncEx;
 using ConnectionState = Discord.ConnectionState;
+using Message = Discord.Message;
 
 namespace Discord_Media_Loader
 {
@@ -176,11 +178,18 @@ namespace Discord_Media_Loader
 
                     foreach (var a in m.Attachments)
                     {
+                        while (clients.Count > 50)
+                        {
+                            // wait
+                        }
                         var wc = new WebClient();
                         clients.Add(wc);
 
-                        wc.DownloadFileCompleted += (wcSender, wcE) => clients.Remove((WebClient)wcSender);
-                        wc.DownloadFile(new Uri(a.Url), $@"{path}\{a.Filename}");
+                        wc.DownloadFileCompleted += (wcSender, wcE) =>
+                        {
+                            clients.Remove(wc);
+                        };
+                        wc.DownloadFileAsync(new Uri(a.Url), $@"{path}\{a.Filename}");
                     }
                 }
 
