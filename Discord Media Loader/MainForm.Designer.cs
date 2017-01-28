@@ -38,7 +38,7 @@
             this.dtpLimit = new System.Windows.Forms.DateTimePicker();
             this.btnSearch = new System.Windows.Forms.Button();
             this.lbPath = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbxPath = new System.Windows.Forms.TextBox();
             this.btnDownload = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -89,12 +89,15 @@
             // cbLimitDate
             // 
             this.cbLimitDate.AutoSize = true;
+            this.cbLimitDate.Checked = true;
+            this.cbLimitDate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbLimitDate.Location = new System.Drawing.Point(15, 73);
             this.cbLimitDate.Name = "cbLimitDate";
             this.cbLimitDate.Size = new System.Drawing.Size(137, 17);
             this.cbLimitDate.TabIndex = 5;
             this.cbLimitDate.Text = "Only media posted after";
             this.cbLimitDate.UseVisualStyleBackColor = true;
+            this.cbLimitDate.CheckedChanged += new System.EventHandler(this.cbLimitDate_CheckedChanged);
             // 
             // dtpLimit
             // 
@@ -112,6 +115,7 @@
             this.btnSearch.TabIndex = 9;
             this.btnSearch.Text = "...";
             this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // lbPath
             // 
@@ -122,12 +126,12 @@
             this.lbPath.TabIndex = 8;
             this.lbPath.Text = "Path:";
             // 
-            // textBox1
+            // tbxPath
             // 
-            this.textBox1.Location = new System.Drawing.Point(50, 107);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(342, 20);
-            this.textBox1.TabIndex = 7;
+            this.tbxPath.Location = new System.Drawing.Point(50, 107);
+            this.tbxPath.Name = "tbxPath";
+            this.tbxPath.Size = new System.Drawing.Size(342, 20);
+            this.tbxPath.TabIndex = 7;
             // 
             // btnDownload
             // 
@@ -137,14 +141,15 @@
             this.btnDownload.TabIndex = 10;
             this.btnDownload.Text = "Start downloading";
             this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(439, 177);
+            this.ClientSize = new System.Drawing.Size(439, 202);
             this.Controls.Add(this.btnDownload);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbxPath);
             this.Controls.Add(this.lbPath);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.dtpLimit);
@@ -177,7 +182,7 @@
         private System.Windows.Forms.DateTimePicker dtpLimit;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label lbPath;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbxPath;
         private System.Windows.Forms.Button btnDownload;
     }
 }
