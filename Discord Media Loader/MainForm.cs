@@ -24,6 +24,7 @@ namespace Discord_Media_Loader
     {
         private DiscordClient Client { get; } = new DiscordClient();
         private event EventHandler<UpdateProgessEventArgs> UpdateProgress;
+        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         public MainForm()
         {
             InitializeComponent();
@@ -32,8 +33,6 @@ namespace Discord_Media_Loader
             {
                 SetControlPropertyThreadSafe(lbDownload, "Text", $"Files downloaded: {e.Downloaded}");
                 SetControlPropertyThreadSafe(lbScanCount, "Text", $"Messages scanned: {e.Scanned}");
-                //SetControlPropertyThreadSafe(pgbProgress, "Max", e.MaxProgress);
-                //SetControlPropertyThreadSafe(pgbProgress, "Value", e.Progress);
             };
         }
 
@@ -174,12 +173,20 @@ namespace Discord_Media_Loader
             }
         }
 
+        private static long DateTimeToUnixTimeStamp(DateTime dateTime)
+        {
+            TimeSpan elapsedTime = dateTime - Epoch;
+            return (long)elapsedTime.TotalSeconds;
+        }
+
+
         private void btnDownload_Click(object sender, EventArgs e)
         {
             var path = tbxPath.Text;
             var useStopDate = cbLimitDate.Checked;
             var stopDate = dtpLimit.Value;
             var threadLimit = nupThreadCount.Value;
+            var skipExisting = cbSkip.Checked;
 
             if (!Directory.Exists(path))
             {
@@ -204,8 +211,8 @@ namespace Discord_Media_Loader
             ulong downloadCount = 0;
             var locker = new object();
 
-            var timeDiffSteps = (uint)Math.Floor(int.MaxValue / 2 / (DateTime.Now - dtpLimit.Value.Date).TotalHours);
-            uint progress = 0;
+            var timeDiffSteps = (int)Math.Floor(int.MaxValue / 2 / (DateTime.Now - dtpLimit.Value.Date).TotalHours);
+            int progress = 0;
 
             Task.Run(async () =>
             {
@@ -235,6 +242,17 @@ namespace Discord_Media_Loader
                         foreach (var a in m.Attachments)
                         {
                             fileFound++;
+
+                            if (!path.EndsWith(@"\"))
+                                path += @"\";
+
+                            var fname = $"{guild.Name}_{channel.Name}_{DateTimeToUnixTimeStamp(m.Timestamp)}_{a.Filename}";
+                            fname = Path.GetInvalidFileNameChars().Aggregate(fname, (current, c) => current.Replace(c, '-'));
+                            fname = path + fname;
+
+                            if (skipExisting && File.Exists(fname))
+                                continue;
+
                             while (clients.Count >= threadLimit)
                             {
                                 // wait
@@ -252,19 +270,11 @@ namespace Discord_Media_Loader
                                 }
                             };
 
-                            if (!path.EndsWith(@"\"))
-                                path += @"\";
-
-                            var fname = $"{guild.Name}_{channel.Name}_{m.Timestamp}_{a.Filename}";
-                            fname = Path.GetInvalidFileNameChars().Aggregate(fname, (current, c) => current.Replace(c, '-'));
-
-
-                            wc.DownloadFileAsync(new Uri(a.Url), $@"{path}{fname}");
+                            wc.DownloadFileAsync(new Uri(a.Url), fname);
                         }
 
                         msgScanCount++;
-                        progress += timeDiffSteps;
-                        OnUpdateProgress(new UpdateProgessEventArgs() { Downloaded = downloadCount, Scanned = msgScanCount, Progress = progress });
+                        OnUpdateProgress(new UpdateProgessEventArgs() { Downloaded = downloadCount, Scanned = msgScanCount});
                     }
 
                     stop = stop || messages.Length < limit;
@@ -287,7 +297,5 @@ namespace Discord_Media_Loader
     {
         internal ulong Scanned { get; set; } = 0;
         internal ulong Downloaded { get; set; } = 0;
-        internal uint Progress { get; set; } = 0;
-        internal uint MaxProgress { get; set; } = int.MaxValue;
     }
 }

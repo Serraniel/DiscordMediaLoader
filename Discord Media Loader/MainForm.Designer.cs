@@ -44,7 +44,7 @@
             this.lbDownload = new System.Windows.Forms.Label();
             this.cbGuilds = new System.Windows.Forms.ComboBox();
             this.lbGuild = new System.Windows.Forms.Label();
-            this.pgbProgress = new System.Windows.Forms.ProgressBar();
+            this.cbSkip = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nupThreadCount)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,7 +87,7 @@
             this.btnDownload.Location = new System.Drawing.Point(12, 167);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(415, 23);
-            this.btnDownload.TabIndex = 10;
+            this.btnDownload.TabIndex = 20;
             this.btnDownload.Text = "Start downloading";
             this.btnDownload.UseVisualStyleBackColor = true;
             this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
@@ -188,19 +188,24 @@
             this.lbGuild.TabIndex = 0;
             this.lbGuild.Text = "Guild:";
             // 
-            // pgbProgress
+            // cbSkip
             // 
-            this.pgbProgress.Location = new System.Drawing.Point(15, 219);
-            this.pgbProgress.Name = "pgbProgress";
-            this.pgbProgress.Size = new System.Drawing.Size(413, 23);
-            this.pgbProgress.TabIndex = 15;
+            this.cbSkip.AutoSize = true;
+            this.cbSkip.Checked = true;
+            this.cbSkip.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbSkip.Location = new System.Drawing.Point(227, 141);
+            this.cbSkip.Name = "cbSkip";
+            this.cbSkip.Size = new System.Drawing.Size(106, 17);
+            this.cbSkip.TabIndex = 16;
+            this.cbSkip.Text = "Skip existing files";
+            this.cbSkip.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(439, 253);
-            this.Controls.Add(this.pgbProgress);
+            this.Controls.Add(this.cbSkip);
             this.Controls.Add(this.lbDownload);
             this.Controls.Add(this.lbScanCount);
             this.Controls.Add(this.nupThreadCount);
@@ -246,6 +251,6 @@
         private System.Windows.Forms.Label lbDownload;
         private System.Windows.Forms.ComboBox cbGuilds;
         private System.Windows.Forms.Label lbGuild;
-        private System.Windows.Forms.ProgressBar pgbProgress;
+        private System.Windows.Forms.CheckBox cbSkip;
     }
 }
