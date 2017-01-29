@@ -29,62 +29,68 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.lbGuild = new System.Windows.Forms.Label();
-            this.cbGuilds = new System.Windows.Forms.ComboBox();
-            this.lbUsername = new System.Windows.Forms.Label();
-            this.cbChannels = new System.Windows.Forms.ComboBox();
-            this.lbChannel = new System.Windows.Forms.Label();
-            this.cbLimitDate = new System.Windows.Forms.CheckBox();
-            this.dtpLimit = new System.Windows.Forms.DateTimePicker();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.lbPath = new System.Windows.Forms.Label();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.tbxPath = new System.Windows.Forms.TextBox();
+            this.dtpLimit = new System.Windows.Forms.DateTimePicker();
             this.btnDownload = new System.Windows.Forms.Button();
+            this.cbLimitDate = new System.Windows.Forms.CheckBox();
+            this.lbThread = new System.Windows.Forms.Label();
+            this.cbChannels = new System.Windows.Forms.ComboBox();
+            this.nupThreadCount = new System.Windows.Forms.NumericUpDown();
+            this.lbChannel = new System.Windows.Forms.Label();
+            this.lbScanCount = new System.Windows.Forms.Label();
+            this.lbUsername = new System.Windows.Forms.Label();
+            this.lbDownload = new System.Windows.Forms.Label();
+            this.cbGuilds = new System.Windows.Forms.ComboBox();
+            this.lbGuild = new System.Windows.Forms.Label();
+            this.pgbProgress = new System.Windows.Forms.ProgressBar();
+            ((System.ComponentModel.ISupportInitialize)(this.nupThreadCount)).BeginInit();
             this.SuspendLayout();
             // 
-            // lbGuild
+            // lbPath
             // 
-            this.lbGuild.AutoSize = true;
-            this.lbGuild.Location = new System.Drawing.Point(12, 35);
-            this.lbGuild.Name = "lbGuild";
-            this.lbGuild.Size = new System.Drawing.Size(34, 13);
-            this.lbGuild.TabIndex = 0;
-            this.lbGuild.Text = "Guild:";
+            this.lbPath.AutoSize = true;
+            this.lbPath.Location = new System.Drawing.Point(12, 110);
+            this.lbPath.Name = "lbPath";
+            this.lbPath.Size = new System.Drawing.Size(32, 13);
+            this.lbPath.TabIndex = 8;
+            this.lbPath.Text = "Path:";
             // 
-            // cbGuilds
+            // btnSearch
             // 
-            this.cbGuilds.FormattingEnabled = true;
-            this.cbGuilds.Location = new System.Drawing.Point(52, 32);
-            this.cbGuilds.Name = "cbGuilds";
-            this.cbGuilds.Size = new System.Drawing.Size(164, 21);
-            this.cbGuilds.TabIndex = 1;
-            this.cbGuilds.SelectedIndexChanged += new System.EventHandler(this.cbGuilds_SelectedIndexChanged);
+            this.btnSearch.Location = new System.Drawing.Point(403, 105);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(25, 23);
+            this.btnSearch.TabIndex = 9;
+            this.btnSearch.Text = "...";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // lbUsername
+            // tbxPath
             // 
-            this.lbUsername.AutoSize = true;
-            this.lbUsername.Location = new System.Drawing.Point(12, 9);
-            this.lbUsername.Name = "lbUsername";
-            this.lbUsername.Size = new System.Drawing.Size(58, 13);
-            this.lbUsername.TabIndex = 2;
-            this.lbUsername.Text = "Username:";
+            this.tbxPath.Location = new System.Drawing.Point(50, 107);
+            this.tbxPath.Name = "tbxPath";
+            this.tbxPath.Size = new System.Drawing.Size(342, 20);
+            this.tbxPath.TabIndex = 7;
             // 
-            // cbChannels
+            // dtpLimit
             // 
-            this.cbChannels.FormattingEnabled = true;
-            this.cbChannels.Location = new System.Drawing.Point(264, 32);
-            this.cbChannels.Name = "cbChannels";
-            this.cbChannels.Size = new System.Drawing.Size(164, 21);
-            this.cbChannels.TabIndex = 4;
+            this.dtpLimit.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpLimit.Location = new System.Drawing.Point(158, 70);
+            this.dtpLimit.Name = "dtpLimit";
+            this.dtpLimit.Size = new System.Drawing.Size(95, 20);
+            this.dtpLimit.TabIndex = 6;
             // 
-            // lbChannel
+            // btnDownload
             // 
-            this.lbChannel.AutoSize = true;
-            this.lbChannel.Location = new System.Drawing.Point(224, 38);
-            this.lbChannel.Name = "lbChannel";
-            this.lbChannel.Size = new System.Drawing.Size(34, 13);
-            this.lbChannel.TabIndex = 3;
-            this.lbChannel.Text = "Guild:";
+            this.btnDownload.Location = new System.Drawing.Point(12, 167);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(415, 23);
+            this.btnDownload.TabIndex = 10;
+            this.btnDownload.Text = "Start downloading";
+            this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // cbLimitDate
             // 
@@ -99,55 +105,106 @@
             this.cbLimitDate.UseVisualStyleBackColor = true;
             this.cbLimitDate.CheckedChanged += new System.EventHandler(this.cbLimitDate_CheckedChanged);
             // 
-            // dtpLimit
+            // lbThread
             // 
-            this.dtpLimit.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpLimit.Location = new System.Drawing.Point(158, 70);
-            this.dtpLimit.Name = "dtpLimit";
-            this.dtpLimit.Size = new System.Drawing.Size(95, 20);
-            this.dtpLimit.TabIndex = 6;
+            this.lbThread.AutoSize = true;
+            this.lbThread.Location = new System.Drawing.Point(12, 141);
+            this.lbThread.Name = "lbThread";
+            this.lbThread.Size = new System.Drawing.Size(64, 13);
+            this.lbThread.TabIndex = 11;
+            this.lbThread.Text = "Thread limit:";
             // 
-            // btnSearch
+            // cbChannels
             // 
-            this.btnSearch.Location = new System.Drawing.Point(403, 105);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(25, 23);
-            this.btnSearch.TabIndex = 9;
-            this.btnSearch.Text = "...";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.cbChannels.FormattingEnabled = true;
+            this.cbChannels.Location = new System.Drawing.Point(264, 32);
+            this.cbChannels.Name = "cbChannels";
+            this.cbChannels.Size = new System.Drawing.Size(164, 21);
+            this.cbChannels.TabIndex = 4;
             // 
-            // lbPath
+            // nupThreadCount
             // 
-            this.lbPath.AutoSize = true;
-            this.lbPath.Location = new System.Drawing.Point(12, 110);
-            this.lbPath.Name = "lbPath";
-            this.lbPath.Size = new System.Drawing.Size(32, 13);
-            this.lbPath.TabIndex = 8;
-            this.lbPath.Text = "Path:";
+            this.nupThreadCount.Location = new System.Drawing.Point(82, 139);
+            this.nupThreadCount.Name = "nupThreadCount";
+            this.nupThreadCount.Size = new System.Drawing.Size(70, 20);
+            this.nupThreadCount.TabIndex = 12;
+            this.nupThreadCount.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
             // 
-            // tbxPath
+            // lbChannel
             // 
-            this.tbxPath.Location = new System.Drawing.Point(50, 107);
-            this.tbxPath.Name = "tbxPath";
-            this.tbxPath.Size = new System.Drawing.Size(342, 20);
-            this.tbxPath.TabIndex = 7;
+            this.lbChannel.AutoSize = true;
+            this.lbChannel.Location = new System.Drawing.Point(224, 38);
+            this.lbChannel.Name = "lbChannel";
+            this.lbChannel.Size = new System.Drawing.Size(34, 13);
+            this.lbChannel.TabIndex = 3;
+            this.lbChannel.Text = "Guild:";
             // 
-            // btnDownload
+            // lbScanCount
             // 
-            this.btnDownload.Location = new System.Drawing.Point(12, 142);
-            this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(416, 23);
-            this.btnDownload.TabIndex = 10;
-            this.btnDownload.Text = "Start downloading";
-            this.btnDownload.UseVisualStyleBackColor = true;
-            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
+            this.lbScanCount.AutoSize = true;
+            this.lbScanCount.Location = new System.Drawing.Point(12, 203);
+            this.lbScanCount.Name = "lbScanCount";
+            this.lbScanCount.Size = new System.Drawing.Size(102, 13);
+            this.lbScanCount.TabIndex = 13;
+            this.lbScanCount.Text = "Messages scanned:";
+            // 
+            // lbUsername
+            // 
+            this.lbUsername.AutoSize = true;
+            this.lbUsername.Location = new System.Drawing.Point(12, 9);
+            this.lbUsername.Name = "lbUsername";
+            this.lbUsername.Size = new System.Drawing.Size(58, 13);
+            this.lbUsername.TabIndex = 2;
+            this.lbUsername.Text = "Username:";
+            // 
+            // lbDownload
+            // 
+            this.lbDownload.AutoSize = true;
+            this.lbDownload.Location = new System.Drawing.Point(234, 203);
+            this.lbDownload.Name = "lbDownload";
+            this.lbDownload.Size = new System.Drawing.Size(92, 13);
+            this.lbDownload.TabIndex = 14;
+            this.lbDownload.Text = "Files downloaded:";
+            // 
+            // cbGuilds
+            // 
+            this.cbGuilds.FormattingEnabled = true;
+            this.cbGuilds.Location = new System.Drawing.Point(52, 32);
+            this.cbGuilds.Name = "cbGuilds";
+            this.cbGuilds.Size = new System.Drawing.Size(164, 21);
+            this.cbGuilds.TabIndex = 1;
+            this.cbGuilds.SelectedIndexChanged += new System.EventHandler(this.cbGuilds_SelectedIndexChanged);
+            // 
+            // lbGuild
+            // 
+            this.lbGuild.AutoSize = true;
+            this.lbGuild.Location = new System.Drawing.Point(12, 35);
+            this.lbGuild.Name = "lbGuild";
+            this.lbGuild.Size = new System.Drawing.Size(34, 13);
+            this.lbGuild.TabIndex = 0;
+            this.lbGuild.Text = "Guild:";
+            // 
+            // pgbProgress
+            // 
+            this.pgbProgress.Location = new System.Drawing.Point(15, 219);
+            this.pgbProgress.Name = "pgbProgress";
+            this.pgbProgress.Size = new System.Drawing.Size(413, 23);
+            this.pgbProgress.TabIndex = 15;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(439, 202);
+            this.ClientSize = new System.Drawing.Size(439, 253);
+            this.Controls.Add(this.pgbProgress);
+            this.Controls.Add(this.lbDownload);
+            this.Controls.Add(this.lbScanCount);
+            this.Controls.Add(this.nupThreadCount);
+            this.Controls.Add(this.lbThread);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.tbxPath);
             this.Controls.Add(this.lbPath);
@@ -166,6 +223,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Discord Media Loader";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            ((System.ComponentModel.ISupportInitialize)(this.nupThreadCount)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,16 +231,21 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lbGuild;
-        private System.Windows.Forms.ComboBox cbGuilds;
-        private System.Windows.Forms.Label lbUsername;
-        private System.Windows.Forms.ComboBox cbChannels;
-        private System.Windows.Forms.Label lbChannel;
-        private System.Windows.Forms.CheckBox cbLimitDate;
-        private System.Windows.Forms.DateTimePicker dtpLimit;
-        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label lbPath;
+        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox tbxPath;
+        private System.Windows.Forms.DateTimePicker dtpLimit;
         private System.Windows.Forms.Button btnDownload;
+        private System.Windows.Forms.CheckBox cbLimitDate;
+        private System.Windows.Forms.Label lbThread;
+        private System.Windows.Forms.ComboBox cbChannels;
+        private System.Windows.Forms.NumericUpDown nupThreadCount;
+        private System.Windows.Forms.Label lbChannel;
+        private System.Windows.Forms.Label lbScanCount;
+        private System.Windows.Forms.Label lbUsername;
+        private System.Windows.Forms.Label lbDownload;
+        private System.Windows.Forms.ComboBox cbGuilds;
+        private System.Windows.Forms.Label lbGuild;
+        private System.Windows.Forms.ProgressBar pgbProgress;
     }
 }
