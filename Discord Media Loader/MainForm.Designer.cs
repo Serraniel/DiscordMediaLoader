@@ -45,6 +45,10 @@
             this.cbGuilds = new System.Windows.Forms.ComboBox();
             this.lbGuild = new System.Windows.Forms.Label();
             this.cbSkip = new System.Windows.Forms.CheckBox();
+            this.lbCopyright = new System.Windows.Forms.Label();
+            this.lbGithub = new System.Windows.Forms.LinkLabel();
+            this.lbAbout = new System.Windows.Forms.LinkLabel();
+            this.lbVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nupThreadCount)).BeginInit();
             this.SuspendLayout();
             // 
@@ -116,6 +120,7 @@
             // 
             // cbChannels
             // 
+            this.cbChannels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbChannels.FormattingEnabled = true;
             this.cbChannels.Location = new System.Drawing.Point(264, 32);
             this.cbChannels.Name = "cbChannels";
@@ -172,6 +177,7 @@
             // 
             // cbGuilds
             // 
+            this.cbGuilds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGuilds.FormattingEnabled = true;
             this.cbGuilds.Location = new System.Drawing.Point(52, 32);
             this.cbGuilds.Name = "cbGuilds";
@@ -200,11 +206,55 @@
             this.cbSkip.Text = "Skip existing files";
             this.cbSkip.UseVisualStyleBackColor = true;
             // 
+            // lbCopyright
+            // 
+            this.lbCopyright.AutoSize = true;
+            this.lbCopyright.Location = new System.Drawing.Point(12, 274);
+            this.lbCopyright.Name = "lbCopyright";
+            this.lbCopyright.Size = new System.Drawing.Size(151, 13);
+            this.lbCopyright.TabIndex = 22;
+            this.lbCopyright.Text = "Copyright (c) 2017 by Serraniel";
+            // 
+            // lbGithub
+            // 
+            this.lbGithub.AutoSize = true;
+            this.lbGithub.Location = new System.Drawing.Point(169, 274);
+            this.lbGithub.Name = "lbGithub";
+            this.lbGithub.Size = new System.Drawing.Size(40, 13);
+            this.lbGithub.TabIndex = 23;
+            this.lbGithub.TabStop = true;
+            this.lbGithub.Text = "GitHub";
+            this.lbGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbGithub_LinkClicked);
+            // 
+            // lbAbout
+            // 
+            this.lbAbout.AutoSize = true;
+            this.lbAbout.Location = new System.Drawing.Point(223, 274);
+            this.lbAbout.Name = "lbAbout";
+            this.lbAbout.Size = new System.Drawing.Size(35, 13);
+            this.lbAbout.TabIndex = 24;
+            this.lbAbout.TabStop = true;
+            this.lbAbout.Text = "About";
+            this.lbAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbAbout_LinkClicked);
+            // 
+            // lbVersion
+            // 
+            this.lbVersion.Location = new System.Drawing.Point(328, 274);
+            this.lbVersion.Name = "lbVersion";
+            this.lbVersion.Size = new System.Drawing.Size(100, 13);
+            this.lbVersion.TabIndex = 25;
+            this.lbVersion.Text = "version";
+            this.lbVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(439, 253);
+            this.ClientSize = new System.Drawing.Size(439, 296);
+            this.Controls.Add(this.lbVersion);
+            this.Controls.Add(this.lbAbout);
+            this.Controls.Add(this.lbGithub);
+            this.Controls.Add(this.lbCopyright);
             this.Controls.Add(this.cbSkip);
             this.Controls.Add(this.lbDownload);
             this.Controls.Add(this.lbScanCount);
@@ -252,5 +302,9 @@
         private System.Windows.Forms.ComboBox cbGuilds;
         private System.Windows.Forms.Label lbGuild;
         private System.Windows.Forms.CheckBox cbSkip;
+        private System.Windows.Forms.Label lbCopyright;
+        private System.Windows.Forms.LinkLabel lbGithub;
+        private System.Windows.Forms.LinkLabel lbAbout;
+        private System.Windows.Forms.Label lbVersion;
     }
 }

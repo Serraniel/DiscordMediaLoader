@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Discord;
 using Discord.Net;
-using Nito.AsyncEx;
 using ConnectionState = Discord.ConnectionState;
-using Message = Discord.Message;
 
 namespace Discord_Media_Loader
 {
@@ -42,13 +35,12 @@ namespace Discord_Media_Loader
         {
             if (control.InvokeRequired)
             {
-                control.Invoke(new SetControlPropertyThreadSafeDelegate(SetControlPropertyThreadSafe),
-                    new object[] { control, propertyName, propertyValue });
+                control.Invoke(new SetControlPropertyThreadSafeDelegate(SetControlPropertyThreadSafe), control, propertyName, propertyValue);
 
             }
             else
             {
-                control.GetType().InvokeMember(propertyName, BindingFlags.SetProperty, null, control, new object[] { propertyValue });
+                control.GetType().InvokeMember(propertyName, BindingFlags.SetProperty, null, control, new[] { propertyValue });
             }
         }
 
@@ -59,7 +51,7 @@ namespace Discord_Media_Loader
 
             while (Client.State != ConnectionState.Connected && !abort)
             {
-                var password = "";
+                string password;
 
                 if (LoginForm.Exec(ref email, out password))
                 {
@@ -78,7 +70,7 @@ namespace Discord_Media_Loader
                             Cursor = Cursors.Default;
                         }
                     }
-                    catch (HttpException ex)
+                    catch (HttpException)
                     {
                         // ignore http exception on invalid login
                     }
@@ -94,6 +86,8 @@ namespace Discord_Media_Loader
 
         private async void MainForm_Shown(object sender, EventArgs e)
         {
+            lbVersion.Text = $"v{Assembly.GetExecutingAssembly().GetName().Version}";
+
             SetEnabled(false);
 
             if (!await Login())
@@ -167,10 +161,7 @@ namespace Discord_Media_Loader
         private void OnUpdateProgress(UpdateProgessEventArgs e)
         {
             EventHandler<UpdateProgessEventArgs> handler = UpdateProgress;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            handler?.Invoke(this, e);
         }
 
         private static long DateTimeToUnixTimeStamp(DateTime dateTime)
@@ -203,16 +194,12 @@ namespace Discord_Media_Loader
 
             var limit = 100;
             var stop = false;
-            ulong lastId = ulong.MaxValue;
+            var lastId = ulong.MaxValue;
             var isFirst = true;
 
             ulong msgScanCount = 0;
-            ulong fileFound = 0;
             ulong downloadCount = 0;
             var locker = new object();
-
-            var timeDiffSteps = (int)Math.Floor(int.MaxValue / 2 / (DateTime.Now - dtpLimit.Value.Date).TotalHours);
-            int progress = 0;
 
             Task.Run(async () =>
             {
@@ -222,9 +209,9 @@ namespace Discord_Media_Loader
                     Discord.Message[] messages;
 
                     if (isFirst)
-                        messages = await channel.DownloadMessages(limit, null, Relative.Before, true);
+                        messages = await channel.DownloadMessages(limit, null);
                     else
-                        messages = await channel.DownloadMessages(limit, lastId, Relative.Before, true);
+                        messages = await channel.DownloadMessages(limit, lastId);
 
                     isFirst = false;
 
@@ -241,8 +228,6 @@ namespace Discord_Media_Loader
 
                         foreach (var a in m.Attachments)
                         {
-                            fileFound++;
-
                             if (!path.EndsWith(@"\"))
                                 path += @"\";
 
@@ -288,14 +273,25 @@ namespace Discord_Media_Loader
                     }
                 });
 
+                Process.Start(path);
                 SetEnabled(true);
             });
+        }
+
+        private void lbGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/Serraniel/DiscordMediaLoader/releases");
+        }
+
+        private void lbAbout_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MessageBox.Show(Properties.Resources.AboutString);
         }
     }
 
     internal class UpdateProgessEventArgs : EventArgs
     {
-        internal ulong Scanned { get; set; } = 0;
-        internal ulong Downloaded { get; set; } = 0;
+        internal ulong Scanned { get; set; }
+        internal ulong Downloaded { get; set; }
     }
 }
