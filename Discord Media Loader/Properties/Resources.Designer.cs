@@ -68,6 +68,7 @@ namespace Discord_Media_Loader.Properties {
         ///Discord.Net (Copyright (c) 2015 RogueException - MIT License)
         ///Newtonsoft.Json (Copyright (c) 2007 James Newton-King - MIT License)
         ///Nito.AsyncEx (Copyright (c) 2014 StephenCleary - MIT License)
+        ///RestSharp (Copyright (c) restsharp - Apache 2.0 License)
         ///WebSocket4Net (Copyright (c) kerryjiang - Apache 2.0 License) ähnelt.
         /// </summary>
         internal static string AboutString {
