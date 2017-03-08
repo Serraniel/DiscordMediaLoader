@@ -87,9 +87,9 @@ namespace Discord_Media_Loader
 
         private async void MainForm_Shown(object sender, EventArgs e)
         {
-            lbVersion.Text = $"v{Assembly.GetExecutingAssembly().GetName().Version}";
-
+            lbVersion.Text = $"v{VersionHelper.CurrentVersion}";          
             SetEnabled(false);
+            await CheckForUpdates();
 
             if (!await Login())
             {
@@ -120,7 +120,6 @@ namespace Discord_Media_Loader
             foreach (Control c in Controls)
             {
                 SetControlPropertyThreadSafe(c, "Enabled", enabled);
-                //c.Enabled = enabled;
             }
         }
 
@@ -260,7 +259,7 @@ namespace Discord_Media_Loader
                         }
 
                         msgScanCount++;
-                        OnUpdateProgress(new UpdateProgessEventArgs() { Downloaded = downloadCount, Scanned = msgScanCount});
+                        OnUpdateProgress(new UpdateProgessEventArgs() { Downloaded = downloadCount, Scanned = msgScanCount });
                     }
 
                     stop = stop || messages.Length < limit;
@@ -289,9 +288,24 @@ namespace Discord_Media_Loader
             MessageBox.Show(Properties.Resources.AboutString);
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        private async Task CheckForUpdates(bool manually = false)
         {
-            await VersionHelper.GetLatestReleaseVersion("Serraniel", "DiscordMediaLoader");
+            if (VersionHelper.CurrentVersion < await VersionHelper.GetLatestReleaseVersion())
+            {                
+                    if (MessageBox.Show("A new version is available, do you want to update now?", "Update available", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        return;
+                
+                Process.Start(await VersionHelper.DownloadLatestReleaseVersion());
+            }
+            else if (manually)
+            {
+                MessageBox.Show("You already use the newest version.");
+            }            
+        }
+
+        private void lbVersion_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            CheckForUpdates(true);
         }
     }
 

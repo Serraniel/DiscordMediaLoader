@@ -11,8 +11,7 @@ namespace Discord_Media_Loader
         /// </summary>
         [STAThread]
         static void Main()
-        {
-         var v = VersionHelper.GetLatestReleaseVersion("Serraniel", "DiscordMediaLoader");
+        {            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
