@@ -122,9 +122,9 @@
             // 
             this.cbChannels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbChannels.FormattingEnabled = true;
-            this.cbChannels.Location = new System.Drawing.Point(264, 32);
+            this.cbChannels.Location = new System.Drawing.Point(279, 32);
             this.cbChannels.Name = "cbChannels";
-            this.cbChannels.Size = new System.Drawing.Size(164, 21);
+            this.cbChannels.Size = new System.Drawing.Size(149, 21);
             this.cbChannels.TabIndex = 4;
             // 
             // nupThreadCount
@@ -144,9 +144,9 @@
             this.lbChannel.AutoSize = true;
             this.lbChannel.Location = new System.Drawing.Point(224, 38);
             this.lbChannel.Name = "lbChannel";
-            this.lbChannel.Size = new System.Drawing.Size(34, 13);
+            this.lbChannel.Size = new System.Drawing.Size(49, 13);
             this.lbChannel.TabIndex = 3;
-            this.lbChannel.Text = "Guild:";
+            this.lbChannel.Text = "Channel:";
             // 
             // lbScanCount
             // 
