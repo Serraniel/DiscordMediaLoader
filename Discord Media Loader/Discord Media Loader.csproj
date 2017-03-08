@@ -32,6 +32,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>True</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>None.Increment.None.None</AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>None.Increment.None.None</AssemblyFileVersionSettings>
+    <AssemblyInfoVersionSettings>None.Increment.None.None</AssemblyInfoVersionSettings>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Serraniel-64x64.ico</ApplicationIcon>
