@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Discord_Media_Loader.Helper;
 
 namespace Discord_Media_Loader
 {
@@ -11,6 +12,7 @@ namespace Discord_Media_Loader
         [STAThread]
         static void Main()
         {
+         var v = VersionHelper.GetLatestReleaseVersion("Serraniel", "DiscordMediaLoader");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Discord;
 using Discord.Net;
+using Discord_Media_Loader.Helper;
 using ConnectionState = Discord.ConnectionState;
 
 namespace Discord_Media_Loader
@@ -286,6 +287,11 @@ namespace Discord_Media_Loader
         private void lbAbout_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             MessageBox.Show(Properties.Resources.AboutString);
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            await VersionHelper.GetLatestReleaseVersion("Serraniel", "DiscordMediaLoader");
         }
     }
 

@@ -49,6 +49,7 @@
             this.lbGithub = new System.Windows.Forms.LinkLabel();
             this.lbAbout = new System.Windows.Forms.LinkLabel();
             this.lbVersion = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nupThreadCount)).BeginInit();
             this.SuspendLayout();
             // 
@@ -246,11 +247,22 @@
             this.lbVersion.Text = "version";
             this.lbVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(294, 256);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 26;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(439, 296);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.lbAbout);
             this.Controls.Add(this.lbGithub);
@@ -306,5 +318,6 @@
         private System.Windows.Forms.LinkLabel lbGithub;
         private System.Windows.Forms.LinkLabel lbAbout;
         private System.Windows.Forms.Label lbVersion;
+        private System.Windows.Forms.Button button1;
     }
 }
