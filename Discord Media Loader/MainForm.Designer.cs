@@ -48,7 +48,7 @@
             this.lbCopyright = new System.Windows.Forms.Label();
             this.lbGithub = new System.Windows.Forms.LinkLabel();
             this.lbAbout = new System.Windows.Forms.LinkLabel();
-            this.lbVersion = new System.Windows.Forms.Label();
+            this.lbVersion = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.nupThreadCount)).BeginInit();
             this.SuspendLayout();
             // 
@@ -122,9 +122,9 @@
             // 
             this.cbChannels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbChannels.FormattingEnabled = true;
-            this.cbChannels.Location = new System.Drawing.Point(264, 32);
+            this.cbChannels.Location = new System.Drawing.Point(279, 32);
             this.cbChannels.Name = "cbChannels";
-            this.cbChannels.Size = new System.Drawing.Size(164, 21);
+            this.cbChannels.Size = new System.Drawing.Size(149, 21);
             this.cbChannels.TabIndex = 4;
             // 
             // nupThreadCount
@@ -144,9 +144,9 @@
             this.lbChannel.AutoSize = true;
             this.lbChannel.Location = new System.Drawing.Point(224, 38);
             this.lbChannel.Name = "lbChannel";
-            this.lbChannel.Size = new System.Drawing.Size(34, 13);
+            this.lbChannel.Size = new System.Drawing.Size(49, 13);
             this.lbChannel.TabIndex = 3;
-            this.lbChannel.Text = "Guild:";
+            this.lbChannel.Text = "Channel:";
             // 
             // lbScanCount
             // 
@@ -241,10 +241,12 @@
             // 
             this.lbVersion.Location = new System.Drawing.Point(328, 274);
             this.lbVersion.Name = "lbVersion";
-            this.lbVersion.Size = new System.Drawing.Size(100, 13);
-            this.lbVersion.TabIndex = 25;
+            this.lbVersion.Size = new System.Drawing.Size(100, 15);
+            this.lbVersion.TabIndex = 26;
+            this.lbVersion.TabStop = true;
             this.lbVersion.Text = "version";
             this.lbVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lbVersion.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbVersion_LinkClicked);
             // 
             // MainForm
             // 
@@ -305,6 +307,6 @@
         private System.Windows.Forms.Label lbCopyright;
         private System.Windows.Forms.LinkLabel lbGithub;
         private System.Windows.Forms.LinkLabel lbAbout;
-        private System.Windows.Forms.Label lbVersion;
+        private System.Windows.Forms.LinkLabel lbVersion;
     }
 }
