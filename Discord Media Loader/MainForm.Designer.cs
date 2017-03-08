@@ -48,7 +48,7 @@
             this.lbCopyright = new System.Windows.Forms.Label();
             this.lbGithub = new System.Windows.Forms.LinkLabel();
             this.lbAbout = new System.Windows.Forms.LinkLabel();
-            this.lbVersion = new System.Windows.Forms.Label();
+            this.lbVersion = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.nupThreadCount)).BeginInit();
             this.SuspendLayout();
             // 
@@ -241,10 +241,12 @@
             // 
             this.lbVersion.Location = new System.Drawing.Point(328, 274);
             this.lbVersion.Name = "lbVersion";
-            this.lbVersion.Size = new System.Drawing.Size(100, 13);
-            this.lbVersion.TabIndex = 25;
+            this.lbVersion.Size = new System.Drawing.Size(100, 15);
+            this.lbVersion.TabIndex = 26;
+            this.lbVersion.TabStop = true;
             this.lbVersion.Text = "version";
             this.lbVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lbVersion.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lbVersion_LinkClicked);
             // 
             // MainForm
             // 
@@ -305,6 +307,6 @@
         private System.Windows.Forms.Label lbCopyright;
         private System.Windows.Forms.LinkLabel lbGithub;
         private System.Windows.Forms.LinkLabel lbAbout;
-        private System.Windows.Forms.Label lbVersion;
+        private System.Windows.Forms.LinkLabel lbVersion;
     }
 }
