@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Discord Media Loader.Application")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Serraniel")]
 [assembly: AssemblyProduct("Discord Media Loader.Application")]
 [assembly: AssemblyCopyright("Copyright © 2017 by Serraniel")]
 [assembly: AssemblyTrademark("")]

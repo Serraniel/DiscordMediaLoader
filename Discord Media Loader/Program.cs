@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,7 +17,11 @@ namespace Discord_Media_Loader
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+
+            ProfileOptimization.SetProfileRoot(Application.UserAppDataPath);
+            ProfileOptimization.StartProfile("profile.opt");
+
+            //Application.Run(new FrmDownload());
         }
     }
 }
