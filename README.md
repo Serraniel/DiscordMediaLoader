@@ -19,3 +19,14 @@ Apache License 2.0
   
 ## Requirements
  * [.Net Framework 4.6](https://www.microsoft.com/en-us/download/details.aspx?id=48137) by Microsoft
+
+## How to use
+First things first: **Do not use if you have MFA enabled** as long as login is only supported via username and password. That might get you lost your account. A switch to a token based login will come soon™!
+
+Otherwise you may just do the following steps:
+ 1. Login
+ 2. Select a guild
+ 3. Select a channel
+ 4. Select a directory to save the files
+ 5. Do other settings if wished
+ 6. Press the magic button to download stuff
