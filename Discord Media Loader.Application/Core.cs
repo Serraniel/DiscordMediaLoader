@@ -1,14 +1,194 @@
-﻿using Discord;
+﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Runtime;
+using System.Runtime.Remoting.Channels;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Discord;
+using Discord.Net;
+using DML.Application.Classes;
+using DML.Application.Dialogs;
+using LiteDB;
+using SweetLib.Utils.Logger;
+using SweetLib.Utils.Logger.Memory;
+using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application
 {
-    public class Core
+    public static class Core
     {
-        internal static DiscordClient Client;
+        internal static DiscordClient Client { get; set; }
+        internal static LiteDatabase Database { get; set; }
+        internal static Settings Settings { get; set; }
 
-        public static void Run()
+        internal static string DataDirectory
+            => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Serraniel\Discord Media Loader");
+
+        public static async Task Run(string[] paramStrings)
         {
-            System.Windows.Forms.Application.Run(new MainForm());
+            try
+            {
+                Info("Starting up Discord Media Loader application...");
+                var useTrace = false;
+#if DEBUG
+                //temporary add debug log level if debugging...
+                GlobalLogLevel |= LogLevel.Debug;
+                Debug("Running in debug configuartion. Added log level debug.");
+#endif
+
+                Debug($"Parameters: {string.Join(", ", paramStrings)}");
+                if (paramStrings.Contains("--trace") || paramStrings.Contains("-t"))
+                {
+                    useTrace = true;
+                    GlobalLogLevel |= LogLevel.Trace;
+                    Trace("Trace parameter found. Added log level trace.");
+                }
+
+                Debug($"Application data folder: {DataDirectory}");
+
+                Trace("Checking application data folder...");
+                if (!Directory.Exists(DataDirectory))
+                {
+                    Debug("Creating application data folder...");
+                    Directory.CreateDirectory(DataDirectory);
+                    Trace("Creating application data folder.");
+                }
+
+                Trace("Initializing profile optimizations...");
+                ProfileOptimization.SetProfileRoot(System.Windows.Forms.Application.UserAppDataPath);
+                ProfileOptimization.StartProfile("profile.opt");
+                Trace("Finished initializing profile optimizations.");
+
+                Trace("Trying to identify log memory...");
+                var logMemory = DefaultLogMemory as ArchivableConsoleLogMemory;
+                if (logMemory != null)
+                {
+                    var logFolder = Path.Combine(DataDirectory, "logs");
+                    if (!Directory.Exists(logFolder))
+                    {
+                        Debug("Creating log folder...");
+                        Directory.CreateDirectory(logFolder);
+                        Trace("Created log folder.");
+                    }
+
+
+                    var logFile = Path.Combine(logFolder,
+                        $"{DateTime.Now.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern).Replace(':', '-')}.log.zip");
+
+                    Trace($"Setting log file: {logFile}");
+                    logMemory.AutoArchiveOnDispose = true;
+                    logMemory.ArchiveFile = logFile;
+                }
+
+                Debug("Loading database...");
+                Database = new LiteDatabase(Path.Combine(DataDirectory, "config.db"));
+                Database.Log.Logging += (message) => Trace($"LiteDB: {message}");
+
+                Debug("Loading settings collection out of database...");
+                var settingsDB = Database.GetCollection<Settings>("settings");
+                if (settingsDB.Count() > 1)
+                {
+                    Warn("Found more than one setting. Loading first one...");
+                }
+                Settings = settingsDB.FindAll().FirstOrDefault();
+                if (Settings == null)
+                {
+                    Warn("Settings not found. Creating new one. This is normal on first start up...");
+                    Settings = new Settings();
+                    Settings.Store();
+                }
+
+                Info("Loaded settings.");
+                Debug(
+                    $"Settings: Email: {Settings.Email}, password: {(string.IsNullOrEmpty(Settings.Password) ? "not set" : "is set")}, use username: {Settings.UseUserData}, loginToken: {Settings.LoginToken}");
+
+                Trace("Updating log level...");
+                GlobalLogLevel = Settings.ApplicactionLogLevel;
+#if DEBUG
+                //temporary add debug log level if debugging...
+                GlobalLogLevel |= LogLevel.Debug;
+                Debug("Running in debug configuartion. Added log level debug.");
+#endif
+                if (useTrace)
+                {
+                    GlobalLogLevel |= LogLevel.Trace;
+                    Trace("Creating application data folder.");
+                }
+
+                Debug("Creating discord client...");
+                Client = new DiscordClient();
+                Client.Log.Message += (sender, message) =>
+                {
+                    var logMessage = $"DiscordClient: {message.Message}";
+                    switch (message.Severity)
+                    {
+                        case LogSeverity.Verbose:
+                            Trace(logMessage);
+                            break;
+                        case LogSeverity.Debug:
+                            Trace(logMessage);
+                            break;
+                        case LogSeverity.Info:
+                            Info(logMessage);
+                            break;
+                        case LogSeverity.Warning:
+                            Warn(logMessage);
+                            break;
+                        case LogSeverity.Error:
+                            Error(logMessage);
+                            break;
+                    }
+                };
+
+
+                Info("Trying to log into discord...");
+                var abort = false;
+
+                while (Client.State != ConnectionState.Connected && !abort)
+                {
+                    Trace("Entering login loop.");
+
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(Settings.LoginToken))
+                        {
+                            Debug("Trying to login with last known token...");
+                            await Client.Connect(Settings.LoginToken, TokenType.User);
+                        }
+
+                        if (Client.State != ConnectionState.Connected && Settings.UseUserData &&
+                            !string.IsNullOrEmpty(Settings.Email) &&
+                            !string.IsNullOrEmpty(Settings.Password))
+                        {
+                            Settings.LoginToken = string.Empty;
+
+                            Debug("Trying to login with email and password...");
+                            await Client.Connect(Settings.Email, Settings.Password);
+                        }
+                    }
+                    catch (HttpException)
+                    {
+                        Warn("Login seems to have failed or gone wrong.");
+                    }
+
+                    if (Client.State != ConnectionState.Connected)
+                    {
+                        Settings.Password = string.Empty;
+                        Debug("Showing dialog for username and password...");
+                        var loginDlg = new LoginDialog();
+                        loginDlg.ShowDialog();
+                        Trace("Dialog closed.");
+                    }
+                }
+
+                System.Windows.Forms.Application.Run(new MainForm());
+            }
+            catch (Exception ex)
+            {
+                Error($"{ex.Message} occured at: {ex.StackTrace}");
+            }
         }
     }
 }
