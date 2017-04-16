@@ -4,14 +4,13 @@ using System.Linq;
 using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Discord_Media_Loader.Helper;
+using DML.Application;
 
 namespace Discord_Media_Loader
 {
     static class Program
     {
-        /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
-        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -21,7 +20,10 @@ namespace Discord_Media_Loader
             ProfileOptimization.SetProfileRoot(Application.UserAppDataPath);
             ProfileOptimization.StartProfile("profile.opt");
 
-            //Application.Run(new FrmDownload());
+            var splashScreen = new FrmSplash();
+            splashScreen.ShowDialog();
+
+            Core.Run();
         }
     }
 }

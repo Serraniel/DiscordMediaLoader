@@ -26,10 +26,12 @@ namespace Discord_Media_Loader
             Source = source;
         }
 
-        internal void StartDownload()
+        internal void StartDownload(bool waitForDialog = true)
         {
             Task.Run(() =>
             {
+                while (waitForDialog && !Visible) { }
+
                 var wc = new WebClient
                 {
                     CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore)
@@ -55,7 +57,7 @@ namespace Discord_Media_Loader
 
         private void Wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            SetStatus(LocUtils.Remember("Download finished"));
+            SetStatus("Download finished");
             Finished = true;
         }
 

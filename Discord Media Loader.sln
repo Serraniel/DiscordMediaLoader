@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord Media Loader", "Discord Media Loader\Discord Media Loader.csproj", "{EDC92554-DBC1-4F9C-9317-379A8BF441E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord Media Loader.Application", "Discord Media Loader.Application\Discord Media Loader.Application.csproj", "{C130DE6A-3237-42B5-BE9F-783D1CD104C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DML.Application", "Discord Media Loader.Application\DML.Application.csproj", "{C130DE6A-3237-42B5-BE9F-783D1CD104C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,13 +24,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(AutomaticVersions) = postSolution
-		UpdateAssemblyVersion.Release|Any CPU = True
-		UpdateAssemblyFileVersion.Release|Any CPU = True
-		UpdateAssemblyInfoVersion.Release|Any CPU = True
-		AssemblyVersionSettings.Release|Any CPU = None.Increment.None.None
-		AssemblyFileVersionSettings.Release|Any CPU = None.Increment.None.None
-		AssemblyInfoVersionSettings.Release|Any CPU = None.Increment.None.None
 	EndGlobalSection
 EndGlobal
