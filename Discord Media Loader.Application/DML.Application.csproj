@@ -54,6 +54,10 @@
       <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SweetLib, Version=0.1.24.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SweetLib.0.1.24\lib\net45\SweetLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
