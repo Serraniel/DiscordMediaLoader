@@ -11,6 +11,7 @@ using Discord.Net;
 using DML.Application.Classes;
 using DML.Application.Dialogs;
 using LiteDB;
+using SweetLib.Utils;
 using SweetLib.Utils.Logger;
 using SweetLib.Utils.Logger.Memory;
 using static SweetLib.Utils.Logger.Logger;
@@ -75,7 +76,7 @@ namespace DML.Application
 
 
                     var logFile = Path.Combine(logFolder,
-                        $"{DateTime.Now.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern).Replace(':', '-')}.log.zip");
+                        SweetUtils.LegalizeFilename($"{DateTime.Now.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern)}.log.zip"));
 
                     Trace($"Setting log file: {logFile}");
                     logMemory.AutoArchiveOnDispose = true;
@@ -182,7 +183,7 @@ namespace DML.Application
                         Trace("Dialog closed.");
                     }
                 }
-
+                
                 System.Windows.Forms.Application.Run(new MainForm());
             }
             catch (Exception ex)
