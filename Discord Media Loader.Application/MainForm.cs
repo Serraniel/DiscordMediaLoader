@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
 using Discord;
+using DML.Application.Classes;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application
@@ -101,18 +102,6 @@ namespace DML.Application
             return (from c in server.TextChannels where c.Name == name select c).FirstOrDefault();
         }
 
-        private Server FindServerById(ulong id)
-        {
-            Trace($"Trying to find server by Id: {id}");
-            return (from s in Core.Client.Servers where s.Id == id select s).FirstOrDefault();
-        }
-
-        private Channel FindChannelById(Server server, ulong id)
-        {
-            Trace($"Trying to find channel in {server} by id: {id}");
-            return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
-        }
-
         private void cbGuild_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             Trace("Guild index changed.");
@@ -145,6 +134,23 @@ namespace DML.Application
             }
 
             Debug("Finished updating channel dropdown component.");
+        }
+
+        private void btnAddJob_Click(object sender, System.EventArgs e)
+        {
+            var job = new Job
+            {
+                GuildId = FindServerByName(cbGuild.Text).Id,
+                ChannelId = FindChannelByName(FindServerByName(cbGuild.Text), cbChannel.Text).Id
+            };
+
+            if (!(from j in Core.Scheduler.JobList
+                  where j.GuildId == job.GuildId && j.ChannelId == job.ChannelId
+                  select j).Any())
+            {
+                Core.Scheduler.JobList.Add(job);
+                job.Store();
+            }
         }
     }
 }

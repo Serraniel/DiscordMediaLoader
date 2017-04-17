@@ -39,13 +39,13 @@
             this.edOperatingFolder = new System.Windows.Forms.TextBox();
             this.lbOperatingFolder = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnAddJob = new System.Windows.Forms.Button();
+            this.cbChannel = new System.Windows.Forms.ComboBox();
+            this.lbChannel = new System.Windows.Forms.Label();
+            this.cbGuild = new System.Windows.Forms.ComboBox();
+            this.lbGuild = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lbGuild = new System.Windows.Forms.Label();
-            this.cbGuild = new System.Windows.Forms.ComboBox();
-            this.lbChannel = new System.Windows.Forms.Label();
-            this.cbChannel = new System.Windows.Forms.ComboBox();
-            this.btnAddJob = new System.Windows.Forms.Button();
             this.pnlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edThreadLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -172,6 +172,54 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add a job";
             // 
+            // btnAddJob
+            // 
+            this.btnAddJob.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddJob.Location = new System.Drawing.Point(481, 19);
+            this.btnAddJob.Name = "btnAddJob";
+            this.btnAddJob.Size = new System.Drawing.Size(66, 23);
+            this.btnAddJob.TabIndex = 4;
+            this.btnAddJob.Text = "&Add";
+            this.btnAddJob.UseVisualStyleBackColor = true;
+            this.btnAddJob.Click += new System.EventHandler(this.btnAddJob_Click);
+            // 
+            // cbChannel
+            // 
+            this.cbChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbChannel.FormattingEnabled = true;
+            this.cbChannel.Location = new System.Drawing.Point(294, 19);
+            this.cbChannel.Name = "cbChannel";
+            this.cbChannel.Size = new System.Drawing.Size(181, 21);
+            this.cbChannel.TabIndex = 3;
+            // 
+            // lbChannel
+            // 
+            this.lbChannel.AutoSize = true;
+            this.lbChannel.Location = new System.Drawing.Point(239, 22);
+            this.lbChannel.Name = "lbChannel";
+            this.lbChannel.Size = new System.Drawing.Size(49, 13);
+            this.lbChannel.TabIndex = 2;
+            this.lbChannel.Text = "Channel:";
+            // 
+            // cbGuild
+            // 
+            this.cbGuild.FormattingEnabled = true;
+            this.cbGuild.Location = new System.Drawing.Point(52, 19);
+            this.cbGuild.Name = "cbGuild";
+            this.cbGuild.Size = new System.Drawing.Size(181, 21);
+            this.cbGuild.TabIndex = 1;
+            this.cbGuild.SelectedIndexChanged += new System.EventHandler(this.cbGuild_SelectedIndexChanged);
+            // 
+            // lbGuild
+            // 
+            this.lbGuild.AutoSize = true;
+            this.lbGuild.Location = new System.Drawing.Point(12, 22);
+            this.lbGuild.Name = "lbGuild";
+            this.lbGuild.Size = new System.Drawing.Size(34, 13);
+            this.lbGuild.TabIndex = 0;
+            this.lbGuild.Text = "Guild:";
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 311);
@@ -189,53 +237,6 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Jobs";
-            // 
-            // lbGuild
-            // 
-            this.lbGuild.AutoSize = true;
-            this.lbGuild.Location = new System.Drawing.Point(12, 22);
-            this.lbGuild.Name = "lbGuild";
-            this.lbGuild.Size = new System.Drawing.Size(34, 13);
-            this.lbGuild.TabIndex = 0;
-            this.lbGuild.Text = "Guild:";
-            // 
-            // cbGuild
-            // 
-            this.cbGuild.FormattingEnabled = true;
-            this.cbGuild.Location = new System.Drawing.Point(52, 19);
-            this.cbGuild.Name = "cbGuild";
-            this.cbGuild.Size = new System.Drawing.Size(181, 21);
-            this.cbGuild.TabIndex = 1;
-            this.cbGuild.SelectedIndexChanged += new System.EventHandler(this.cbGuild_SelectedIndexChanged);
-            // 
-            // lbChannel
-            // 
-            this.lbChannel.AutoSize = true;
-            this.lbChannel.Location = new System.Drawing.Point(239, 22);
-            this.lbChannel.Name = "lbChannel";
-            this.lbChannel.Size = new System.Drawing.Size(49, 13);
-            this.lbChannel.TabIndex = 2;
-            this.lbChannel.Text = "Channel:";
-            // 
-            // cbChannel
-            // 
-            this.cbChannel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbChannel.FormattingEnabled = true;
-            this.cbChannel.Location = new System.Drawing.Point(294, 19);
-            this.cbChannel.Name = "cbChannel";
-            this.cbChannel.Size = new System.Drawing.Size(181, 21);
-            this.cbChannel.TabIndex = 3;
-            // 
-            // btnAddJob
-            // 
-            this.btnAddJob.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddJob.Location = new System.Drawing.Point(481, 19);
-            this.btnAddJob.Name = "btnAddJob";
-            this.btnAddJob.Size = new System.Drawing.Size(66, 23);
-            this.btnAddJob.TabIndex = 4;
-            this.btnAddJob.Text = "&Add";
-            this.btnAddJob.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

@@ -23,6 +23,7 @@ namespace DML.Application
         internal static DiscordClient Client { get; set; }
         internal static LiteDatabase Database { get; set; }
         internal static Settings Settings { get; set; }
+        internal static JobScheduler Scheduler { get; } = new JobScheduler();
 
         internal static string DataDirectory
             => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Serraniel\Discord Media Loader");
@@ -100,6 +101,9 @@ namespace DML.Application
                     Settings = new Settings();
                     Settings.Store();
                 }
+
+                Debug("Loading jobs collection out of database...");
+                Scheduler.JobList = Job.RestoreJobs().ToList();
 
                 Info("Loaded settings.");
                 Debug(
@@ -183,8 +187,14 @@ namespace DML.Application
                         Trace("Dialog closed.");
                     }
                 }
-                
+
+                Info("Starting scheduler...");
+                Scheduler.Start();
+
                 System.Windows.Forms.Application.Run(new MainForm());
+
+                Info("Stopping scheduler...");
+                Scheduler.Stop();
             }
             catch (Exception ex)
             {

@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Job.cs" />
+    <Compile Include="Classes\JobScheduler.cs" />
     <Compile Include="Classes\Settings.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Dialogs\LoginDialog.cs">
