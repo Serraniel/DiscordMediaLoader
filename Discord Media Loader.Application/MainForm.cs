@@ -42,6 +42,16 @@ namespace DML.Application
             cbGuild.Items.AddRange(Core.Client.Servers.OrderBy(g => g.Name).Select(g => g.Name).ToArray());
             cbGuild.SelectedIndex = 0;
             Trace("Guild component initialized.");
+
+            Trace("Refreshing job list component...");
+            var oldIndex = lbxJobs.SelectedIndex;
+            lbxJobs.Items.Clear();
+            foreach (var job in Core.Scheduler.JobList)
+            {
+                lbxJobs.Items.Add(
+                    $"{FindServerById(job.GuildId).Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId).Name}");
+            }
+            lbxJobs.SelectedIndex = oldIndex;
         }
 
         private void DoSomethingChanged(object sender, System.EventArgs e)
@@ -102,6 +112,18 @@ namespace DML.Application
             return (from c in server.TextChannels where c.Name == name select c).FirstOrDefault();
         }
 
+        private Server FindServerById(ulong id)
+        {
+            Trace($"Trying to find server by Id: {id}");
+            return (from s in Core.Client.Servers where s.Id == id select s).FirstOrDefault();
+        }
+
+        private Channel FindChannelById(Server server, ulong id)
+        {
+            Trace($"Trying to find channel in {server} by id: {id}");
+            return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
+        }
+
         private void cbGuild_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             Trace("Guild index changed.");
@@ -151,6 +173,55 @@ namespace DML.Application
                 Core.Scheduler.JobList.Add(job);
                 job.Store();
             }
+        }
+
+        private void btnDelete_Click(object sender, System.EventArgs e)
+        {
+            Trace("Deleting job pressed.");
+
+            if (lbxJobs.SelectedIndex < 0)
+            {
+                Warn("No job selected.");
+                MessageBox.Show("No job has been seleted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            var jobNameData = lbxJobs.SelectedItem.ToString().Split(':');
+
+            var guildName = "";
+            for (var i = 0; i < jobNameData.Length - 1; i++)
+                guildName += jobNameData[i] + ":";
+            guildName = guildName.Substring(0, guildName.Length - 1);
+
+            var channelName = jobNameData[jobNameData.Length - 1];
+
+            var guild = FindServerByName(guildName);
+            var channel = FindChannelByName(guild, channelName);
+
+            foreach (var job in Core.Scheduler.JobList)
+            {
+                if (job.GuildId == guild.Id && job.ChannelId == channel.Id)
+                {
+                    Core.Scheduler.JobList.Remove(job);
+                    Core.Scheduler.RunningJobs.Remove(job.Id);
+                    job.Delete();
+                }
+            }
+
+            lbxJobs.SelectedIndex = -1;
+            RefreshComponents();
+        }
+
+        private void tmrRefreshProgress_Tick(object sender, System.EventArgs e)
+        {
+            var scanned = Core.Scheduler.MessagesScanned;
+            var totalAttachments = Core.Scheduler.TotalAttachments;
+            var done = Core.Scheduler.AttachmentsDownloaded;
+
+            var progress = totalAttachments > 0 ? (int)(100 * done / totalAttachments) : 0;
+            pgbProgress.Maximum = 100;
+            pgbProgress.Value = progress;
+
+            lbProgress.Text = $"Scanned: {scanned} Downloaded: {done} Open: {totalAttachments - done}";
         }
     }
 }

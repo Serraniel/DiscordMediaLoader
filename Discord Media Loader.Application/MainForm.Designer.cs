@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.pnlSettings = new System.Windows.Forms.GroupBox();
             this.lbThreadLimit = new System.Windows.Forms.Label();
@@ -44,11 +45,18 @@
             this.lbChannel = new System.Windows.Forms.Label();
             this.cbGuild = new System.Windows.Forms.ComboBox();
             this.lbGuild = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbxJobs = new System.Windows.Forms.ListBox();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.lbProgress = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pgbProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.tmrRefreshProgress = new System.Windows.Forms.Timer(this.components);
             this.pnlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edThreadLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.statusStrip.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlSettings
@@ -220,16 +228,21 @@
             this.lbGuild.TabIndex = 0;
             this.lbGuild.Text = "Guild:";
             // 
-            // statusStrip1
+            // statusStrip
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 311);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(553, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pgbProgress,
+            this.lbProgress});
+            this.statusStrip.Location = new System.Drawing.Point(0, 311);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(553, 22);
+            this.statusStrip.TabIndex = 2;
+            this.statusStrip.Text = "statusStrip1";
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnDelete);
+            this.groupBox2.Controls.Add(this.lbxJobs);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 150);
             this.groupBox2.Name = "groupBox2";
@@ -238,13 +251,51 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Jobs";
             // 
+            // lbxJobs
+            // 
+            this.lbxJobs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbxJobs.FormattingEnabled = true;
+            this.lbxJobs.Location = new System.Drawing.Point(6, 19);
+            this.lbxJobs.Name = "lbxJobs";
+            this.lbxJobs.Size = new System.Drawing.Size(541, 108);
+            this.lbxJobs.TabIndex = 0;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnDelete.Location = new System.Drawing.Point(3, 135);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(547, 23);
+            this.btnDelete.TabIndex = 1;
+            this.btnDelete.Text = "Delete selected";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // lbProgress
+            // 
+            this.lbProgress.Name = "lbProgress";
+            this.lbProgress.Size = new System.Drawing.Size(0, 17);
+            // 
+            // pgbProgress
+            // 
+            this.pgbProgress.Name = "pgbProgress";
+            this.pgbProgress.Size = new System.Drawing.Size(100, 16);
+            // 
+            // tmrRefreshProgress
+            // 
+            this.tmrRefreshProgress.Enabled = true;
+            this.tmrRefreshProgress.Interval = 500;
+            this.tmrRefreshProgress.Tick += new System.EventHandler(this.tmrRefreshProgress_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 333);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pnlSettings);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -258,6 +309,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.edThreadLimit)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,7 +321,7 @@
 
         private System.Windows.Forms.GroupBox pnlSettings;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lbThreadLimit;
         private System.Windows.Forms.NumericUpDown edThreadLimit;
@@ -282,5 +336,10 @@
         private System.Windows.Forms.Label lbChannel;
         private System.Windows.Forms.ComboBox cbGuild;
         private System.Windows.Forms.Label lbGuild;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.ListBox lbxJobs;
+        private System.Windows.Forms.ToolStripProgressBar pgbProgress;
+        private System.Windows.Forms.ToolStripStatusLabel lbProgress;
+        private System.Windows.Forms.Timer tmrRefreshProgress;
     }
 }

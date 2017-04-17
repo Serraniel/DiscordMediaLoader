@@ -36,6 +36,16 @@ namespace DML.Application.Classes
             }
         }
 
+        internal void Delete()
+        {
+            Debug("Deleting job from database...");
+            Trace("Getting jobs collection...");
+            var jobDb = Core.Database.GetCollection<Job>("jobs");
+
+            Trace("Deleting value...");
+            jobDb.Delete(Id);
+        }
+
         private Server FindServerById(ulong id)
         {
             Trace($"Trying to find server by Id: {id}");
@@ -103,9 +113,12 @@ namespace DML.Application.Classes
                     if (m.Attachments.Length > 0)
                     {
                         result.Add(m);
+                        Core.Scheduler.TotalAttachments++;
                         Trace($"Added message {m.Id}");
                     }
                     Debug($"Finished message {m.Id}");
+
+                    Core.Scheduler.MessagesScanned++;
                 }
 
                 finished = finished || messages.Length < limit;

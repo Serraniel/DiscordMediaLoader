@@ -15,10 +15,70 @@ namespace DML.Application.Classes
 {
     internal class JobScheduler
     {
+        private ulong messageScanned = 0;
+        private ulong totalAttachments = 0;
+        private ulong attachmentsDownloaded = 0;
+
         private bool Run { get; set; } = false;
         internal List<Job> JobList { get; set; } = new List<Job>();
         internal Dictionary<int, Queue<Message>> RunningJobs = new Dictionary<int, Queue<Message>>();
         internal int RunningThreads { get; set; } = 0;
+
+        internal ulong MessagesScanned
+        {
+            get
+            {
+                lock (this)
+                {
+                    return messageScanned;
+                }
+            }
+            set
+            {
+                lock (this)
+                {
+                    messageScanned = value;
+                }
+            }
+        }
+
+        internal ulong TotalAttachments
+        {
+            get
+            {
+                lock (this)
+                {
+                    return totalAttachments;
+                }
+            }
+            set
+            {
+                lock (this)
+                {
+                    totalAttachments = value;
+                }
+            }
+        }
+
+        internal ulong AttachmentsDownloaded
+        {
+            get
+            {
+                lock (this)
+                {
+                    return attachmentsDownloaded;
+                }
+            }
+            set
+            {
+                lock (this)
+                {
+                    attachmentsDownloaded = value;
+                }
+            }
+        }
+
+        internal ulong AttachmentsToDownload => TotalAttachments - AttachmentsDownloaded;
 
         internal void Stop()
         {
@@ -28,7 +88,7 @@ namespace DML.Application.Classes
         internal void Start()
         {
             Run = true;
-            
+
             Task.Run(async () =>
             {
                 Info("Started JobScheduler...");
@@ -71,7 +131,7 @@ namespace DML.Application.Classes
                             }
                             Trace($"Added {queue.Count} messages to queue.");
 
-                            if(messages.Count!= queue.Count)
+                            if (messages.Count != queue.Count)
                                 Warn("Not all messages have been added into the queue.");
 
                             var startedDownload = false;
@@ -128,50 +188,70 @@ namespace DML.Application.Classes
                     Trace("Queue found.");
                 }
                 Trace("Unlocked scheduler.");
-                
+
                 Debug($"Messages to process for job {jobId}: {queue.Count}");
                 while (queue.Count > 0)
                 {
+                    Trace("Locking scheduler...");
+                    lock (this)
+                    {
+                        Trace("Checking if still a job...");
+                        if (!RunningJobs.ContainsKey(jobId))
+                        {
+                            Warn($"Queue for job {jobId} not found!");
+                            return;
+                        }
+                        Trace("Continue working...");
+                    }
+                    Trace("Unlocked scheduler.");
+
                     Trace("Dequeueing message...");
                     var message = queue.Dequeue();
 
                     Debug($"Attachments for message {message.Id}: {message.Attachments.Length}");
                     foreach (var a in message.Attachments)
                     {
-                        var fileName = Path.Combine(Core.Settings.OperatingFolder, Core.Settings.FileNameScheme);
-                        
-                        Trace("Replacing filename placeholders...");
-                        fileName =
-                            fileName.Replace("%guild%", message.Server.Name)
-                                .Replace("%channel%", message.Channel.Name)
-                                .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.Timestamp).ToString())
-                                .Replace("%name%", a.Filename);
-                        Trace($"Detemined file name: {fileName}.");
-
-                        if (File.Exists(fileName) && new FileInfo(fileName).Length == a.Size)
+                        try
                         {
-                            Debug($"{fileName} already existing with its estimated size. Skipping...");
-                            continue;
-                        }
-                        
-                        Trace("Determining directory...");
-                        var fileDirectory = Path.GetDirectoryName(fileName);
+                            var fileName = Path.Combine(Core.Settings.OperatingFolder, Core.Settings.FileNameScheme);
 
-                        if (!Directory.Exists(fileDirectory))
+                            Trace("Replacing filename placeholders...");
+                            fileName =
+                                fileName.Replace("%guild%", message.Server.Name)
+                                    .Replace("%channel%", message.Channel.Name)
+                                    .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.Timestamp).ToString())
+                                    .Replace("%name%", a.Filename);
+                            Trace($"Detemined file name: {fileName}.");
+
+                            if (File.Exists(fileName) && new FileInfo(fileName).Length == a.Size)
+                            {
+                                Debug($"{fileName} already existing with its estimated size. Skipping...");
+                                continue;
+                            }
+
+                            Trace("Determining directory...");
+                            var fileDirectory = Path.GetDirectoryName(fileName);
+
+                            if (!Directory.Exists(fileDirectory))
+                            {
+                                Info($"Directory {fileDirectory} does not exist. Creating directory...");
+                                Directory.CreateDirectory(fileDirectory);
+                                Debug("Created directory.");
+                            }
+
+                            var wc = new WebClient();
+                            Debug($"Starting downloading of attachment {a.Id}...");
+                            wc.DownloadFile(new Uri(a.Url), fileName);
+                            Debug($"Downloaded attachment {a.Id}.");
+
+                            Trace("Updating known timestamp for job...");
+                            job.KnownTimestamp = SweetUtils.DateTimeToUnixTimeStamp(message.Timestamp);
+                            job.Store();
+                        }
+                        finally
                         {
-                            Info($"Directory {fileDirectory} does not exist. Creating directory...");
-                            Directory.CreateDirectory(fileDirectory);
-                            Debug("Created directory.");
+                            AttachmentsDownloaded++;
                         }
-
-                        var wc = new WebClient();
-                        Debug($"Starting downloading of attachment {a.Id}...");
-                        wc.DownloadFile(new Uri(a.Url), fileName);
-                        Debug($"Downloaded attachment {a.Id}.");
-
-                        Trace("Updating known timestamp for job...");
-                        job.KnownTimestamp = SweetUtils.DateTimeToUnixTimeStamp(message.Timestamp);
-                        job.Store();
                     }
                 }
             }
