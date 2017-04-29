@@ -102,7 +102,7 @@ namespace DML.Application.Classes
                         lastId = m.Id;
                     }
 
-                    if (SweetUtils.DateTimeToUnixTimeStamp(m.Timestamp) < StopTimestamp)
+                    if (SweetUtils.DateTimeToUnixTimeStamp(m.Timestamp) <= StopTimestamp)
                     {
                         Debug("Found a message with a known timestamp...Stopping scan.");
                         finished = true;
