@@ -61,6 +61,25 @@ namespace DML.Application.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Discord Media Loader by Serraniel - Apache 2.0 License
+        ///https://github.com/Serraniel/DiscordMediaLoader/
+        ///
+        ///Made with:
+        ///SweetLib (Copyright (c) 2017 Serraniel - GNU General Public License v3.0)
+        ///Discord.Net (Copyright (c) 2015 RogueException - MIT License)
+        ///Newtonsoft.Json (Copyright (c) 2007 James Newton-King - MIT License)
+        ///Nito.AsyncEx (Copyright (c) 2014 StephenCleary - MIT License)
+        ///RestSharp (Copyright (c) restsharp - Apache 2.0 License)
+        ///WebSocket4Net (Copyright (c) kerryjiang - Apache 2.0 License)
+        /// [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string AboutString {
+            get {
+                return ResourceManager.GetString("AboutString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Serraniel_Logo4_NO_BG {

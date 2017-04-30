@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using Discord;
 using DML.Application.Classes;
@@ -25,6 +27,8 @@ namespace DML.Application
         private void RefreshComponents()
         {
             Debug("Refreshing components...");
+
+            lbVersion.Text = $"v{Assembly.GetExecutingAssembly().GetName().Version} Copyright © by Serraniel"; 
 
             Trace("Refreshing operating folder component...");
             edOperatingFolder.Text = Core.Settings.OperatingFolder;
@@ -229,6 +233,16 @@ namespace DML.Application
             pgbProgress.Value = progress;
 
             lbProgress.Text = $"Scanned: {scanned} Downloaded: {done} Open: {totalAttachments - done}";
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            MessageBox.Show(Properties.Resources.AboutString);
+        }
+
+        private void visitGithubToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            Process.Start("https://github.com/Serraniel/DiscordMediaLoader/");
         }
     }
 }

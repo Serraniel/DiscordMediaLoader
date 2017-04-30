@@ -46,12 +46,17 @@
             this.cbGuild = new System.Windows.Forms.ComboBox();
             this.lbGuild = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lbxJobs = new System.Windows.Forms.ListBox();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.lbProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.pgbProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.lbProgress = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.lbxJobs = new System.Windows.Forms.ListBox();
             this.tmrRefreshProgress = new System.Windows.Forms.Timer(this.components);
+            this.lblVersionPlaceholder = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lbVersion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnDropDown = new System.Windows.Forms.ToolStripSplitButton();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.visitGithubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edThreadLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -232,12 +237,25 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pgbProgress,
-            this.lbProgress});
+            this.lbProgress,
+            this.lblVersionPlaceholder,
+            this.lbVersion,
+            this.btnDropDown});
             this.statusStrip.Location = new System.Drawing.Point(0, 311);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(553, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // pgbProgress
+            // 
+            this.pgbProgress.Name = "pgbProgress";
+            this.pgbProgress.Size = new System.Drawing.Size(100, 16);
+            // 
+            // lbProgress
+            // 
+            this.lbProgress.Name = "lbProgress";
+            this.lbProgress.Size = new System.Drawing.Size(0, 17);
             // 
             // groupBox2
             // 
@@ -251,17 +269,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Jobs";
             // 
-            // lbxJobs
-            // 
-            this.lbxJobs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbxJobs.FormattingEnabled = true;
-            this.lbxJobs.Location = new System.Drawing.Point(6, 19);
-            this.lbxJobs.Name = "lbxJobs";
-            this.lbxJobs.Size = new System.Drawing.Size(541, 108);
-            this.lbxJobs.TabIndex = 0;
-            // 
             // btnDelete
             // 
             this.btnDelete.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -273,21 +280,59 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // lbProgress
+            // lbxJobs
             // 
-            this.lbProgress.Name = "lbProgress";
-            this.lbProgress.Size = new System.Drawing.Size(0, 17);
-            // 
-            // pgbProgress
-            // 
-            this.pgbProgress.Name = "pgbProgress";
-            this.pgbProgress.Size = new System.Drawing.Size(100, 16);
+            this.lbxJobs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbxJobs.FormattingEnabled = true;
+            this.lbxJobs.Location = new System.Drawing.Point(6, 19);
+            this.lbxJobs.Name = "lbxJobs";
+            this.lbxJobs.Size = new System.Drawing.Size(541, 108);
+            this.lbxJobs.TabIndex = 0;
             // 
             // tmrRefreshProgress
             // 
             this.tmrRefreshProgress.Enabled = true;
             this.tmrRefreshProgress.Interval = 500;
             this.tmrRefreshProgress.Tick += new System.EventHandler(this.tmrRefreshProgress_Tick);
+            // 
+            // lblVersionPlaceholder
+            // 
+            this.lblVersionPlaceholder.Name = "lblVersionPlaceholder";
+            this.lblVersionPlaceholder.Size = new System.Drawing.Size(271, 17);
+            this.lblVersionPlaceholder.Spring = true;
+            // 
+            // lbVersion
+            // 
+            this.lbVersion.Name = "lbVersion";
+            this.lbVersion.Size = new System.Drawing.Size(118, 17);
+            this.lbVersion.Text = "v https://github.com";
+            // 
+            // btnDropDown
+            // 
+            this.btnDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDropDown.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.visitGithubToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.btnDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDropDown.Name = "btnDropDown";
+            this.btnDropDown.Size = new System.Drawing.Size(16, 20);
+            this.btnDropDown.Text = "Options";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // visitGithubToolStripMenuItem
+            // 
+            this.visitGithubToolStripMenuItem.Name = "visitGithubToolStripMenuItem";
+            this.visitGithubToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.visitGithubToolStripMenuItem.Text = "Visit Github";
+            this.visitGithubToolStripMenuItem.Click += new System.EventHandler(this.visitGithubToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -341,5 +386,10 @@
         private System.Windows.Forms.ToolStripProgressBar pgbProgress;
         private System.Windows.Forms.ToolStripStatusLabel lbProgress;
         private System.Windows.Forms.Timer tmrRefreshProgress;
+        private System.Windows.Forms.ToolStripStatusLabel lblVersionPlaceholder;
+        private System.Windows.Forms.ToolStripStatusLabel lbVersion;
+        private System.Windows.Forms.ToolStripSplitButton btnDropDown;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem visitGithubToolStripMenuItem;
     }
 }
