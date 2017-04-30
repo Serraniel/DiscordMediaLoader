@@ -38,10 +38,13 @@ namespace DML.Application
             Trace("Refreshing thread limit component...");
             edThreadLimit.Value = Core.Settings.ThreadLimit;
 
-            Trace("Adding guilds to component...");
-            cbGuild.Items.AddRange(Core.Client.Servers.OrderBy(g => g.Name).Select(g => g.Name).ToArray());
-            cbGuild.SelectedIndex = 0;
-            Trace("Guild component initialized.");
+            if (cbGuild.Items.Count == 0)
+            {
+                Trace("Adding guilds to component...");
+                cbGuild.Items.AddRange(Core.Client.Servers.OrderBy(g => g.Name).Select(g => g.Name).ToArray());
+                cbGuild.SelectedIndex = 0;
+                Trace("Guild component initialized.");
+            }
 
             Trace("Refreshing job list component...");
             var oldIndex = lbxJobs.SelectedIndex;
@@ -170,9 +173,11 @@ namespace DML.Application
                   where j.GuildId == job.GuildId && j.ChannelId == job.ChannelId
                   select j).Any())
             {
-                Core.Scheduler.JobList.Add(job);
                 job.Store();
+                Core.Scheduler.JobList.Add(job);
             }
+
+            RefreshComponents();
         }
 
         private void btnDelete_Click(object sender, System.EventArgs e)
@@ -203,7 +208,9 @@ namespace DML.Application
                 {
                     Core.Scheduler.JobList.Remove(job);
                     Core.Scheduler.RunningJobs.Remove(job.Id);
+                    job.Stop();
                     job.Delete();
+                    break;
                 }
             }
 

@@ -32,6 +32,10 @@ namespace DML.Application
         {
             try
             {
+                var splash = new FrmInternalSplash();
+                splash.Show();
+                System.Windows.Forms.Application.DoEvents();
+
                 Info("Starting up Discord Media Loader application...");
                 var useTrace = false;
 #if DEBUG
@@ -187,6 +191,8 @@ namespace DML.Application
                         Trace("Dialog closed.");
                     }
                 }
+
+                splash.Close();
 
                 Info("Starting scheduler...");
                 Scheduler.Start();

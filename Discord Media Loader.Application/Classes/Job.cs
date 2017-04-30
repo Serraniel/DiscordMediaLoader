@@ -17,6 +17,7 @@ namespace DML.Application.Classes
         public ulong ChannelId { get; set; }
         public double KnownTimestamp { get; set; } = 0;
         private double StopTimestamp { get; set; } = 0;
+        private bool IsValid { get; set; } = true;
 
         internal void Store()
         {
@@ -95,6 +96,9 @@ namespace DML.Application.Classes
 
                 foreach (var m in messages)
                 {
+                    if (!IsValid)
+                        return null;
+
                     Debug($"Processing message {m.Id}");
                     if (m.Id < lastId)
                     {
@@ -128,12 +132,20 @@ namespace DML.Application.Classes
             Trace("Sorting messages...");
             result.Sort((a, b) => DateTime.Compare(a.Timestamp, b.Timestamp));
 
-            Trace("Updating StopTimestamp for next scan...");
-            StopTimestamp = SweetUtils.DateTimeToUnixTimeStamp(result[result.Count - 1].Timestamp);
+            if (result.Count > 0)
+            {
+                Trace("Updating StopTimestamp for next scan...");
+                StopTimestamp = SweetUtils.DateTimeToUnixTimeStamp(result[result.Count - 1].Timestamp);
+            }
 
             Debug($"Fisnished scan of guild {GuildId} channel {ChannelId}.");
 
             return result;
+        }
+
+        internal void Stop()
+        {
+            IsValid = false;
         }
 
         internal static IEnumerable<Job> RestoreJobs()

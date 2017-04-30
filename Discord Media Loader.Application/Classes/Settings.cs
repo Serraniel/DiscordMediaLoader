@@ -19,7 +19,7 @@ namespace DML.Application.Classes
         public bool SavePassword { get; set; } = false;
         public LogLevel ApplicactionLogLevel { get; set; } = LogLevel.Info | LogLevel.Warn | LogLevel.Error;
         public string OperatingFolder { get; set; }
-        public string FileNameScheme { get; set; } = @"%guild%\%channel%\%guild%_%channel%_%timestamp%_%name%";
+        public string FileNameScheme { get; set; } = @"%guild%\%channel%\%id%";
         public bool SkipExistingFiles { get; set; } = true;
         public int ThreadLimit { get; set; } = 50;
 

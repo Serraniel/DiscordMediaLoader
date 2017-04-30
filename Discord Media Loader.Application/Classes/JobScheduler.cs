@@ -95,8 +95,10 @@ namespace DML.Application.Classes
                 while (Run)
                 {
                     Debug("Entering job list handler loop...");
-                    foreach (var job in JobList)
+                    //foreach (var job in JobList)
+                    for(var i = JobList.Count-1;i>=0;i--)
                     {
+                        var job = JobList[i];
                         Debug($"Checking job {job}");
                         var hasJob = false;
 
@@ -123,6 +125,9 @@ namespace DML.Application.Classes
 
                             Trace("Issuing job message scan...");
                             var messages = await job.Scan();
+
+                            if(messages==null)
+                                continue;
 
                             Trace($"Adding {messages.Count} messages to queue...");
                             foreach (var msg in messages)
@@ -216,12 +221,21 @@ namespace DML.Application.Classes
                             var fileName = Path.Combine(Core.Settings.OperatingFolder, Core.Settings.FileNameScheme);
 
                             Trace("Replacing filename placeholders...");
+
+                            var extensionRequired = !fileName.EndsWith("%name%");
+
                             fileName =
                                 fileName.Replace("%guild%", message.Server.Name)
                                     .Replace("%channel%", message.Channel.Name)
                                     .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.Timestamp).ToString())
-                                    .Replace("%name%", a.Filename);
+                                    .Replace("%name%", a.Filename)
+                                    .Replace("%id%", a.Id);
+
+                            if (extensionRequired)
+                                fileName += Path.GetExtension(a.Filename);
+
                             Trace($"Detemined file name: {fileName}.");
+                            
 
                             if (File.Exists(fileName) && new FileInfo(fileName).Length == a.Size)
                             {
