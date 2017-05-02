@@ -56,7 +56,7 @@ namespace DML.Application
             foreach (var job in Core.Scheduler.JobList)
             {
                 lbxJobs.Items.Add(
-                    $"{FindServerById(job.GuildId).Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId).Name}");
+                    $"{FindServerById(job.GuildId)?.Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId)?.Name}");
             }
             lbxJobs.SelectedIndex = oldIndex;
         }

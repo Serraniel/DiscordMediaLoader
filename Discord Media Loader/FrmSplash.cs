@@ -34,7 +34,22 @@ namespace Discord_Media_Loader
                     downloadManager.StartDownload();
                     downloadManager.ShowDialog();
 
-                    ZipFile.ExtractToDirectory(tmpFile, AppDomain.CurrentDomain.BaseDirectory);
+                    var tmpFolder = Path.GetTempFileName();
+                    tmpFolder = Path.Combine(Path.GetFullPath(tmpFolder).Replace(Path.GetFileName(tmpFolder),""), Path.GetFileNameWithoutExtension(tmpFolder));
+
+                    var di = Directory.CreateDirectory(tmpFolder);
+
+                    ZipFile.ExtractToDirectory(tmpFile, tmpFolder);
+
+                    foreach (var f in di.GetFiles())
+                    {
+                        try
+                        {
+                            var fname = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, f.Name);
+                            File.Copy(f.FullName, fname, true);
+                        }
+                        catch (Exception) { }
+                    }
 
                     File.Delete(tmpFile);
                 }
