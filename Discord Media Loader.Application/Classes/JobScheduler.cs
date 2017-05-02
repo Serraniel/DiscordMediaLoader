@@ -225,7 +225,7 @@ namespace DML.Application.Classes
                             var extensionRequired = !fileName.EndsWith("%name%");
 
                             fileName =
-                                fileName.Replace("%guild%", message.Server.Name)
+                                fileName.Replace("%guild%", message.Server.Name.Replace(":","").Replace("/","").Replace("\\",""))
                                     .Replace("%channel%", message.Channel.Name)
                                     .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.Timestamp).ToString())
                                     .Replace("%name%", a.Filename)
