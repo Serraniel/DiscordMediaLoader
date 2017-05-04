@@ -192,6 +192,33 @@ namespace DML.Application
                     }
                 }
 
+                Debug("Start checking for invalid jobs...");
+                for (var i = Scheduler.JobList.Count - 1; i >= 0; i--)
+                {
+                    var job = Scheduler.JobList[i];
+                    var isError = false;
+                    var guild = FindServerById(job.GuildId);
+                    if (guild == null)
+                        isError = true;
+                    else
+                    {
+                        var channel = FindChannelById(guild, job.ChannelId);
+                        if (channel == null)
+                            isError = true;
+                    }
+
+                    if (isError)
+                    {
+                        MessageBox.Show($"Invalid job for guild {job.GuildId}, channel {job.ChannelId} found. Guild or channel may not exist any more. This job will be deleted...", "Invalid job",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                        Scheduler.JobList.Remove(job);
+                        Scheduler.RunningJobs.Remove(job.Id);
+                        job.Stop();
+                        job.Delete();
+                    }
+                }
+
                 splash.Close();
 
                 Info("Starting scheduler...");
@@ -206,6 +233,19 @@ namespace DML.Application
             {
                 Error($"{ex.Message} occured at: {ex.StackTrace}");
             }
+        }
+
+        //TODO: this is thrid time we implement this.....this has to be fixed!!!
+        private static Server FindServerById(ulong id)
+        {
+            Trace($"Trying to find server by Id: {id}");
+            return (from s in Core.Client.Servers where s.Id == id select s).FirstOrDefault();
+        }
+
+        private static Channel FindChannelById(Server server, ulong id)
+        {
+            Trace($"Trying to find channel in {server} by id: {id}");
+            return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
         }
     }
 }
