@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -229,6 +230,7 @@ namespace DML.Application
             var done = Core.Scheduler.AttachmentsDownloaded;
 
             var progress = totalAttachments > 0 ? (int)(100 * done / totalAttachments) : 0;
+            progress = Math.Min(Math.Max(0, progress), 100);
             pgbProgress.Maximum = 100;
             pgbProgress.Value = progress;
 

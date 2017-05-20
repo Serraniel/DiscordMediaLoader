@@ -255,6 +255,7 @@ namespace DML.Application.Classes
 
                             var wc = new WebClient();
                             Debug($"Starting downloading of attachment {a.Id}...");
+
                             wc.DownloadFile(new Uri(a.Url), fileName);
                             Debug($"Downloaded attachment {a.Id}.");
 
