@@ -22,12 +22,6 @@ namespace DML.Application.Dialogs
         {
             Trace("Login dialog shown.");
             edToken.Text = Core.Settings.LoginToken;
-            edEmail.Text = Core.Settings.Email;
-            edPassword.Text = Core.Settings.Password;
-            cbUseUserdata.Checked = Core.Settings.UseUserData;
-            cbSavePassword.Checked = Core.Settings.SavePassword;
-
-            tbcLoginMethods.SelectedTab = Core.Settings.UseUserData ? tpgUserdata : tpgToken;
         }
 
         private void LoginDialog_FormClosing(object sender, FormClosingEventArgs e)
@@ -38,10 +32,6 @@ namespace DML.Application.Dialogs
 
             Debug("Adjusting login settings...");
             Core.Settings.LoginToken = edToken.Text;
-            Core.Settings.Email = edEmail.Text;
-            Core.Settings.Password = edPassword.Text;
-            Core.Settings.UseUserData = cbUseUserdata.Checked;
-            Core.Settings.SavePassword = cbSavePassword.Checked;
 
             Core.Settings.Store();
         }

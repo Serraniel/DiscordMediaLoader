@@ -8,6 +8,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Discord;
+using Discord.Rpc;
+using Discord.WebSocket;
 using SweetLib.Utils;
 using static SweetLib.Utils.Logger.Logger;
 
@@ -21,7 +23,7 @@ namespace DML.Application.Classes
 
         private bool Run { get; set; } = false;
         internal List<Job> JobList { get; set; } = new List<Job>();
-        internal Dictionary<int, Queue<Message>> RunningJobs = new Dictionary<int, Queue<Message>>();
+        internal Dictionary<int, Queue<SocketMessage>> RunningJobs = new Dictionary<int, Queue<SocketMessage>>();
         internal int RunningThreads { get; set; } = 0;
 
         internal ulong MessagesScanned
@@ -96,7 +98,7 @@ namespace DML.Application.Classes
                 {
                     Debug("Entering job list handler loop...");
                     //foreach (var job in JobList)
-                    for(var i = JobList.Count-1;i>=0;i--)
+                    for (var i = JobList.Count - 1; i >= 0; i--)
                     {
                         var job = JobList[i];
                         Debug($"Checking job {job}");
@@ -113,7 +115,7 @@ namespace DML.Application.Classes
                         if (!hasJob)
                         {
                             Debug("Job is not performed yet...Performing job...");
-                            var queue = new Queue<Message>();
+                            var queue = new Queue<SocketMessage>();
 
                             Trace("Locking scheduler...");
                             lock (this)
@@ -126,7 +128,7 @@ namespace DML.Application.Classes
                             Trace("Issuing job message scan...");
                             var messages = await job.Scan();
 
-                            if(messages==null)
+                            if (messages == null)
                                 continue;
 
                             Trace($"Adding {messages.Count} messages to queue...");
@@ -180,7 +182,7 @@ namespace DML.Application.Classes
                 }
                 Trace("Found job.");
 
-                Queue<Message> queue;
+                Queue<SocketMessage> queue;
                 Trace("Locking scheduler...");
                 lock (this)
                 {
@@ -213,7 +215,7 @@ namespace DML.Application.Classes
                     Trace("Dequeueing message...");
                     var message = queue.Dequeue();
 
-                    Debug($"Attachments for message {message.Id}: {message.Attachments.Length}");
+                    Debug($"Attachments for message {message.Id}: {message.Attachments.Count}");
                     foreach (var a in message.Attachments)
                     {
                         try
@@ -224,18 +226,27 @@ namespace DML.Application.Classes
 
                             var extensionRequired = !fileName.EndsWith("%name%");
 
+                            var serverName = "unknown";
+
+                            var socketTextChannel = message.Channel as SocketTextChannel;
+                            if (socketTextChannel != null)
+                            {
+                                serverName = socketTextChannel.Guild.Name.Replace(":", "").Replace("/", "")
+                                    .Replace("\\", "");
+                            }
+
                             fileName =
-                                fileName.Replace("%guild%", message.Server.Name.Replace(":","").Replace("/","").Replace("\\",""))
+                                fileName.Replace("%guild%", serverName)
                                     .Replace("%channel%", message.Channel.Name)
-                                    .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.Timestamp).ToString())
+                                    .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime).ToString())
                                     .Replace("%name%", a.Filename)
-                                    .Replace("%id%", a.Id);
+                                    .Replace("%id%", a.Id.ToString());
 
                             if (extensionRequired)
                                 fileName += Path.GetExtension(a.Filename);
 
                             Trace($"Detemined file name: {fileName}.");
-                            
+
 
                             if (File.Exists(fileName) && new FileInfo(fileName).Length == a.Size)
                             {
@@ -260,7 +271,7 @@ namespace DML.Application.Classes
                             Debug($"Downloaded attachment {a.Id}.");
 
                             Trace("Updating known timestamp for job...");
-                            job.KnownTimestamp = SweetUtils.DateTimeToUnixTimeStamp(message.Timestamp);
+                            job.KnownTimestamp = SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime);
                             job.Store();
                         }
                         finally

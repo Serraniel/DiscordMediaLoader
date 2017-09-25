@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using SweetLib.Utils;
 using static SweetLib.Utils.Logger.Logger;
 
@@ -47,22 +48,22 @@ namespace DML.Application.Classes
             jobDb.Delete(Id);
         }
 
-        private Server FindServerById(ulong id)
+        private SocketGuild FindServerById(ulong id)
         {
             Trace($"Trying to find server by Id: {id}");
-            return (from s in Core.Client.Servers where s.Id == id select s).FirstOrDefault();
+            return (from s in Core.Client.Guilds where s.Id == id select s).FirstOrDefault();
         }
 
-        private Channel FindChannelById(Server server, ulong id)
+        private SocketTextChannel FindChannelById(SocketGuild server, ulong id)
         {
             Trace($"Trying to find channel in {server} by id: {id}");
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
         }
 
-        internal async Task<List<Message>> Scan()
+        internal async Task<List<SocketMessage>> Scan()
         {
             Debug($"Starting scan of guild {GuildId} channel {ChannelId}...");
-            var result = new List<Message>();
+            var result = new List<SocketMessage>();
 
             var limit = 100;
             var lastId = ulong.MaxValue;
@@ -79,16 +80,16 @@ namespace DML.Application.Classes
             while (!finished)
             {
                 Trace("Entering scanning loop...");
-                Message[] messages;
+                SocketMessage[] messages;
 
                 Trace($"Downloading next {limit} messages...");
                 if (isFirst)
                 {
-                    messages = await channel.DownloadMessages(limit, null);
+                    messages = await channel.GetMessagesAsync(limit).ToArray() as SocketMessage[];
                 }
                 else
                 {
-                    messages = await channel.DownloadMessages(limit, lastId);
+                    messages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray() as SocketMessage[];
                 }
                 Trace($"Downloaded {messages.Length} messages.");
 
@@ -106,15 +107,15 @@ namespace DML.Application.Classes
                         lastId = m.Id;
                     }
 
-                    if (SweetUtils.DateTimeToUnixTimeStamp(m.Timestamp) <= StopTimestamp)
+                    if (SweetUtils.DateTimeToUnixTimeStamp(m.CreatedAt.UtcDateTime) <= StopTimestamp)
                     {
                         Debug("Found a message with a known timestamp...Stopping scan.");
                         finished = true;
                         continue;
                     }
 
-                    Trace($"Message {m.Id} has {m.Attachments.Length} attachments.");
-                    if (m.Attachments.Length > 0)
+                    Trace($"Message {m.Id} has {m.Attachments.Count} attachments.");
+                    if (m.Attachments.Count > 0)
                     {
                         result.Add(m);
                         Core.Scheduler.TotalAttachments++;
@@ -130,12 +131,12 @@ namespace DML.Application.Classes
             Trace($"Downloaded all messages for guild {GuildId} channel {ChannelId}.");
 
             Trace("Sorting messages...");
-            result.Sort((a, b) => DateTime.Compare(a.Timestamp, b.Timestamp));
+            result.Sort((a, b) => DateTime.Compare(a.CreatedAt.UtcDateTime, b.CreatedAt.UtcDateTime));
 
             if (result.Count > 0)
             {
                 Trace("Updating StopTimestamp for next scan...");
-                StopTimestamp = SweetUtils.DateTimeToUnixTimeStamp(result[result.Count - 1].Timestamp);
+                StopTimestamp = SweetUtils.DateTimeToUnixTimeStamp(result[result.Count - 1].CreatedAt.UtcDateTime);
             }
 
             Debug($"Fisnished scan of guild {GuildId} channel {ChannelId}.");

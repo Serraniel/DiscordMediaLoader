@@ -25,7 +25,7 @@ namespace Discord_Media_Loader
             UseWaitCursor = true;
             try
             {
-                var releaseVersion = await VersionHelper.GetReleaseVersion();
+                /*var releaseVersion = await VersionHelper.GetReleaseVersion();
                 if (releaseVersion > VersionHelper.CurrentVersion)
                 {
                     var tmpFile = Path.GetTempFileName();
@@ -52,7 +52,7 @@ namespace Discord_Media_Loader
                     }
 
                     File.Delete(tmpFile);
-                }
+                }*/
             }
             finally
             {
