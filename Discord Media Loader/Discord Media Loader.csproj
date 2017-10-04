@@ -214,10 +214,6 @@
       <Project>{c130de6a-3237-42b5-be9f-783d1cd104c6}</Project>
       <Name>DML.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DML.AppCore\DML.AppCore.csproj">
-      <Project>{4db264a7-2352-4057-b3de-61fcfec01ae5}</Project>
-      <Name>DML.AppCore</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

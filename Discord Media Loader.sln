@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DML.Application", "Discord 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SweetLib", "..\SweetLib\SweetLib\SweetLib.csproj", "{02C1F8EF-32F2-4E77-A36D-79129402AF37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DML.AppCore", "DML.AppCore\DML.AppCore.csproj", "{4DB264A7-2352-4057-B3DE-61FCFEC01AE5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{02C1F8EF-32F2-4E77-A36D-79129402AF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02C1F8EF-32F2-4E77-A36D-79129402AF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02C1F8EF-32F2-4E77-A36D-79129402AF37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DB264A7-2352-4057-B3DE-61FCFEC01AE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DB264A7-2352-4057-B3DE-61FCFEC01AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DB264A7-2352-4057-B3DE-61FCFEC01AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DB264A7-2352-4057-B3DE-61FCFEC01AE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

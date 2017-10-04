@@ -128,7 +128,12 @@ namespace DML.Application.Classes
 
                 Logger.Debug("Creating discord client...");
 
-                Client = new DiscordSocketClient();
+                var config = new DiscordSocketConfig()
+                {
+                    DefaultRetryMode = RetryMode.AlwaysRetry,
+                };
+
+                Client = new DiscordSocketClient(config);
                 Client.Log += (arg) =>
                 {
                     var logMessage = $"DiscordClient: {arg.Message}";
@@ -160,7 +165,7 @@ namespace DML.Application.Classes
 
                 Client.Connected += Client_Connected;
 
-                while (Client.LoginState != LoginState.LoggedIn && !abort)
+                while ((Client.LoginState != LoginState.LoggedIn || Client.ConnectionState!=ConnectionState.Connected) && !abort)
                 {
                     Logger.Debug(Client.ConnectionState.ToString());
                     Logger.Debug(Client.LoginState.ToString());
@@ -176,6 +181,7 @@ namespace DML.Application.Classes
                         {
                             Logger.Debug("Trying to login with last known token...");
                             await Client.LoginAsync(TokenType.User, Settings.LoginToken);
+                            await Client.StartAsync();
                             await Task.Delay(1000);
                         }
 

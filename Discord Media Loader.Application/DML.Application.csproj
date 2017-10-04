@@ -208,10 +208,6 @@
       <Project>{02c1f8ef-32f2-4e77-a36d-79129402af37}</Project>
       <Name>SweetLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DML.AppCore\DML.AppCore.csproj">
-      <Project>{4db264a7-2352-4057-b3de-61fcfec01ae5}</Project>
-      <Name>DML.AppCore</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Serraniel-Logo4-NO-BG.png" />
