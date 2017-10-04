@@ -10,6 +10,7 @@ using Discord.Net;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Dialogs;
+using DML.Client;
 using LiteDB;
 using SweetLib.Utils;
 using SweetLib.Utils.Logger;
@@ -20,7 +21,7 @@ namespace DML.Application.Classes
 {
     public static class Core
     {
-        internal static DiscordSocketClient Client { get; set; }
+        //internal static DiscordSocketClient Client { get; set; }
         internal static LiteDatabase Database { get; set; }
         internal static Settings Settings { get; set; }
         internal static JobScheduler Scheduler { get; } = new JobScheduler();
@@ -133,8 +134,8 @@ namespace DML.Application.Classes
                     DefaultRetryMode = RetryMode.AlwaysRetry,
                 };
 
-                Client = new DiscordSocketClient(config);
-                Client.Log += (arg) =>
+                //Client = new DiscordSocketClient(config);
+                DMLClient.Client.Log += (arg) =>
                 {
                     var logMessage = $"DiscordClient: {arg.Message}";
                     switch (arg.Severity)
@@ -163,9 +164,27 @@ namespace DML.Application.Classes
                 Logger.Info("Trying to log into discord...");
                 var abort = false;
 
-                Client.Connected += Client_Connected;
+                DMLClient.Client.Connected += Client_Connected;
 
-                while ((Client.LoginState != LoginState.LoggedIn || Client.ConnectionState!=ConnectionState.Connected) && !abort)
+                var loggedIn = false;
+
+                while (!loggedIn)
+                {
+                    if (!string.IsNullOrEmpty(Settings.LoginToken))
+                    {
+                        Logger.Debug("Trying to login with last known token...");
+                        loggedIn= await DMLClient.Login(Settings.LoginToken);
+                    }
+
+                    if (!loggedIn)
+                    {
+                        Logger.Debug("Showing dialog for username and password...");
+                        var loginDlg = new LoginDialog();
+                        loginDlg.ShowDialog();
+                    }
+                }
+
+                /*while ((Client.LoginState != LoginState.LoggedIn || Client.ConnectionState!=ConnectionState.Connected) && !abort)
                 {
                     Logger.Debug(Client.ConnectionState.ToString());
                     Logger.Debug(Client.LoginState.ToString());
@@ -199,13 +218,13 @@ namespace DML.Application.Classes
                         loginDlg.ShowDialog();
                         Logger.Trace("Dialog closed.");
                     }
-                }
+                }*/
 
                 Logger.Debug("Start checking for invalid jobs...");
 
                 //Client
 
-                while (Client.Guilds.Count == 0)
+                while (DMLClient.Client.Guilds.Count == 0)
                 {
                     // wait until guilds are loaded
                 }
@@ -262,7 +281,7 @@ namespace DML.Application.Classes
         private static SocketGuild FindServerById(ulong id)
         {
             Logger.Trace($"Trying to find server by Id: {id}");
-            return (from s in Core.Client.Guilds where s.Id == id select s).FirstOrDefault();
+            return (from s in DMLClient.Client.Guilds where s.Id == id select s).FirstOrDefault();
         }
 
         private static SocketTextChannel FindChannelById(SocketGuild server, ulong id)

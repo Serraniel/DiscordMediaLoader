@@ -8,6 +8,7 @@ using Discord.WebSocket;
 using DML.AppCore;
 using DML.AppCore.Classes;
 using DML.Application.Classes;
+using DML.Client;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application
@@ -49,7 +50,7 @@ namespace DML.Application
             if (cbGuild.Items.Count == 0)
             {
                 Trace("Adding guilds to component...");
-                cbGuild.Items.AddRange(Core.Client.Guilds.OrderBy(g => g.Name).Select(g => g.Name).ToArray());
+                cbGuild.Items.AddRange(DMLClient.Client.Guilds.OrderBy(g => g.Name).Select(g => g.Name).ToArray());
                 cbGuild.SelectedIndex = 0;
                 Trace("Guild component initialized.");
             }
@@ -114,7 +115,7 @@ namespace DML.Application
         private SocketGuild FindServerByName(string name)
         {
             Trace($"Trying to find server by name: {name}");
-            return (from s in Core.Client.Guilds where s.Name == name select s).FirstOrDefault();
+            return (from s in DMLClient.Client.Guilds where s.Name == name select s).FirstOrDefault();
         }
 
         private SocketTextChannel FindChannelByName(SocketGuild server, string name)
@@ -126,7 +127,7 @@ namespace DML.Application
         private SocketGuild FindServerById(ulong id)
         {
             Trace($"Trying to find server by Id: {id}");
-            return (from s in Core.Client.Guilds where s.Id == id select s).FirstOrDefault();
+            return (from s in DMLClient.Client.Guilds where s.Id == id select s).FirstOrDefault();
         }
 
         private SocketTextChannel FindChannelById(SocketGuild server, ulong id)

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Discord;
 using Discord.WebSocket;
 using DML.Application.Classes;
 using SweetLib.Utils;
@@ -20,7 +21,7 @@ namespace DML.AppCore.Classes
 
         private bool Run { get; set; } = false;
         public List<Job> JobList { get; set; } = new List<Job>();
-        public Dictionary<int, Queue<SocketMessage>> RunningJobs = new Dictionary<int, Queue<SocketMessage>>();
+        public Dictionary<int, Queue<IMessage>> RunningJobs = new Dictionary<int, Queue<IMessage>>();
         internal int RunningThreads { get; set; } = 0;
 
         internal ulong MessagesScanned
@@ -112,7 +113,7 @@ namespace DML.AppCore.Classes
                         if (!hasJob)
                         {
                             Logger.Debug("Job is not performed yet...Performing job...");
-                            var queue = new Queue<SocketMessage>();
+                            var queue = new Queue<IMessage>();
 
                             Logger.Trace("Locking scheduler...");
                             lock (this)
@@ -179,7 +180,7 @@ namespace DML.AppCore.Classes
                 }
                 Logger.Trace("Found job.");
 
-                Queue<SocketMessage> queue;
+                Queue<IMessage> queue;
                 Logger.Trace("Locking scheduler...");
                 lock (this)
                 {
@@ -229,7 +230,7 @@ namespace DML.AppCore.Classes
                             if (socketTextChannel != null)
                             {
                                 serverName = socketTextChannel.Guild.Name.Replace(":", "").Replace("/", "")
-                                    .Replace("\\", "");
+                                    .Replace("\\", "").Replace("|", "");
                             }
 
                             fileName =
