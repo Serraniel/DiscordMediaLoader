@@ -2,22 +2,13 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime;
-using System.Runtime.Remoting.Channels;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Discord;
 using Discord.Net;
 using Discord.WebSocket;
-using DML.Application.Classes;
-using DML.Application.Dialogs;
-using LiteDB;
-using SweetLib.Utils;
-using SweetLib.Utils.Logger;
-using SweetLib.Utils.Logger.Memory;
-using static SweetLib.Utils.Logger.Logger;
+using DML.Core.Classes;
 
-namespace DML.Application
+namespace DML.Core
 {
     public static class Core
     {

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SweetLib.Utils.Logger;
-using static SweetLib.Utils.Logger.Logger;
+﻿using System.Diagnostics;
 
-namespace DML.Application.Classes
+namespace DML.Core.Classes
 {
     internal class Settings
     {
@@ -26,7 +19,7 @@ namespace DML.Application.Classes
         internal void Store()
         {
             Trace("Getting settings collection...");
-            var settingsDB = Core.Database.GetCollection<Settings>("settings");
+            var settingsDB = DML.Core.Core.Database.GetCollection<Settings>("settings");
 
             Debug("Storing settings to database...");
 

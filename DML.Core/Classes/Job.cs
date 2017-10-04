@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using SweetLib.Utils;
-using static SweetLib.Utils.Logger.Logger;
 
-namespace DML.Application.Classes
+namespace DML.Core.Classes
 {
     public class Job
     {
@@ -24,7 +20,7 @@ namespace DML.Application.Classes
         {
             Debug("Storing job to database...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = DML.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Adding new value...");
 
@@ -42,7 +38,7 @@ namespace DML.Application.Classes
         {
             Debug("Deleting job from database...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = DML.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Deleting value...");
             jobDb.Delete(Id);
@@ -51,7 +47,7 @@ namespace DML.Application.Classes
         private SocketGuild FindServerById(ulong id)
         {
             Trace($"Trying to find server by Id: {id}");
-            return (from s in Core.Client.Guilds where s.Id == id select s).FirstOrDefault();
+            return (from s in DML.Core.Core.Client.Guilds where s.Id == id select s).FirstOrDefault();
         }
 
         private SocketTextChannel FindChannelById(SocketGuild server, ulong id)
@@ -118,12 +114,12 @@ namespace DML.Application.Classes
                     if (m.Attachments.Count > 0)
                     {
                         result.Add(m);
-                        Core.Scheduler.TotalAttachments++;
+                        DML.Core.Core.Scheduler.TotalAttachments++;
                         Trace($"Added message {m.Id}");
                     }
                     Debug($"Finished message {m.Id}");
 
-                    Core.Scheduler.MessagesScanned++;
+                    DML.Core.Core.Scheduler.MessagesScanned++;
                 }
 
                 finished = finished || messages.Length < limit;
@@ -153,7 +149,7 @@ namespace DML.Application.Classes
         {
             Debug("Restoring jobs...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = DML.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Creating new empty job list");
             return jobDb.FindAll();

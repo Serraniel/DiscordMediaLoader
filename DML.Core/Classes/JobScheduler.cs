@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using Discord;
-using Discord.Rpc;
 using Discord.WebSocket;
-using SweetLib.Utils;
-using static SweetLib.Utils.Logger.Logger;
 
-namespace DML.Application.Classes
+namespace DML.Core.Classes
 {
     internal class JobScheduler
     {
@@ -149,8 +141,8 @@ namespace DML.Application.Classes
                                 Trace("Locking scheduler...");
                                 lock (this)
                                 {
-                                    Trace($"Checking thread limit. Running: {RunningThreads}, Max: {Core.Settings.ThreadLimit}");
-                                    if (RunningThreads >= Core.Settings.ThreadLimit)
+                                    Trace($"Checking thread limit. Running: {RunningThreads}, Max: {DML.Core.Core.Settings.ThreadLimit}");
+                                    if (RunningThreads >= DML.Core.Core.Settings.ThreadLimit)
                                         continue;
 
                                     RunningThreads++;
@@ -220,7 +212,7 @@ namespace DML.Application.Classes
                     {
                         try
                         {
-                            var fileName = Path.Combine(Core.Settings.OperatingFolder, Core.Settings.FileNameScheme);
+                            var fileName = Path.Combine(DML.Core.Core.Settings.OperatingFolder, DML.Core.Core.Settings.FileNameScheme);
 
                             Trace("Replacing filename placeholders...");
 
