@@ -155,6 +155,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Core.cs" />
+    <Compile Include="Classes\Job.cs" />
+    <Compile Include="Classes\JobScheduler.cs" />
     <Compile Include="Dialogs\LoginDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,6 +182,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dialogs\LoginDialog.resx">
@@ -203,6 +207,10 @@
     <ProjectReference Include="..\..\SweetLib\SweetLib\SweetLib.csproj">
       <Project>{02c1f8ef-32f2-4e77-a36d-79129402af37}</Project>
       <Name>SweetLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DML.AppCore\DML.AppCore.csproj">
+      <Project>{4db264a7-2352-4057-b3de-61fcfec01ae5}</Project>
+      <Name>DML.AppCore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

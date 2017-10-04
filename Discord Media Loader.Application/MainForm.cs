@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Windows.Forms;
 using Discord;
 using Discord.WebSocket;
+using DML.AppCore;
+using DML.AppCore.Classes;
 using DML.Application.Classes;
 using static SweetLib.Utils.Logger.Logger;
 

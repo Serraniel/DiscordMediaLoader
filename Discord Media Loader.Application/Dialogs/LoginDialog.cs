@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DML.Application.Classes;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application.Dialogs
