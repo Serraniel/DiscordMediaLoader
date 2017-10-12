@@ -78,8 +78,6 @@ namespace DML.AppCore.Classes
             }
         }
 
-        internal ulong AttachmentsToDownload => TotalAttachments - AttachmentsDownloaded;
-
         public void Stop()
         {
             Run = false;
@@ -230,17 +228,19 @@ namespace DML.AppCore.Classes
                             if (socketTextChannel != null)
                             {
                                 serverName = socketTextChannel.Guild.Name;
+                                serverName = Path.GetInvalidFileNameChars().Aggregate(serverName, (current, c) => current.Replace(c, ' '));
                             }
+
+                            var channelName = message.Channel.Name;
+                            channelName = Path.GetInvalidFileNameChars().Aggregate(channelName, (current, c) => current.Replace(c, ' '));
 
                             fileName =
                                 fileName.Replace("%guild%", serverName)
-                                    .Replace("%channel%", message.Channel.Name)
+                                    .Replace("%channel%", channelName)
                                     .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime).ToString())
                                     .Replace("%name%", a.Filename)
                                     .Replace("%id%", a.Id.ToString());
-
-                            fileName = Path.GetInvalidFileNameChars().Aggregate(fileName, (current, c) => current.Replace(c, ' '));
-
+                            
                             if (extensionRequired)
                                 fileName += Path.GetExtension(a.Filename);
 
