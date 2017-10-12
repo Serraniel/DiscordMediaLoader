@@ -4,7 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using Discord;
+using Discord.WebSocket;
+using DML.AppCore;
+using DML.AppCore.Classes;
 using DML.Application.Classes;
+using DML.Client;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application
@@ -46,7 +50,7 @@ namespace DML.Application
             if (cbGuild.Items.Count == 0)
             {
                 Trace("Adding guilds to component...");
-                cbGuild.Items.AddRange(Core.Client.Servers.OrderBy(g => g.Name).Select(g => g.Name).ToArray());
+                cbGuild.Items.AddRange(DMLClient.Client.Guilds.OrderBy(g => g.Name).Select(g => g.Name).ToArray());
                 cbGuild.SelectedIndex = 0;
                 Trace("Guild component initialized.");
             }
@@ -108,25 +112,25 @@ namespace DML.Application
             }
         }
 
-        private Server FindServerByName(string name)
+        private SocketGuild FindServerByName(string name)
         {
             Trace($"Trying to find server by name: {name}");
-            return (from s in Core.Client.Servers where s.Name == name select s).FirstOrDefault();
+            return (from s in DMLClient.Client.Guilds where s.Name == name select s).FirstOrDefault();
         }
 
-        private Channel FindChannelByName(Server server, string name)
+        private SocketTextChannel FindChannelByName(SocketGuild server, string name)
         {
             Trace($"Trying to find channel in {server} by name: {name}");
             return (from c in server.TextChannels where c.Name == name select c).FirstOrDefault();
         }
 
-        private Server FindServerById(ulong id)
+        private SocketGuild FindServerById(ulong id)
         {
             Trace($"Trying to find server by Id: {id}");
-            return (from s in Core.Client.Servers where s.Id == id select s).FirstOrDefault();
+            return (from s in DMLClient.Client.Guilds where s.Id == id select s).FirstOrDefault();
         }
 
-        private Channel FindChannelById(Server server, ulong id)
+        private SocketTextChannel FindChannelById(SocketGuild server, ulong id)
         {
             Trace($"Trying to find channel in {server} by id: {id}");
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();

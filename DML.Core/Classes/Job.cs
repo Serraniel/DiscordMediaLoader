@@ -4,12 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using DML.Application.Classes;
-using DML.Client;
-using SweetLib.Utils;
-using static SweetLib.Utils.Logger.Logger;
 
-namespace DML.AppCore.Classes
+namespace DML.Core.Classes
 {
     public class Job
     {
@@ -24,7 +20,7 @@ namespace DML.AppCore.Classes
         {
             Debug("Storing job to database...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = DML.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Adding new value...");
 
@@ -38,11 +34,11 @@ namespace DML.AppCore.Classes
             }
         }
 
-        public void Delete()
+        internal void Delete()
         {
             Debug("Deleting job from database...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = DML.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Deleting value...");
             jobDb.Delete(Id);
@@ -51,7 +47,7 @@ namespace DML.AppCore.Classes
         private SocketGuild FindServerById(ulong id)
         {
             Trace($"Trying to find server by Id: {id}");
-            return (from s in DMLClient.Client.Guilds where s.Id == id select s).FirstOrDefault();
+            return (from s in DML.Core.Core.Client.Guilds where s.Id == id select s).FirstOrDefault();
         }
 
         private SocketTextChannel FindChannelById(SocketGuild server, ulong id)
@@ -60,10 +56,10 @@ namespace DML.AppCore.Classes
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
         }
 
-        internal async Task<List<IMessage>> Scan()
+        internal async Task<List<SocketMessage>> Scan()
         {
             Debug($"Starting scan of guild {GuildId} channel {ChannelId}...");
-            var result = new List<IMessage>();
+            var result = new List<SocketMessage>();
 
             var limit = 100;
             var lastId = ulong.MaxValue;
@@ -73,13 +69,6 @@ namespace DML.AppCore.Classes
             var guild = FindServerById(GuildId);
             var channel = FindChannelById(guild, ChannelId);
 
-            Debug("Checking channel access");
-            if (!channel.Users.Contains(channel.Guild.CurrentUser))
-            {
-                Info("Skipping channel without access");
-                return result;
-            }
-
             if (Math.Abs(StopTimestamp) < 0.4)
                 StopTimestamp = KnownTimestamp;
             Trace("Initialized scanning parameters.");
@@ -87,37 +76,18 @@ namespace DML.AppCore.Classes
             while (!finished)
             {
                 Trace("Entering scanning loop...");
-                var messages = new List<IMessage>();
+                SocketMessage[] messages;
 
                 Trace($"Downloading next {limit} messages...");
                 if (isFirst)
                 {
-                    //messages = await channel.GetMessagesAsync(limit).ToArray() as SocketMessage[];
-                    var realMessages = await channel.GetMessagesAsync(limit).ToArray();
-
-                    foreach (var realMessageArray in realMessages)
-                    {
-                        foreach (var realMessage in realMessageArray)
-                        {
-                            messages.Add(realMessage);
-                        }
-                    }
+                    messages = await channel.GetMessagesAsync(limit).ToArray() as SocketMessage[];
                 }
                 else
                 {
-                    var realMessages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray();
-
-                    foreach (var realMessageArray in realMessages)
-                    {
-                        foreach (var realMessage in realMessageArray)
-                        {
-                            messages.Add(realMessage);
-                        }
-                    }
-
-                    //messages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray() as SocketMessage[];
+                    messages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray() as SocketMessage[];
                 }
-                Trace($"Downloaded {messages.Count} messages.");
+                Trace($"Downloaded {messages.Length} messages.");
 
                 isFirst = false;
 
@@ -144,15 +114,15 @@ namespace DML.AppCore.Classes
                     if (m.Attachments.Count > 0)
                     {
                         result.Add(m);
-                        Core.Scheduler.TotalAttachments += (ulong)m.Attachments.Count;
+                        DML.Core.Core.Scheduler.TotalAttachments++;
                         Trace($"Added message {m.Id}");
                     }
                     Debug($"Finished message {m.Id}");
 
-                    Core.Scheduler.MessagesScanned++;
+                    DML.Core.Core.Scheduler.MessagesScanned++;
                 }
 
-                finished = finished || messages.Count < limit;
+                finished = finished || messages.Length < limit;
             }
             Trace($"Downloaded all messages for guild {GuildId} channel {ChannelId}.");
 
@@ -170,16 +140,16 @@ namespace DML.AppCore.Classes
             return result;
         }
 
-        public void Stop()
+        internal void Stop()
         {
             IsValid = false;
         }
 
-        public static IEnumerable<Job> RestoreJobs()
+        internal static IEnumerable<Job> RestoreJobs()
         {
             Debug("Restoring jobs...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = DML.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Creating new empty job list");
             return jobDb.FindAll();

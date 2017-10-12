@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
-using SweetLib.Utils.Logger;
 
-namespace DML.Application.Classes
+namespace DML.Core.Classes
 {
-    public class Settings
+    internal class Settings
     {
         public int Id { get; } = 1; // using always unique ID
         public string Email { get; set; }
@@ -17,21 +16,21 @@ namespace DML.Application.Classes
         public bool SkipExistingFiles { get; set; } = true;
         public int ThreadLimit { get; set; } = 50;
 
-        public void Store()
+        internal void Store()
         {
-            Logger.Trace("Getting settings collection...");
-            var settingsDB = Core.Database.GetCollection<Settings>("settings");
+            Trace("Getting settings collection...");
+            var settingsDB = DML.Core.Core.Database.GetCollection<Settings>("settings");
 
-            Logger.Debug("Storing settings to database...");
+            Debug("Storing settings to database...");
 
             if (settingsDB.Exists(_setting => _setting.Id == Id))
             {
-                Logger.Trace("Updating existing value...");
+                Trace("Updating existing value...");
                 settingsDB.Update(this);
             }
             else
             {
-                Logger.Trace("Adding new value...");
+                Trace("Adding new value...");
                 settingsDB.Insert(this);
             }
         }

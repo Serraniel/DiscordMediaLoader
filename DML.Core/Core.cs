@@ -2,25 +2,17 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime;
-using System.Runtime.Remoting.Channels;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Discord;
 using Discord.Net;
-using DML.Application.Classes;
-using DML.Application.Dialogs;
-using LiteDB;
-using SweetLib.Utils;
-using SweetLib.Utils.Logger;
-using SweetLib.Utils.Logger.Memory;
-using static SweetLib.Utils.Logger.Logger;
+using Discord.WebSocket;
+using DML.Core.Classes;
 
-namespace DML.Application
+namespace DML.Core
 {
     public static class Core
     {
-        internal static DiscordClient Client { get; set; }
+        internal static DiscordSocketClient Client { get; set; }
         internal static LiteDatabase Database { get; set; }
         internal static Settings Settings { get; set; }
         internal static JobScheduler Scheduler { get; } = new JobScheduler();
@@ -127,11 +119,12 @@ namespace DML.Application
                 }
 
                 Debug("Creating discord client...");
-                Client = new DiscordClient();
-                Client.Log.Message += (sender, message) =>
+                
+                Client = new DiscordSocketClient();
+                Client.Log += (arg) =>
                 {
-                    var logMessage = $"DiscordClient: {message.Message}";
-                    switch (message.Severity)
+                    var logMessage = $"DiscordClient: {arg.Message}";
+                    switch (arg.Severity)
                     {
                         case LogSeverity.Verbose:
                             Trace(logMessage);
@@ -149,40 +142,42 @@ namespace DML.Application
                             Error(logMessage);
                             break;
                     }
+
+                    return Task.CompletedTask;
                 };
 
 
                 Info("Trying to log into discord...");
                 var abort = false;
 
-                while (Client.State != ConnectionState.Connected && !abort)
-                {
-                    Trace("Entering login loop.");
+                Client.Connected += Client_Connected;
 
+                while (Client.LoginState != LoginState.LoggedIn && !abort)
+                {
+                    Debug(Client.ConnectionState.ToString());
+                    Debug(Client.LoginState.ToString());
+
+                    Trace("Entering login loop.");
+                    
                     try
                     {
+                        if (Client.ConnectionState == ConnectionState.Connecting)
+                            continue;
+
                         if (!string.IsNullOrEmpty(Settings.LoginToken))
                         {
                             Debug("Trying to login with last known token...");
-                            await Client.Connect(Settings.LoginToken, TokenType.User);
+                            await Client.LoginAsync(TokenType.User, Settings.LoginToken);
+                            await Task.Delay(1000);
                         }
 
-                        if (Client.State != ConnectionState.Connected && Settings.UseUserData &&
-                            !string.IsNullOrEmpty(Settings.Email) &&
-                            !string.IsNullOrEmpty(Settings.Password))
-                        {
-                            Settings.LoginToken = string.Empty;
-
-                            Debug("Trying to login with email and password...");
-                            await Client.Connect(Settings.Email, Settings.Password);
-                        }
                     }
-                    catch (HttpException)
+                    catch (HttpException ex)
                     {
-                        Warn("Login seems to have failed or gone wrong.");
+                        Warn($"Login seems to have failed or gone wrong: {ex.GetType().Name} - {ex.Message}");
                     }
 
-                    if (Client.State != ConnectionState.Connected)
+                    if (Client.LoginState == LoginState.LoggedOut)
                     {
                         Settings.Password = string.Empty;
                         Debug("Showing dialog for username and password...");
@@ -193,6 +188,14 @@ namespace DML.Application
                 }
 
                 Debug("Start checking for invalid jobs...");
+
+                //Client
+
+                while (Client.Guilds.Count==0)
+                {
+                    // wait until guilds are loaded
+                }
+
                 for (var i = Scheduler.JobList.Count - 1; i >= 0; i--)
                 {
                     var job = Scheduler.JobList[i];
@@ -235,14 +238,20 @@ namespace DML.Application
             }
         }
 
-        //TODO: this is thrid time we implement this.....this has to be fixed!!!
-        private static Server FindServerById(ulong id)
+        private static Task Client_Connected()
         {
-            Trace($"Trying to find server by Id: {id}");
-            return (from s in Core.Client.Servers where s.Id == id select s).FirstOrDefault();
+            Debug("Connected");
+            return Task.CompletedTask;
         }
 
-        private static Channel FindChannelById(Server server, ulong id)
+        //TODO: this is thrid time we implement this.....this has to be fixed!!!
+        private static SocketGuild FindServerById(ulong id)
+        {
+            Trace($"Trying to find server by Id: {id}");
+            return (from s in Core.Client.Guilds where s.Id == id select s).FirstOrDefault();
+        }
+
+        private static SocketTextChannel FindChannelById(SocketGuild server, ulong id)
         {
             Trace($"Trying to find channel in {server} by id: {id}");
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
