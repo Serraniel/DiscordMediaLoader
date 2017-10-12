@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using DML.Application.Classes;
 using Octokit;
 
 namespace Discord_Media_Loader.Helper
@@ -12,6 +13,7 @@ namespace Discord_Media_Loader.Helper
     internal class VersionHelper
     {
         internal static Version CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version;
+        internal static Version AppVersion => typeof(Core).Assembly.GetName().Version;
 
         internal static async Task<Version> GetReleaseVersion()
         {
