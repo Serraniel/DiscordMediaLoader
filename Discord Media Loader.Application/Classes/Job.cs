@@ -144,7 +144,7 @@ namespace DML.AppCore.Classes
                     if (m.Attachments.Count > 0)
                     {
                         result.Add(m);
-                        Core.Scheduler.TotalAttachments++;
+                        Core.Scheduler.TotalAttachments += (ulong)m.Attachments.Count;
                         Trace($"Added message {m.Id}");
                     }
                     Debug($"Finished message {m.Id}");
