@@ -229,8 +229,7 @@ namespace DML.AppCore.Classes
                             var socketTextChannel = message.Channel as SocketTextChannel;
                             if (socketTextChannel != null)
                             {
-                                serverName = socketTextChannel.Guild.Name.Replace(":", "").Replace("/", "")
-                                    .Replace("\\", "").Replace("|", "");
+                                serverName = socketTextChannel.Guild.Name;
                             }
 
                             fileName =
@@ -239,6 +238,8 @@ namespace DML.AppCore.Classes
                                     .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime).ToString())
                                     .Replace("%name%", a.Filename)
                                     .Replace("%id%", a.Id.ToString());
+
+                            fileName = Path.GetInvalidFileNameChars().Aggregate(fileName, (current, c) => current.Replace(c, ' '));
 
                             if (extensionRequired)
                                 fileName += Path.GetExtension(a.Filename);
