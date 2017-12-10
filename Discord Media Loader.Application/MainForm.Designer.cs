@@ -48,15 +48,15 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.pgbProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.lbProgress = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblVersionPlaceholder = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lbVersion = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnDropDown = new System.Windows.Forms.ToolStripSplitButton();
+            this.visitGithubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.lbxJobs = new System.Windows.Forms.ListBox();
             this.tmrRefreshProgress = new System.Windows.Forms.Timer(this.components);
-            this.lblVersionPlaceholder = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lbVersion = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnDropDown = new System.Windows.Forms.ToolStripSplitButton();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.visitGithubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edThreadLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -257,6 +257,43 @@
             this.lbProgress.Name = "lbProgress";
             this.lbProgress.Size = new System.Drawing.Size(0, 17);
             // 
+            // lblVersionPlaceholder
+            // 
+            this.lblVersionPlaceholder.Name = "lblVersionPlaceholder";
+            this.lblVersionPlaceholder.Size = new System.Drawing.Size(302, 17);
+            this.lblVersionPlaceholder.Spring = true;
+            // 
+            // lbVersion
+            // 
+            this.lbVersion.Name = "lbVersion";
+            this.lbVersion.Size = new System.Drawing.Size(118, 17);
+            this.lbVersion.Text = "v https://github.com";
+            // 
+            // btnDropDown
+            // 
+            this.btnDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDropDown.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.visitGithubToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.btnDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDropDown.Name = "btnDropDown";
+            this.btnDropDown.Size = new System.Drawing.Size(16, 20);
+            this.btnDropDown.Text = "Options";
+            // 
+            // visitGithubToolStripMenuItem
+            // 
+            this.visitGithubToolStripMenuItem.Name = "visitGithubToolStripMenuItem";
+            this.visitGithubToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.visitGithubToolStripMenuItem.Text = "Visit Github";
+            this.visitGithubToolStripMenuItem.Click += new System.EventHandler(this.visitGithubToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.btnDelete);
@@ -296,43 +333,6 @@
             this.tmrRefreshProgress.Enabled = true;
             this.tmrRefreshProgress.Interval = 500;
             this.tmrRefreshProgress.Tick += new System.EventHandler(this.tmrRefreshProgress_Tick);
-            // 
-            // lblVersionPlaceholder
-            // 
-            this.lblVersionPlaceholder.Name = "lblVersionPlaceholder";
-            this.lblVersionPlaceholder.Size = new System.Drawing.Size(271, 17);
-            this.lblVersionPlaceholder.Spring = true;
-            // 
-            // lbVersion
-            // 
-            this.lbVersion.Name = "lbVersion";
-            this.lbVersion.Size = new System.Drawing.Size(118, 17);
-            this.lbVersion.Text = "v https://github.com";
-            // 
-            // btnDropDown
-            // 
-            this.btnDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnDropDown.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.visitGithubToolStripMenuItem,
-            this.aboutToolStripMenuItem});
-            this.btnDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDropDown.Name = "btnDropDown";
-            this.btnDropDown.Size = new System.Drawing.Size(16, 20);
-            this.btnDropDown.Text = "Options";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // visitGithubToolStripMenuItem
-            // 
-            this.visitGithubToolStripMenuItem.Name = "visitGithubToolStripMenuItem";
-            this.visitGithubToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.visitGithubToolStripMenuItem.Text = "Visit Github";
-            this.visitGithubToolStripMenuItem.Click += new System.EventHandler(this.visitGithubToolStripMenuItem_Click);
             // 
             // MainForm
             // 

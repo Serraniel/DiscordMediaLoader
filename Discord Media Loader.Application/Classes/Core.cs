@@ -12,6 +12,8 @@ using DML.AppCore.Classes;
 using DML.Application.Dialogs;
 using DML.Client;
 using LiteDB;
+using SharpRaven;
+using SharpRaven.Data;
 using SweetLib.Utils;
 using SweetLib.Utils.Logger;
 using SweetLib.Utils.Logger.Memory;
@@ -25,6 +27,7 @@ namespace DML.Application.Classes
         internal static LiteDatabase Database { get; set; }
         internal static Settings Settings { get; set; }
         internal static JobScheduler Scheduler { get; } = new JobScheduler();
+        internal static RavenClient Raven = new RavenClient("https://0de964231669473e9098b9f6cc1d6278:79d9f2eb24034de199b2a37cc058e0f2@sentry.io/257114");
 
         internal static string DataDirectory
            => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Serraniel\Discord Media Loader");
@@ -268,6 +271,8 @@ namespace DML.Application.Classes
             catch (Exception ex)
             {
                 Logger.Error($"{ex.Message} occured at: {ex.StackTrace}");
+                if (MessageBox.Show($"An error occured while running Discord Media Loader:\n{ex.GetType().Name}: {ex.Message}\n\nDo you aggree to sending the error report to the creator of the tool?", "Discord Media Loader", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    Raven.Capture(new SentryEvent(ex));
             }
         }
 
