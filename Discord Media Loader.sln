@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord Media Loader", "Discord Media Loader\Discord Media Loader.csproj", "{83E64057-7010-4DF3-A011-F7E536508407}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord Media Loader", "Discord Media Loader\Discord Media Loader.csproj", "{EDC92554-DBC1-4F9C-9317-379A8BF441E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DML.Application", "Discord Media Loader.Application\DML.Application.csproj", "{C130DE6A-3237-42B5-BE9F-783D1CD104C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SweetLib", "..\SweetLib\SweetLib\SweetLib.csproj", "{02C1F8EF-32F2-4E77-A36D-79129402AF37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DML.Client", "DML.Client\DML.Client.csproj", "{045EB4A1-34E7-47E0-867E-E10C40505095}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +17,27 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{83E64057-7010-4DF3-A011-F7E536508407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83E64057-7010-4DF3-A011-F7E536508407}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83E64057-7010-4DF3-A011-F7E536508407}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83E64057-7010-4DF3-A011-F7E536508407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC92554-DBC1-4F9C-9317-379A8BF441E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC92554-DBC1-4F9C-9317-379A8BF441E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC92554-DBC1-4F9C-9317-379A8BF441E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC92554-DBC1-4F9C-9317-379A8BF441E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C130DE6A-3237-42B5-BE9F-783D1CD104C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C130DE6A-3237-42B5-BE9F-783D1CD104C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C130DE6A-3237-42B5-BE9F-783D1CD104C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C130DE6A-3237-42B5-BE9F-783D1CD104C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C1F8EF-32F2-4E77-A36D-79129402AF37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C1F8EF-32F2-4E77-A36D-79129402AF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C1F8EF-32F2-4E77-A36D-79129402AF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C1F8EF-32F2-4E77-A36D-79129402AF37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{045EB4A1-34E7-47E0-867E-E10C40505095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{045EB4A1-34E7-47E0-867E-E10C40505095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{045EB4A1-34E7-47E0-867E-E10C40505095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{045EB4A1-34E7-47E0-867E-E10C40505095}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B742DE0-D6AF-4033-9605-863C32A7FFD8}
 	EndGlobalSection
 EndGlobal

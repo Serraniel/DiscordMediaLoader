@@ -1,20 +1,32 @@
 ﻿using System;
 using System.Windows.Forms;
-using Discord_Media_Loader.Helper;
+using DML.Application.Classes;
+using Nito.AsyncEx;
 
 namespace Discord_Media_Loader
 {
     static class Program
     {
-        /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
-        /// </summary>
         [STAThread]
-        static void Main()
-        {            
+        static void Main(string[] paramStrings)
+        {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            var splashScreen = new FrmSplash();
+            if (splashScreen.ShowDialog() == DialogResult.OK)
+            {
+               DoLaunch(paramStrings);
+            }
+            else
+            {
+                Application.Restart();
+            }
+        }
+
+        private static void DoLaunch(string[] paramStrings)
+        {
+            AsyncContext.Run(() => Core.Run(paramStrings));
         }
     }
 }

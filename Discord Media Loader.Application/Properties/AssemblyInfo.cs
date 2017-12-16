@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
-[assembly: AssemblyTitle("Discord Media Loader")]
+[assembly: AssemblyTitle("Discord Media Loader.Application")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Serraniel")]
-[assembly: AssemblyProduct("Discord Media Loader")]
+[assembly: AssemblyProduct("Discord Media Loader.Application")]
 [assembly: AssemblyCopyright("Copyright © 2017 by Serraniel")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-[assembly: Guid("edc92554-dbc1-4f9c-9317-379a8bf441e8")]
+[assembly: Guid("c130de6a-3237-42b5-be9f-783d1cd104c6")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //
