@@ -2,11 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using Discord;
 using Discord.WebSocket;
-using DML.AppCore;
 using DML.AppCore.Classes;
 using DML.Application.Classes;
 using DML.Client;

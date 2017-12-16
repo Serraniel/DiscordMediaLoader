@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Discord_Media_Loader.Helper;
-using DML.Application;
 using DML.Application.Classes;
 using Nito.AsyncEx;
 

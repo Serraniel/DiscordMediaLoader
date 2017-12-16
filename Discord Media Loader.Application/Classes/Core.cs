@@ -6,7 +6,6 @@ using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Discord;
-using Discord.Net;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Dialogs;

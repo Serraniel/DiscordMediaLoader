@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using SweetLib.Utils.Logger;
+﻿using SweetLib.Utils.Logger;
 
 namespace DML.Application.Classes
 {
