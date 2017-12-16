@@ -35,7 +35,7 @@ namespace Discord_Media_Loader
                     downloadManager.ShowDialog();
 
                     var tmpFolder = Path.GetTempFileName();
-                    tmpFolder = Path.Combine(Path.GetFullPath(tmpFolder).Replace(Path.GetFileName(tmpFolder),""), Path.GetFileNameWithoutExtension(tmpFolder));
+                    tmpFolder = Path.Combine(Path.GetFullPath(tmpFolder).Replace(Path.GetFileName(tmpFolder), ""), Path.GetFileNameWithoutExtension(tmpFolder));
 
                     var di = Directory.CreateDirectory(tmpFolder);
 
@@ -52,6 +52,7 @@ namespace Discord_Media_Loader
                     }
 
                     File.Delete(tmpFile);
+                    DialogResult = DialogResult.Cancel;
                 }
             }
             finally
@@ -59,7 +60,7 @@ namespace Discord_Media_Loader
                 UseWaitCursor = false;
             }
 
-            Close();
+            DialogResult = DialogResult.OK;
         }
     }
 }

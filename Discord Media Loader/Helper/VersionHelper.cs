@@ -13,7 +13,8 @@ namespace Discord_Media_Loader.Helper
     internal class VersionHelper
     {
         internal static Version CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version;
-        internal static Version AppVersion => typeof(Core).Assembly.GetName().Version;
+
+        internal static Version AppVersion => AssemblyName.GetAssemblyName("Discord Media Loader.Application.dll").Version;
 
         internal static async Task<Version> GetReleaseVersion()
         {
@@ -35,7 +36,7 @@ namespace Discord_Media_Loader.Helper
         {
             var github = new GitHubClient(new ProductHeaderValue("DiscordMediaLoader"));
             var releaseVersion = (from release in (await github.Repository.Release.GetAll("Serraniel", "DiscordMediaLoader")) where release.TagName == $"v{version.Major}.{version.Minor}.{version.Build}.{version.Revision}" select release).First();
-            
+
             return releaseVersion.Assets.FirstOrDefault()?.BrowserDownloadUrl;
         }
     }

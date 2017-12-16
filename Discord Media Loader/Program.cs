@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,10 +21,19 @@ namespace Discord_Media_Loader
             Application.SetCompatibleTextRenderingDefault(false);
 
             var splashScreen = new FrmSplash();
-            splashScreen.ShowDialog();
+            if (splashScreen.ShowDialog() == DialogResult.OK)
+            {
+               DoLaunch(paramStrings);
+            }
+            else
+            {
+                Application.Restart();
+            }
+        }
 
+        private static void DoLaunch(string[] paramStrings)
+        {
             AsyncContext.Run(() => Core.Run(paramStrings));
-            Console.WriteLine("Ende");
         }
     }
 }
