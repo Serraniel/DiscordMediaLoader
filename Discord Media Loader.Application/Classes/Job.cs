@@ -74,7 +74,8 @@ namespace DML.AppCore.Classes
             var channel = FindChannelById(guild, ChannelId);
 
             Debug("Checking channel access");
-            if (!channel.Users.Contains(channel.Guild.CurrentUser))
+            //channel.GetUser(channel.Guild.CurrentUser.Id);
+            if (channel.GetUser(channel.Guild.CurrentUser.Id) == null)
             {
                 Info("Skipping channel without access");
                 return result;
@@ -126,6 +127,8 @@ namespace DML.AppCore.Classes
                     if (!IsValid)
                         return null;
 
+                    Core.Scheduler.MessagesScanned++;
+
                     Debug($"Processing message {m.Id}");
                     if (m.Id < lastId)
                     {
@@ -148,8 +151,6 @@ namespace DML.AppCore.Classes
                         Trace($"Added message {m.Id}");
                     }
                     Debug($"Finished message {m.Id}");
-
-                    Core.Scheduler.MessagesScanned++;
                 }
 
                 finished = finished || messages.Count < limit;
