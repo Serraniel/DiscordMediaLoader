@@ -6,11 +6,11 @@ using System.Net;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
-using DML.Application.Classes;
+using DML.AppCore.Classes;
 using SweetLib.Utils;
 using SweetLib.Utils.Logger;
 
-namespace DML.AppCore.Classes
+namespace DML.Application.Classes
 {
     public class JobScheduler
     {
@@ -82,7 +82,7 @@ namespace DML.AppCore.Classes
             Run = false;
         }
 
-        public void StartAll()
+        public void ScanAll()
         {
             Logger.Info("Started JobScheduler...");
 
@@ -104,137 +104,6 @@ namespace DML.AppCore.Classes
                 {
                     Logger.Error(ex.Message);
                 }
-            }
-        }
-        
-        private void WorkQueue(int jobId)
-        {
-            try
-            {
-                Logger.Debug("Beginning attachment  download...");
-                Logger.Trace("Finding job...");
-                var job = (from j in JobList where j.Id == jobId select j).FirstOrDefault();
-
-                if (job == null)
-                {
-                    Logger.Warn($"Associating job not found! JobId: {jobId}");
-                    return;
-                }
-                Logger.Trace("Found job.");
-
-                Queue<IMessage> queue;
-                Logger.Trace("Locking scheduler...");
-                lock (this)
-                {
-                    Logger.Trace("Finiding queue...");
-                    if (!RunningJobs.TryGetValue(jobId, out queue))
-                    {
-                        Logger.Warn($"Queue for job {jobId} not found!");
-                        return;
-                    }
-                    Logger.Trace("Queue found.");
-                }
-                Logger.Trace("Unlocked scheduler.");
-
-                Logger.Debug($"Messages to process for job {jobId}: {queue.Count}");
-                while (queue.Count > 0)
-                {
-                    Logger.Trace("Locking scheduler...");
-                    lock (this)
-                    {
-                        Logger.Trace("Checking if still a job...");
-                        if (!RunningJobs.ContainsKey(jobId))
-                        {
-                            Logger.Warn($"Queue for job {jobId} not found!");
-                            return;
-                        }
-                        Logger.Trace("Continue working...");
-                    }
-                    Logger.Trace("Unlocked scheduler.");
-
-                    Logger.Trace("Dequeueing message...");
-                    var message = queue.Dequeue();
-
-                    Logger.Debug($"Attachments for message {message.Id}: {message.Attachments.Count}");
-                    foreach (var a in message.Attachments)
-                    {
-                        try
-                        {
-                            var fileName = Path.Combine(Core.Settings.OperatingFolder, Core.Settings.FileNameScheme);
-
-                            Logger.Trace("Replacing filename placeholders...");
-
-                            var extensionRequired = !fileName.EndsWith("%name%");
-
-                            var serverName = "unknown";
-
-                            var socketTextChannel = message.Channel as SocketTextChannel;
-                            if (socketTextChannel != null)
-                            {
-                                serverName = socketTextChannel.Guild.Name;
-                                serverName = Path.GetInvalidFileNameChars().Aggregate(serverName, (current, c) => current.Replace(c, ' '));
-                            }
-
-                            var channelName = message.Channel.Name;
-                            channelName = Path.GetInvalidFileNameChars().Aggregate(channelName, (current, c) => current.Replace(c, ' '));
-
-                            fileName =
-                                fileName.Replace("%guild%", serverName)
-                                    .Replace("%channel%", channelName)
-                                    .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime).ToString())
-                                    .Replace("%name%", a.Filename)
-                                    .Replace("%id%", a.Id.ToString());
-
-                            if (extensionRequired)
-                                fileName += Path.GetExtension(a.Filename);
-
-                            Logger.Trace($"Detemined file name: {fileName}.");
-
-
-                            if (File.Exists(fileName) && new FileInfo(fileName).Length == a.Size)
-                            {
-                                Logger.Debug($"{fileName} already existing with its estimated size. Skipping...");
-                                continue;
-                            }
-
-                            Logger.Trace("Determining directory...");
-                            var fileDirectory = Path.GetDirectoryName(fileName);
-
-                            if (!Directory.Exists(fileDirectory))
-                            {
-                                Logger.Info($"Directory {fileDirectory} does not exist. Creating directory...");
-                                Directory.CreateDirectory(fileDirectory);
-                                Logger.Debug("Created directory.");
-                            }
-
-                            var wc = new WebClient();
-                            Logger.Debug($"Starting downloading of attachment {a.Id}...");
-
-                            wc.DownloadFile(new Uri(a.Url), fileName);
-                            Logger.Debug($"Downloaded attachment {a.Id}.");
-
-                            Logger.Trace("Updating known timestamp for job...");
-                            job.KnownTimestamp = SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime);
-                            job.Store();
-                        }
-                        finally
-                        {
-                            AttachmentsDownloaded++;
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                Logger.Trace("Locking scheduler...");
-                lock (this)
-                {
-                    Logger.Trace($"Removing {jobId} from running jobs...");
-                    RunningJobs.Remove(jobId);
-                    Logger.Trace("Decreasing thread count...");
-                    RunningThreads--;
-                }
-                Logger.Trace("Unlocked scheduler.");
             }
         }
     }

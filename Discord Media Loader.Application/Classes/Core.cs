@@ -175,7 +175,7 @@ namespace DML.Application.Classes
                     if (!string.IsNullOrEmpty(Settings.LoginToken))
                     {
                         Logger.Debug("Trying to login with last known token...");
-                        loggedIn= await DMLClient.Login(Settings.LoginToken);
+                        loggedIn = await DMLClient.Login(Settings.LoginToken);
                     }
 
                     if (!loggedIn)
@@ -230,7 +230,7 @@ namespace DML.Application.Classes
                 splash.Close();
 
                 Logger.Info("Starting scheduler...");
-                Scheduler.Start();
+                Scheduler.ScanAll();
 
                 System.Windows.Forms.Application.Run(new MainForm());
 

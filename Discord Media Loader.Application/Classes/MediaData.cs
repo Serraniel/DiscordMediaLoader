@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using DML.AppCore.Classes;
+using DML.Client;
+using SweetLib.Utils;
+using SweetLib.Utils.Logger;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application.Classes
@@ -13,9 +18,10 @@ namespace DML.Application.Classes
         public ulong Id { get; set; }
         public string DownloadSource { get; set; }
         public ulong GuildId { get; set; }
-        public ulong ChannelId { get; set;}
+        public ulong ChannelId { get; set; }
         public double TimeStamp { get; set; }
         public string Filename { get; set; }
+        public int FileSize { get; set; }
 
         internal void Store()
         {
@@ -43,6 +49,51 @@ namespace DML.Application.Classes
 
             Trace("Deleting value...");
             db.Delete(Id);
+        }
+
+        internal async Task Download()
+        {
+            Trace("Beginning attachment download...");
+
+            Debug("Building filename...");
+            var fileName = Path.Combine(Core.Settings.OperatingFolder, Core.Settings.FileNameScheme);
+
+            Debug($"Base filename: {fileName}");
+
+            Trace("Determining if extension is required");
+            var extensionRequired = !fileName.EndsWith("%name%");
+            Trace($"Extension required: {extensionRequired}");
+
+            Trace("Replacing filename placeholders...");
+            var guildName = DMLClient.Client.GetGuild(GuildId)?.Name ?? GuildId.ToString();
+            var channelName = DMLClient.Client.GetGuild(GuildId)?.GetChannel(ChannelId)?.Name ?? ChannelId.ToString();
+
+            fileName =
+                fileName.Replace("%guild%", guildName)
+                    .Replace("%channel%", channelName)
+                    .Replace("%timestamp%", TimeStamp.ToString("####"))
+                    .Replace("%name%", Filename)
+                    .Replace("%id%", Id.ToString());
+
+            Trace("Adding extension if required");
+            if (extensionRequired)
+                fileName += Path.GetExtension(Filename);
+
+            Debug($"Final filename: {fileName}");
+
+            if (File.Exists(fileName) && new FileInfo(fileName).Length == FileSize)
+            {
+                Logger.Debug($"{fileName} already existing with its estimated size. Skipping...");
+                return;
+            }
+
+            var wc = new WebClient();
+            Logger.Debug($"Starting downloading of attachment {Id}...");
+            wc.DownloadFile(new Uri(DownloadSource), fileName);
+            Logger.Debug($"Downloaded attachment {Id}.");
+
+
+            Core.Scheduler.AttachmentsDownloaded++;
         }
     }
 }

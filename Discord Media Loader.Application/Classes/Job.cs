@@ -156,7 +156,8 @@ namespace DML.AppCore.Classes
                         ChannelId = r.Channel.Id,
                         DownloadSource = a.Url,
                         Filename = a.Filename,
-                        TimeStamp = SweetUtils.DateTimeToUnixTimeStamp(r.CreatedAt.UtcDateTime)
+                        TimeStamp = SweetUtils.DateTimeToUnixTimeStamp(r.CreatedAt.UtcDateTime),
+                        FileSize = a.Size
                     };
                     mediaData.Store();
                 }
