@@ -186,42 +186,6 @@ namespace DML.Application.Classes
                     }
                 }
 
-                /*while ((Client.LoginState != LoginState.LoggedIn || Client.ConnectionState!=ConnectionState.Connected) && !abort)
-                {
-                    Logger.Debug(Client.ConnectionState.ToString());
-                    Logger.Debug(Client.LoginState.ToString());
-
-                    Logger.Trace("Entering login loop.");
-
-                    try
-                    {
-                        if (Client.ConnectionState == ConnectionState.Connecting)
-                            continue;
-
-                        if (!string.IsNullOrEmpty(Settings.LoginToken))
-                        {
-                            Logger.Debug("Trying to login with last known token...");
-                            await Client.LoginAsync(TokenType.User, Settings.LoginToken);
-                            await Client.StartAsync();
-                            await Task.Delay(1000);
-                        }
-
-                    }
-                    catch (HttpException ex)
-                    {
-                        Logger.Warn($"Login seems to have failed or gone wrong: {ex.GetType().Name} - {ex.Message}");
-                    }
-
-                    if (Client.LoginState == LoginState.LoggedOut)
-                    {
-                        Settings.Password = string.Empty;
-                        Logger.Debug("Showing dialog for username and password...");
-                        var loginDlg = new LoginDialog();
-                        loginDlg.ShowDialog();
-                        Logger.Trace("Dialog closed.");
-                    }
-                }*/
-
                 Logger.Debug("Start checking for invalid jobs...");
 
                 //Client
@@ -255,7 +219,13 @@ namespace DML.Application.Classes
                         job.Stop();
                         job.Delete();
                     }
+
+                    if (Settings.RescanRequired)
+                        job.KnownTimestamp = 0;
                 }
+
+                Settings.RescanRequired = false;
+                Settings.Store();
 
                 splash.Close();
 
