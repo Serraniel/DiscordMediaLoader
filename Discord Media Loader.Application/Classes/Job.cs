@@ -60,7 +60,7 @@ namespace DML.AppCore.Classes
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
         }
 
-        internal async Task<List<IMessage>> Scan()
+        internal async Task Scan()
         {
             Debug($"Starting scan of guild {GuildId} channel {ChannelId}...");
             var result = new List<IMessage>();
@@ -74,11 +74,10 @@ namespace DML.AppCore.Classes
             var channel = FindChannelById(guild, ChannelId);
 
             Debug("Checking channel access");
-            //channel.GetUser(channel.Guild.CurrentUser.Id);
             if (channel.GetUser(channel.Guild.CurrentUser.Id) == null)
             {
                 Info("Skipping channel without access");
-                return result;
+                return;
             }
 
             if (Math.Abs(StopTimestamp) < 0.4)
@@ -93,39 +92,24 @@ namespace DML.AppCore.Classes
                 Trace($"Downloading next {limit} messages...");
                 if (isFirst)
                 {
-                    //messages = await channel.GetMessagesAsync(limit).ToArray() as SocketMessage[];
                     var realMessages = await channel.GetMessagesAsync(limit).ToArray();
 
-                    foreach (var realMessageArray in realMessages)
-                    {
-                        foreach (var realMessage in realMessageArray)
-                        {
-                            messages.Add(realMessage);
-                        }
-                    }
+                    messages.AddRange(realMessages.SelectMany(realMessageArray => realMessageArray));
                 }
                 else
                 {
                     var realMessages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray();
 
-                    foreach (var realMessageArray in realMessages)
-                    {
-                        foreach (var realMessage in realMessageArray)
-                        {
-                            messages.Add(realMessage);
-                        }
-                    }
-
-                    //messages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray() as SocketMessage[];
+                    messages.AddRange(realMessages.SelectMany(realMessageArray => realMessageArray));
                 }
-                Trace($"Downloaded {messages.Count} messages.");
 
+                Trace($"Downloaded {messages.Count} messages.");
                 isFirst = false;
 
                 foreach (var m in messages)
                 {
                     if (!IsValid)
-                        return null;
+                        return;
 
                     Core.Scheduler.MessagesScanned++;
 
@@ -155,10 +139,28 @@ namespace DML.AppCore.Classes
 
                 finished = finished || messages.Count < limit;
             }
+
             Trace($"Downloaded all messages for guild {GuildId} channel {ChannelId}.");
 
             Trace("Sorting messages...");
             result.Sort((a, b) => DateTime.Compare(a.CreatedAt.UtcDateTime, b.CreatedAt.UtcDateTime));
+
+            foreach (var r in result)
+            {
+                foreach (var a in r.Attachments)
+                {
+                    var mediaData = new MediaData
+                    {
+                        Id = a.Id,
+                        GuildId = (r.Channel as SocketTextChannel)?.Guild?.Id ?? 0,
+                        ChannelId = r.Channel.Id,
+                        DownloadSource = a.Url,
+                        Filename = a.Filename,
+                        TimeStamp = SweetUtils.DateTimeToUnixTimeStamp(r.CreatedAt.UtcDateTime)
+                    };
+                    mediaData.Store();
+                }
+            }
 
             if (result.Count > 0)
             {
@@ -167,8 +169,6 @@ namespace DML.AppCore.Classes
             }
 
             Debug($"Fisnished scan of guild {GuildId} channel {ChannelId}.");
-
-            return result;
         }
 
         public void Stop()

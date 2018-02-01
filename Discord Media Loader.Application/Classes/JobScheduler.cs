@@ -82,99 +82,36 @@ namespace DML.AppCore.Classes
             Run = false;
         }
 
-        public void Start()
+        public void StartAll()
         {
-            Run = true;
+            Logger.Info("Started JobScheduler...");
 
-            Task.Run(async () =>
+            Logger.Debug("Entering job list handler loop...");
+            //foreach (var job in JobList)
+            for (var i = JobList.Count - 1; i >= 0; i--)
             {
-                Logger.Info("Started JobScheduler...");
-                while (Run)
+                try
                 {
-                    try
+                    var job = JobList[i];
+                    Logger.Debug($"Checking job {job}");
+
+                    Task.Run(async () =>
                     {
-                        Logger.Debug("Entering job list handler loop...");
-                        //foreach (var job in JobList)
-                        for (var i = JobList.Count - 1; i >= 0; i--)
-                        {
-                            var job = JobList[i];
-                            Logger.Debug($"Checking job {job}");
-                            var hasJob = false;
-
-                            Logger.Trace("Locking scheduler...");
-                            lock (this)
-                            {
-                                Logger.Trace("Checking if job is already performed...");
-                                hasJob = RunningJobs.ContainsKey(job.Id);
-                            }
-                            Logger.Trace("Unlocked scheduler.");
-
-                            if (!hasJob)
-                            {
-                                Logger.Debug("Job is not performed yet...Performing job...");
-                                var queue = new Queue<IMessage>();
-
-                                Logger.Trace("Locking scheduler...");
-                                lock (this)
-                                {
-                                    Logger.Trace("Adding job to running jobs.");
-                                    RunningJobs.Add(job.Id, queue);
-                                }
-                                Logger.Trace("Unlocked scheduler.");
-
-                                Logger.Trace("Issuing job message scan...");
-                                var messages = await job.Scan();
-
-                                if (messages == null)
-                                    continue;
-
-                                Logger.Trace($"Adding {messages.Count} messages to queue...");
-                                foreach (var msg in messages)
-                                {
-                                    queue.Enqueue(msg);
-                                }
-                                Logger.Trace($"Added {queue.Count} messages to queue.");
-
-                                if (messages.Count != queue.Count)
-                                    Logger.Warn("Not all messages have been added into the queue.");
-
-                                var startedDownload = false;
-
-                                while (!startedDownload)
-                                {
-                                    Logger.Debug("Entering loop to check thread availability");
-                                    Logger.Trace("Locking scheduler...");
-                                    lock (this)
-                                    {
-                                        Logger.Trace(
-                                            $"Checking thread limit. Running: {RunningThreads}, Max: {Core.Settings.ThreadLimit}");
-                                        if (RunningThreads >= Core.Settings.ThreadLimit)
-                                            continue;
-
-                                        RunningThreads++;
-                                        startedDownload = true;
-                                    }
-                                    Logger.Trace("Unlocked scheduler.");
-                                }
-
-                                Logger.Trace("Start downloading job async.");
-                                Task.Run(() => WorkQueue(job.Id)); // do not await to work parallel
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex.Message);
-                    }
+                        await job.Scan();
+                    });
                 }
-            });
+                catch (Exception ex)
+                {
+                    Logger.Error(ex.Message);
+                }
+            }
         }
-
+        
         private void WorkQueue(int jobId)
         {
             try
             {
-                Logger.Debug("Beginning job download...");
+                Logger.Debug("Beginning attachment  download...");
                 Logger.Trace("Finding job...");
                 var job = (from j in JobList where j.Id == jobId select j).FirstOrDefault();
 
@@ -247,7 +184,7 @@ namespace DML.AppCore.Classes
                                     .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime).ToString())
                                     .Replace("%name%", a.Filename)
                                     .Replace("%id%", a.Id.ToString());
-                            
+
                             if (extensionRequired)
                                 fileName += Path.GetExtension(a.Filename);
 
