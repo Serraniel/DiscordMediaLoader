@@ -15,6 +15,7 @@ namespace DML.Application.Classes
         public string FileNameScheme { get; set; } = @"%guild%\%channel%\%id%";
         public bool SkipExistingFiles { get; set; } = true;
         public int ThreadLimit { get; set; } = 50;
+        public bool RescanRequired { get; set; } = true;
 
         public void Store()
         {
