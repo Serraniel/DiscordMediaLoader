@@ -167,6 +167,8 @@ namespace DML.AppCore.Classes
             {
                 Trace("Updating StopTimestamp for next scan...");
                 StopTimestamp = SweetUtils.DateTimeToUnixTimeStamp(result[result.Count - 1].CreatedAt.UtcDateTime);
+                KnownTimestamp = StopTimestamp;
+                Store();
             }
 
             Debug($"Fisnished scan of guild {GuildId} channel {ChannelId}.");

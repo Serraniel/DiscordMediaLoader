@@ -92,8 +92,13 @@ namespace DML.Application.Classes
                 }
 
                 Logger.Debug("Loading database...");
+#if DEBUG
+                Database = new LiteDatabase(Path.Combine(DataDirectory, "config.debug.db"));
+                Database.Log.Logging += (message) => Logger.Trace($"LiteDB: {message}");
+#else
                 Database = new LiteDatabase(Path.Combine(DataDirectory, "config.db"));
                 Database.Log.Logging += (message) => Logger.Trace($"LiteDB: {message}");
+#endif
 
                 Logger.Debug("Loading settings collection out of database...");
                 var settingsDB = Database.GetCollection<Settings>("settings");
@@ -221,7 +226,11 @@ namespace DML.Application.Classes
                     }
 
                     if (Settings.RescanRequired)
+                    {
+                        Logger.Info("Restting timestamps");
                         job.KnownTimestamp = 0;
+                        job.Store();
+                    }
                 }
 
                 Settings.RescanRequired = false;
