@@ -57,6 +57,12 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.lbxJobs = new System.Windows.Forms.ListBox();
             this.tmrRefreshProgress = new System.Windows.Forms.Timer(this.components);
+            this.lbStatus = new System.Windows.Forms.ToolStripDropDownButton();
+            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.doNotDenyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.doNotDisturbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.invisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmrTriggerRefresh = new System.Windows.Forms.Timer(this.components);
             this.pnlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edThreadLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -77,7 +83,7 @@
             this.pnlSettings.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSettings.Location = new System.Drawing.Point(0, 0);
             this.pnlSettings.Name = "pnlSettings";
-            this.pnlSettings.Size = new System.Drawing.Size(553, 93);
+            this.pnlSettings.Size = new System.Drawing.Size(690, 93);
             this.pnlSettings.TabIndex = 0;
             this.pnlSettings.TabStop = false;
             this.pnlSettings.Text = "Settings";
@@ -113,7 +119,7 @@
             // 
             this.cbSkipExisting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbSkipExisting.AutoSize = true;
-            this.cbSkipExisting.Location = new System.Drawing.Point(447, 42);
+            this.cbSkipExisting.Location = new System.Drawing.Point(584, 42);
             this.cbSkipExisting.Name = "cbSkipExisting";
             this.cbSkipExisting.Size = new System.Drawing.Size(106, 17);
             this.cbSkipExisting.TabIndex = 5;
@@ -127,7 +133,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.edNameScheme.Location = new System.Drawing.Point(113, 39);
             this.edNameScheme.Name = "edNameScheme";
-            this.edNameScheme.Size = new System.Drawing.Size(328, 20);
+            this.edNameScheme.Size = new System.Drawing.Size(465, 20);
             this.edNameScheme.TabIndex = 4;
             this.edNameScheme.TextChanged += new System.EventHandler(this.DoSomethingChanged);
             // 
@@ -143,7 +149,7 @@
             // btnSearchFolders
             // 
             this.btnSearchFolders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearchFolders.Location = new System.Drawing.Point(522, 11);
+            this.btnSearchFolders.Location = new System.Drawing.Point(659, 11);
             this.btnSearchFolders.Name = "btnSearchFolders";
             this.btnSearchFolders.Size = new System.Drawing.Size(25, 23);
             this.btnSearchFolders.TabIndex = 2;
@@ -157,7 +163,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.edOperatingFolder.Location = new System.Drawing.Point(113, 13);
             this.edOperatingFolder.Name = "edOperatingFolder";
-            this.edOperatingFolder.Size = new System.Drawing.Size(403, 20);
+            this.edOperatingFolder.Size = new System.Drawing.Size(540, 20);
             this.edOperatingFolder.TabIndex = 1;
             this.edOperatingFolder.TextChanged += new System.EventHandler(this.DoSomethingChanged);
             // 
@@ -180,7 +186,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 93);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(553, 57);
+            this.groupBox1.Size = new System.Drawing.Size(690, 57);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add a job";
@@ -188,7 +194,7 @@
             // btnAddJob
             // 
             this.btnAddJob.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddJob.Location = new System.Drawing.Point(481, 19);
+            this.btnAddJob.Location = new System.Drawing.Point(618, 19);
             this.btnAddJob.Name = "btnAddJob";
             this.btnAddJob.Size = new System.Drawing.Size(66, 23);
             this.btnAddJob.TabIndex = 4;
@@ -203,7 +209,7 @@
             this.cbChannel.FormattingEnabled = true;
             this.cbChannel.Location = new System.Drawing.Point(294, 19);
             this.cbChannel.Name = "cbChannel";
-            this.cbChannel.Size = new System.Drawing.Size(181, 21);
+            this.cbChannel.Size = new System.Drawing.Size(318, 21);
             this.cbChannel.TabIndex = 3;
             // 
             // lbChannel
@@ -236,14 +242,15 @@
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lbStatus,
             this.pgbProgress,
             this.lbProgress,
             this.lblVersionPlaceholder,
             this.lbVersion,
             this.btnDropDown});
-            this.statusStrip.Location = new System.Drawing.Point(0, 311);
+            this.statusStrip.Location = new System.Drawing.Point(0, 393);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(553, 22);
+            this.statusStrip.Size = new System.Drawing.Size(690, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -260,7 +267,7 @@
             // lblVersionPlaceholder
             // 
             this.lblVersionPlaceholder.Name = "lblVersionPlaceholder";
-            this.lblVersionPlaceholder.Size = new System.Drawing.Size(302, 17);
+            this.lblVersionPlaceholder.Size = new System.Drawing.Size(426, 17);
             this.lblVersionPlaceholder.Spring = true;
             // 
             // lbVersion
@@ -301,7 +308,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 150);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(553, 161);
+            this.groupBox2.Size = new System.Drawing.Size(690, 243);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Jobs";
@@ -309,9 +316,9 @@
             // btnDelete
             // 
             this.btnDelete.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnDelete.Location = new System.Drawing.Point(3, 135);
+            this.btnDelete.Location = new System.Drawing.Point(3, 217);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(547, 23);
+            this.btnDelete.Size = new System.Drawing.Size(684, 23);
             this.btnDelete.TabIndex = 1;
             this.btnDelete.Text = "Delete selected";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -325,7 +332,7 @@
             this.lbxJobs.FormattingEnabled = true;
             this.lbxJobs.Location = new System.Drawing.Point(6, 19);
             this.lbxJobs.Name = "lbxJobs";
-            this.lbxJobs.Size = new System.Drawing.Size(541, 108);
+            this.lbxJobs.Size = new System.Drawing.Size(678, 186);
             this.lbxJobs.TabIndex = 0;
             // 
             // tmrRefreshProgress
@@ -334,11 +341,55 @@
             this.tmrRefreshProgress.Interval = 500;
             this.tmrRefreshProgress.Tick += new System.EventHandler(this.tmrRefreshProgress_Tick);
             // 
+            // lbStatus
+            // 
+            this.lbStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.invisibleToolStripMenuItem,
+            this.doNotDisturbToolStripMenuItem,
+            this.doNotDenyToolStripMenuItem,
+            this.onlineToolStripMenuItem});
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(13, 20);
+            this.lbStatus.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStripDropDownButton1_DropDownItemClicked);
+            // 
+            // onlineToolStripMenuItem
+            // 
+            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
+            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.onlineToolStripMenuItem.Tag = "0";
+            this.onlineToolStripMenuItem.Text = "Online";
+            // 
+            // doNotDenyToolStripMenuItem
+            // 
+            this.doNotDenyToolStripMenuItem.Name = "doNotDenyToolStripMenuItem";
+            this.doNotDenyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.doNotDenyToolStripMenuItem.Tag = "1";
+            this.doNotDenyToolStripMenuItem.Text = "Idle";
+            // 
+            // doNotDisturbToolStripMenuItem
+            // 
+            this.doNotDisturbToolStripMenuItem.Name = "doNotDisturbToolStripMenuItem";
+            this.doNotDisturbToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.doNotDisturbToolStripMenuItem.Tag = "2";
+            this.doNotDisturbToolStripMenuItem.Text = "Do not disturb";
+            // 
+            // invisibleToolStripMenuItem
+            // 
+            this.invisibleToolStripMenuItem.Name = "invisibleToolStripMenuItem";
+            this.invisibleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.invisibleToolStripMenuItem.Tag = "3";
+            this.invisibleToolStripMenuItem.Text = "Invisible";
+            // 
+            // tmrTriggerRefresh
+            // 
+            this.tmrTriggerRefresh.Interval = 5000;
+            this.tmrTriggerRefresh.Tick += new System.EventHandler(this.tmrTriggerRefresh_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(553, 333);
+            this.ClientSize = new System.Drawing.Size(690, 415);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
@@ -391,5 +442,11 @@
         private System.Windows.Forms.ToolStripSplitButton btnDropDown;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem visitGithubToolStripMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton lbStatus;
+        private System.Windows.Forms.ToolStripMenuItem invisibleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem doNotDisturbToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem doNotDenyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
+        private System.Windows.Forms.Timer tmrTriggerRefresh;
     }
 }
