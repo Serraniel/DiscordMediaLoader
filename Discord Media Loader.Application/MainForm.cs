@@ -262,18 +262,6 @@ namespace DML.Application
 
         private async void toolStripDropDownButton1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-
-
-            /*
-             *   var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-   Task.Factory.StartNew(delegate { DoBackgroundComputation(); },
-                         backgroundScheduler).
-   ContinueWith(delegate { UpdateUI(); }, uiScheduler).
-   */
-
-            var backgroundScheduler = TaskScheduler.Default;
-            var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-
             OnlineState state = (OnlineState)Convert.ToInt32(e.ClickedItem.Tag);
 
             lbStatus.Text = state.ToString();
