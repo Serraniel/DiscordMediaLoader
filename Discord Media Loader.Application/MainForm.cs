@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Discord;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Classes;
@@ -11,6 +13,13 @@ using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application
 {
+    enum OnlineState
+    {
+        Online,
+        Idle,
+        DoNotDisturb,
+        Invisible
+    }
     public partial class MainForm : Form
     {
         private bool IsInitialized { get; set; } = false;
@@ -31,7 +40,7 @@ namespace DML.Application
         {
             Debug("Refreshing components...");
 
-            lbVersion.Text = $"v{Assembly.GetExecutingAssembly().GetName().Version} Copyright © by Serraniel"; 
+            lbVersion.Text = $"v{Assembly.GetExecutingAssembly().GetName().Version} Copyright © by Serraniel";
 
             Trace("Refreshing operating folder component...");
             edOperatingFolder.Text = Core.Settings.OperatingFolder;
@@ -62,6 +71,8 @@ namespace DML.Application
                     $"{FindServerById(job.GuildId)?.Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId)?.Name}");
             }
             lbxJobs.SelectedIndex = oldIndex;
+
+            lbStatus.Text = DMLClient.Client.CurrentUser.Status.ToString();
         }
 
         private void DoSomethingChanged(object sender, System.EventArgs e)
@@ -247,6 +258,48 @@ namespace DML.Application
         private void visitGithubToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             Process.Start("https://github.com/Serraniel/DiscordMediaLoader/");
+        }
+
+        private async void toolStripDropDownButton1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+
+            /*
+             *   var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+   Task.Factory.StartNew(delegate { DoBackgroundComputation(); },
+                         backgroundScheduler).
+   ContinueWith(delegate { UpdateUI(); }, uiScheduler).
+   */
+
+            var backgroundScheduler = TaskScheduler.Default;
+            var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
+            OnlineState state = (OnlineState)Convert.ToInt32(e.ClickedItem.Tag);
+
+            lbStatus.Text = state.ToString();
+            tmrTriggerRefresh.Start();
+
+            switch (state)
+            {
+                case OnlineState.Online:
+                    await DMLClient.Client.SetStatusAsync(UserStatus.Online);
+                    break;
+                case OnlineState.Idle:
+                    await DMLClient.Client.SetStatusAsync(UserStatus.Idle);
+                    break;
+                case OnlineState.DoNotDisturb:
+                    await DMLClient.Client.SetStatusAsync(UserStatus.DoNotDisturb);
+                    break;
+                case OnlineState.Invisible:
+                    await DMLClient.Client.SetStatusAsync(UserStatus.Invisible);
+                    break;
+            }
+        }
+
+        private void tmrTriggerRefresh_Tick(object sender, EventArgs e)
+        {
+            lbStatus.Text = DMLClient.Client.CurrentUser.Status.ToString();
+            tmrTriggerRefresh.Stop();
         }
     }
 }
