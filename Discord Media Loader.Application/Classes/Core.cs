@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Discord;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
+using DML.Application.Classes.RPC;
 using DML.Application.Dialogs;
 using DML.Client;
 using LiteDB;
@@ -26,10 +27,13 @@ namespace DML.Application.Classes
         internal static LiteDatabase Database { get; set; }
         internal static Settings Settings { get; set; }
         internal static JobScheduler Scheduler { get; } = new JobScheduler();
-        internal static RavenClient Raven = new RavenClient("https://0de964231669473e9098b9f6cc1d6278:79d9f2eb24034de199b2a37cc058e0f2@sentry.io/257114");
-
+        internal static RavenClient Raven { get; } = new RavenClient("https://0de964231669473e9098b9f6cc1d6278:79d9f2eb24034de199b2a37cc058e0f2@sentry.io/257114");
+        internal static bool ShuttingDown { get; private set; } = false;
         internal static string DataDirectory
            => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Serraniel\Discord Media Loader");
+
+        internal static DiscordRpc.RichPresence RpcPresence;
+        internal static DiscordRpc.EventHandlers RpcHandlers = new DiscordRpc.EventHandlers();
 
         public static async Task Run(string[] paramStrings)
         {
@@ -175,7 +179,7 @@ namespace DML.Application.Classes
                     if (!string.IsNullOrEmpty(Settings.LoginToken))
                     {
                         Logger.Debug("Trying to login with last known token...");
-                        loggedIn= await DMLClient.Login(Settings.LoginToken);
+                        loggedIn = await DMLClient.Login(Settings.LoginToken);
                     }
 
                     if (!loggedIn)
@@ -257,6 +261,26 @@ namespace DML.Application.Classes
                     }
                 }
 
+                Logger.Info("Initializing RPC client");
+                Logger.Trace("Registering RPC handlers");
+                RpcHandlers.readyCallback += RpcReadyCallback;
+                RpcHandlers.disconnectedCallback += RpcDisconnectedCallback;
+                RpcHandlers.errorCallback += RpcErrorCallback;
+                RpcPresence.startTimestamp = DiscordRpcHelper.DateTimeToTimestamp(DateTime.UtcNow);
+
+                Logger.Debug("Calling RPC initialize");
+                DiscordRpc.Initialize("430025401851707393", ref RpcHandlers, true, null);
+
+                // Do not await ;)
+                Task.Run(async () =>
+                {
+                    while (!ShuttingDown)
+                    {
+                        Logger.Trace("Running RPC callbacks");
+                        await Task.Delay(5000);
+                    }
+                });
+
                 splash.Close();
 
                 Logger.Info("Starting scheduler...");
@@ -264,8 +288,14 @@ namespace DML.Application.Classes
 
                 System.Windows.Forms.Application.Run(new MainForm());
 
+                // shutting down
+                ShuttingDown = true;
+
                 Logger.Info("Stopping scheduler...");
                 Scheduler.Stop();
+
+                Logger.Info("Shutting down RPC client");
+                DiscordRpc.Shutdown();
             }
             catch (Exception ex)
             {
@@ -292,6 +322,27 @@ namespace DML.Application.Classes
         {
             Logger.Trace($"Trying to find channel in {server} by id: {id}");
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
+        }
+
+        internal static void RpcUpdatePresence()
+        {
+            Logger.Debug("Updating RPC presence");
+            DiscordRpc.UpdatePresence(ref RpcPresence);
+        }
+
+        private static void RpcReadyCallback()
+        {
+            Logger.Debug("RpcReady");
+        }
+
+        private static void RpcDisconnectedCallback(int errorCode, string message)
+        {
+            Logger.Warn($"RPC disconnect received: {errorCode} - {message}");
+        }
+
+        private static void RpcErrorCallback(int errorCode, string message)
+        {
+            Logger.Error($"RPC error received: {errorCode} - {message}");
         }
     }
 }

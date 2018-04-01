@@ -15,6 +15,7 @@ namespace Discord_Media_Loader
 
         private async void FrmSplash_Shown(object sender, EventArgs e)
         {
+#if !DEBUG
             UseWaitCursor = true;
             try
             {
@@ -52,6 +53,7 @@ namespace Discord_Media_Loader
             {
                 UseWaitCursor = false;
             }
+#endif
 
             DialogResult = DialogResult.OK;
         }
