@@ -1,0 +1,6 @@
+[submodule "discord-rpc"]
+	path = discord-rpc
+	url = https://github.com/discordapp/discord-rpc.git
+[submodule "cshap-discord-rpc-demo"]
+	path = cshap-discord-rpc-demo
+	url = https://github.com/nostrenz/cshap-discord-rpc-demo.git
