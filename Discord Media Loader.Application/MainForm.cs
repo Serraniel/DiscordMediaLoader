@@ -8,6 +8,7 @@ using Discord;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Classes;
+using DML.Application.Classes.RPC;
 using DML.Client;
 using static SweetLib.Utils.Logger.Logger;
 
@@ -23,6 +24,8 @@ namespace DML.Application
     public partial class MainForm : Form
     {
         private bool IsInitialized { get; set; } = false;
+        private DiscordRpc.RichPresence Presence { get; }
+
         public MainForm()
         {
             InitializeComponent();
@@ -248,6 +251,15 @@ namespace DML.Application
             pgbProgress.Value = progress;
 
             lbProgress.Text = $"Scanned: {scanned} Downloaded: {done} Open: {totalAttachments - done}";
+
+            Core.RpcPresence.details = "Downloading media files";
+            Core.RpcPresence.state = $"{done} / {totalAttachments} ({pgbProgress.Value}%)";
+            Core.RpcPresence.largeImageKey = "main";
+            Core.RpcPresence.largeImageText = "Visit discordmedialoader.net";
+            Core.RpcPresence.smallImageKey = "author";
+            Core.RpcPresence.smallImageText = "Made by Serraniel";
+
+            Core.RpcUpdatePresence();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, System.EventArgs e)
