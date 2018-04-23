@@ -252,14 +252,17 @@ namespace DML.Application
 
             lbProgress.Text = $"Scanned: {scanned} Downloaded: {done} Open: {totalAttachments - done}";
 
-            Core.RpcPresence.details = "Downloading media files";
-            Core.RpcPresence.state = $"{done} / {totalAttachments} ({pgbProgress.Value}%)";
-            Core.RpcPresence.largeImageKey = "main";
-            Core.RpcPresence.largeImageText = "Visit discordmedialoader.net";
-            Core.RpcPresence.smallImageKey = "author";
-            Core.RpcPresence.smallImageText = "Made by Serraniel";
+            if (Core.Settings.UseRPC)
+            {
+                Core.RpcPresence.details = "Downloading media files";
+                Core.RpcPresence.state = $"{done} / {totalAttachments} ({pgbProgress.Value}%)";
+                Core.RpcPresence.largeImageKey = "main";
+                Core.RpcPresence.largeImageText = "Visit discordmedialoader.net";
+                Core.RpcPresence.smallImageKey = "author";
+                Core.RpcPresence.smallImageText = "Made by Serraniel";
 
-            Core.RpcUpdatePresence();
+                Core.RpcUpdatePresence();
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, System.EventArgs e)
