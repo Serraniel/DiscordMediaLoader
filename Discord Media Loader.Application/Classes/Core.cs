@@ -236,8 +236,7 @@ namespace DML.Application.Classes
                         job.Store();
                     }
                 }
-
-
+                
                 Settings.RescanRequired = false;
                 Settings.Store();
 
