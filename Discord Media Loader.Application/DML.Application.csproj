@@ -161,7 +161,10 @@
     <Compile Include="Classes\Core.cs" />
     <Compile Include="Classes\Job.cs" />
     <Compile Include="Classes\JobScheduler.cs" />
-    <Compile Include="Classes\MediaData.cs" />
+    <Compile Include="Classes\RPC\DiscordRpc.cs" />
+    <Compile Include="Classes\RPC\DiscordRpcHelper.cs" />
+    <Compile Include="Classes\RPC\RpcWrapper.cs" />
+	<Compile Include="Classes\MediaData.cs" />
     <Compile Include="Dialogs\LoginDialog.cs">
       <SubType>Form</SubType>
     </Compile>

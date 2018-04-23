@@ -7,6 +7,7 @@ using Discord.WebSocket;
 using DML.Application.Classes;
 using DML.Client;
 using SweetLib.Utils;
+using SweetLib.Utils.Extensions;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.AppCore.Classes
@@ -119,8 +120,8 @@ namespace DML.AppCore.Classes
                         Trace($"Updating lastId ({lastId}) to {m.Id}");
                         lastId = m.Id;
                     }
-
-                    if (SweetUtils.DateTimeToUnixTimeStamp(m.CreatedAt.UtcDateTime) <= StopTimestamp)
+                    
+                    if (m.CreatedAt.UtcDateTime.ToUnixTimeStamp() <= StopTimestamp)
                     {
                         Debug("Found a message with a known timestamp...Stopping scan.");
                         finished = true;
@@ -156,7 +157,7 @@ namespace DML.AppCore.Classes
                         ChannelId = r.Channel.Id,
                         DownloadSource = a.Url,
                         Filename = a.Filename,
-                        TimeStamp = SweetUtils.DateTimeToUnixTimeStamp(r.CreatedAt.UtcDateTime),
+                        TimeStamp = r.CreatedAt.UtcDateTime.ToUnixTimeStamp(),
                         FileSize = a.Size
                     };
                     mediaData.Store();
@@ -166,7 +167,7 @@ namespace DML.AppCore.Classes
             if (result.Count > 0)
             {
                 Trace("Updating StopTimestamp for next scan...");
-                StopTimestamp = SweetUtils.DateTimeToUnixTimeStamp(result[result.Count - 1].CreatedAt.UtcDateTime);
+                StopTimestamp = result[result.Count - 1].CreatedAt.UtcDateTime.ToUnixTimeStamp();
                 KnownTimestamp = StopTimestamp;
                 Store();
             }

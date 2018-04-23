@@ -2,18 +2,30 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Discord;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Classes;
+using DML.Application.Classes.RPC;
 using DML.Client;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application
 {
+    enum OnlineState
+    {
+        Online,
+        Idle,
+        DoNotDisturb,
+        Invisible
+    }
     public partial class MainForm : Form
     {
         private bool IsInitialized { get; set; } = false;
+        private DiscordRpc.RichPresence Presence { get; }
+
         public MainForm()
         {
             InitializeComponent();
@@ -31,7 +43,7 @@ namespace DML.Application
         {
             Debug("Refreshing components...");
 
-            lbVersion.Text = $"v{Assembly.GetExecutingAssembly().GetName().Version} Copyright © by Serraniel"; 
+            lbVersion.Text = $"v{Assembly.GetExecutingAssembly().GetName().Version} Copyright © by Serraniel";
 
             Trace("Refreshing operating folder component...");
             edOperatingFolder.Text = Core.Settings.OperatingFolder;
@@ -62,6 +74,8 @@ namespace DML.Application
                     $"{FindServerById(job.GuildId)?.Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId)?.Name}");
             }
             lbxJobs.SelectedIndex = oldIndex;
+
+            lbStatus.Text = DMLClient.Client.CurrentUser.Status.ToString();
         }
 
         private void DoSomethingChanged(object sender, System.EventArgs e)
@@ -237,6 +251,18 @@ namespace DML.Application
             pgbProgress.Value = progress;
 
             lbProgress.Text = $"Scanned: {scanned} Downloaded: {done} Open: {totalAttachments - done}";
+
+            if (Core.Settings.UseRPC)
+            {
+                Core.RpcPresence.details = "Downloading media files";
+                Core.RpcPresence.state = $"{done} / {totalAttachments} ({pgbProgress.Value}%)";
+                Core.RpcPresence.largeImageKey = "main";
+                Core.RpcPresence.largeImageText = "Visit discordmedialoader.net";
+                Core.RpcPresence.smallImageKey = "author";
+                Core.RpcPresence.smallImageText = "Made by Serraniel";
+
+                Core.RpcUpdatePresence();
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, System.EventArgs e)
@@ -247,6 +273,36 @@ namespace DML.Application
         private void visitGithubToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             Process.Start("https://github.com/Serraniel/DiscordMediaLoader/");
+        }
+
+        private async void toolStripDropDownButton1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            OnlineState state = (OnlineState)Convert.ToInt32(e.ClickedItem.Tag);
+
+            lbStatus.Text = state.ToString();
+            tmrTriggerRefresh.Start();
+
+            switch (state)
+            {
+                case OnlineState.Online:
+                    await DMLClient.Client.SetStatusAsync(UserStatus.Online);
+                    break;
+                case OnlineState.Idle:
+                    await DMLClient.Client.SetStatusAsync(UserStatus.Idle);
+                    break;
+                case OnlineState.DoNotDisturb:
+                    await DMLClient.Client.SetStatusAsync(UserStatus.DoNotDisturb);
+                    break;
+                case OnlineState.Invisible:
+                    await DMLClient.Client.SetStatusAsync(UserStatus.Invisible);
+                    break;
+            }
+        }
+
+        private void tmrTriggerRefresh_Tick(object sender, EventArgs e)
+        {
+            lbStatus.Text = DMLClient.Client.CurrentUser.Status.ToString();
+            tmrTriggerRefresh.Stop();
         }
     }
 }
