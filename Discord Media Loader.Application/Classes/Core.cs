@@ -261,25 +261,28 @@ namespace DML.Application.Classes
                     }
                 }
 
-                Logger.Info("Initializing RPC client");
-                Logger.Trace("Registering RPC handlers");
-                RpcHandlers.readyCallback += RpcReadyCallback;
-                RpcHandlers.disconnectedCallback += RpcDisconnectedCallback;
-                RpcHandlers.errorCallback += RpcErrorCallback;
-                RpcPresence.startTimestamp = DiscordRpcHelper.DateTimeToTimestamp(DateTime.UtcNow);
-
-                Logger.Debug("Calling RPC initialize");
-                DiscordRpc.Initialize("430025401851707393", ref RpcHandlers, true, null);
-
-                // Do not await ;)
-                Task.Run(async () =>
+                if (Settings.UseRPC)
                 {
-                    while (!ShuttingDown)
+                    Logger.Info("Initializing RPC client");
+                    Logger.Trace("Registering RPC handlers");
+                    RpcHandlers.readyCallback += RpcReadyCallback;
+                    RpcHandlers.disconnectedCallback += RpcDisconnectedCallback;
+                    RpcHandlers.errorCallback += RpcErrorCallback;
+                    RpcPresence.startTimestamp = DiscordRpcHelper.DateTimeToTimestamp(DateTime.UtcNow);
+
+                    Logger.Debug("Calling RPC initialize");
+                    DiscordRpc.Initialize("430025401851707393", ref RpcHandlers, true, null);
+
+                    // Do not await ;)
+                    Task.Run(async () =>
                     {
-                        Logger.Trace("Running RPC callbacks");
-                        await Task.Delay(5000);
-                    }
-                });
+                        while (!ShuttingDown)
+                        {
+                            Logger.Trace("Running RPC callbacks");
+                            await Task.Delay(5000);
+                        }
+                    });
+                }
 
                 splash.Close();
 
