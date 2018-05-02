@@ -61,7 +61,7 @@ namespace DML.AppCore.Classes
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
         }
 
-        internal async Task Scan()
+        internal async Task<bool> Scan()
         {
             Debug($"Starting scan of guild {GuildId} channel {ChannelId}...");
             var result = new List<IMessage>();
@@ -70,6 +70,7 @@ namespace DML.AppCore.Classes
             var lastId = ulong.MaxValue;
             var isFirst = true;
             var finished = false;
+            var scanStartTimeStamp = DateTime.UtcNow;
 
             var guild = FindServerById(GuildId);
             var channel = FindChannelById(guild, ChannelId);
@@ -78,7 +79,7 @@ namespace DML.AppCore.Classes
             if (channel.GetUser(channel.Guild.CurrentUser.Id) == null)
             {
                 Info("Skipping channel without access");
-                return;
+                return true;
             }
 
             if (Math.Abs(StopTimestamp) < 0.4)
@@ -110,7 +111,7 @@ namespace DML.AppCore.Classes
                 foreach (var m in messages)
                 {
                     if (!IsValid)
-                        return;
+                        return false;
 
                     Core.Scheduler.MessagesScanned++;
 
@@ -120,7 +121,7 @@ namespace DML.AppCore.Classes
                         Trace($"Updating lastId ({lastId}) to {m.Id}");
                         lastId = m.Id;
                     }
-                    
+
                     if (m.CreatedAt.UtcDateTime.ToUnixTimeStamp() <= StopTimestamp)
                     {
                         Debug("Found a message with a known timestamp...Stopping scan.");
@@ -170,6 +171,19 @@ namespace DML.AppCore.Classes
                 StopTimestamp = result[result.Count - 1].CreatedAt.UtcDateTime.ToUnixTimeStamp();
                 KnownTimestamp = StopTimestamp;
                 Store();
+                return false;
+            }
+            else
+            {
+                // if we found any messages we remember the timestamp of starting so we don´t have to scan all past messages....
+                StopTimestamp = scanStartTimeStamp.ToUnixTimeStamp();
+                KnownTimestamp = StopTimestamp;
+                Store();
+
+                var realLastMessage = await channel.GetMessagesAsync(1).ToArray();
+                return scanStartTimeStamp > (realLastMessage.SelectMany(realLastMessageArray => realLastMessageArray)
+                                                 .FirstOrDefault()?.CreatedAt.UtcDateTime ??
+                                             scanStartTimeStamp);
             }
 
             Debug($"Fisnished scan of guild {GuildId} channel {ChannelId}.");

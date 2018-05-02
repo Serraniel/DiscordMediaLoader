@@ -102,7 +102,9 @@ namespace DML.Application.Classes
 
                     Task.Run(async () =>
                     {
-                        await job.Scan();
+                        var foundCount = await job.Scan();
+                        while (foundCount > 0)
+                            foundCount = await job.Scan();
                     });
                 }
                 catch (Exception ex)
