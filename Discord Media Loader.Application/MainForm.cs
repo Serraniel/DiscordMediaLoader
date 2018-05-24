@@ -57,7 +57,7 @@ namespace DML.Application
             if (cbGuild.Items.Count == 0)
             {
                 Trace("Adding guilds to component...");
-                cbGuild.Items.AddRange(DMLClient.Client.Guilds.OrderBy(g => g.Name).Select(g => g.Name).ToArray());
+                cbGuild.Items.AddRange(DMLClient.Client.Guilds.Where(g => g.Name != null).OrderBy(g => g.Name).Select(g => g.Name).ToArray());
                 cbGuild.SelectedIndex = 0;
                 Trace("Guild component initialized.");
             }
