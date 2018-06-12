@@ -8,6 +8,7 @@ using Discord;
 using Discord.WebSocket;
 using DML.Application.Classes;
 using SweetLib.Utils;
+using SweetLib.Utils.Extensions;
 using SweetLib.Utils.Logger;
 
 namespace DML.AppCore.Classes
@@ -244,7 +245,7 @@ namespace DML.AppCore.Classes
                             fileName =
                                 fileName.Replace("%guild%", serverName)
                                     .Replace("%channel%", channelName)
-                                    .Replace("%timestamp%", SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime).ToString())
+                                    .Replace("%timestamp%", message.CreatedAt.UtcDateTime.ToUnixTimeStamp().ToString())
                                     .Replace("%name%", a.Filename)
                                     .Replace("%id%", a.Id.ToString());
                             
@@ -277,7 +278,7 @@ namespace DML.AppCore.Classes
                             Logger.Debug($"Downloaded attachment {a.Id}.");
 
                             Logger.Trace("Updating known timestamp for job...");
-                            job.KnownTimestamp = SweetUtils.DateTimeToUnixTimeStamp(message.CreatedAt.UtcDateTime);
+                            job.KnownTimestamp = message.CreatedAt.UtcDateTime.ToUnixTimeStamp();
                             job.Store();
                         }
                         finally
