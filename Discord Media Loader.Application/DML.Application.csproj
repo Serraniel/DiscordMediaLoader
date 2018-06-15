@@ -179,6 +179,7 @@
     <Compile Include="FrmInternalSplash.Designer.cs">
       <DependentUpon>FrmInternalSplash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\IdentifiedString.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
