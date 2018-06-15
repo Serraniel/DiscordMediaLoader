@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +9,9 @@ using Discord;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Classes;
+using DML.Application.Helper;
 using DML.Client;
+using static DML.Client.DMLClient;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application
@@ -57,7 +60,9 @@ namespace DML.Application
             if (cbGuild.Items.Count == 0)
             {
                 Trace("Adding guilds to component...");
-                cbGuild.Items.AddRange(DMLClient.Client.Guilds.Where(g => g.Name != null).OrderBy(g => g.Name).Select(g => g.Name).ToArray());
+
+                cbGuild.Items.AddRange(DMLClient.Client.Guilds.Where(g => g.Name != null).OrderBy(g => g.Name).Select(g => new IdentifiedString<ulong>(g.Id, g.Name)).ToArray());
+
                 cbGuild.SelectedIndex = 0;
                 Trace("Guild component initialized.");
             }
@@ -153,7 +158,7 @@ namespace DML.Application
             UseWaitCursor = true;
             try
             {
-                var guild = FindServerByName(cbGuild.Text);
+                var guild = FindServerById(((IdentifiedString<ulong>)cbGuild.SelectedItem).Id);
 
                 if (guild != null)
                 {
@@ -161,7 +166,9 @@ namespace DML.Application
                     cbChannel.Items.Clear();
 
                     Trace("Adding new channels...");
-                    cbChannel.Items.AddRange(guild.TextChannels.OrderBy(c => c.Position).Select(c => c.Name).ToArray());
+
+                    cbChannel.Items.AddRange(guild.TextChannels.OrderBy(c => c.Position).Select(c => new IdentifiedString<ulong>(c.Id, c.Name)).ToArray());
+
                     Trace($"Added {cbChannel.Items.Count} channels.");
 
                     cbChannel.SelectedIndex = 0;
@@ -183,8 +190,8 @@ namespace DML.Application
         {
             var job = new Job
             {
-                GuildId = FindServerByName(cbGuild.Text).Id,
-                ChannelId = FindChannelByName(FindServerByName(cbGuild.Text), cbChannel.Text).Id
+                GuildId = ((IdentifiedString<ulong>)cbGuild.SelectedItem).Id,
+                ChannelId = ((IdentifiedString<ulong>)cbChannel.SelectedItem).Id
             };
 
             if (!(from j in Core.Scheduler.JobList
