@@ -72,8 +72,7 @@ namespace DML.Application
             lbxJobs.Items.Clear();
             foreach (var job in Core.Scheduler.JobList)
             {
-                lbxJobs.Items.Add(
-                    $"{FindServerById(job.GuildId)?.Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId)?.Name}");
+                lbxJobs.Items.Add(new IdentifiedString<int>(job.Id, $"{FindServerById(job.GuildId)?.Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId)?.Name}"));
             }
             lbxJobs.SelectedIndex = oldIndex;
 
@@ -215,28 +214,15 @@ namespace DML.Application
                 MessageBox.Show("No job has been seleted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            var jobNameData = lbxJobs.SelectedItem.ToString().Split(':');
+            var jobId = ((IdentifiedString<int>)lbxJobs.SelectedItem).Id;
 
-            var guildName = "";
-            for (var i = 0; i < jobNameData.Length - 1; i++)
-                guildName += jobNameData[i] + ":";
-            guildName = guildName.Substring(0, guildName.Length - 1);
-
-            var channelName = jobNameData[jobNameData.Length - 1];
-
-            var guild = FindServerByName(guildName);
-            var channel = FindChannelByName(guild, channelName);
-
-            foreach (var job in Core.Scheduler.JobList)
+            var job = Core.Scheduler.JobList.FirstOrDefault(j => j.Id == jobId);
+            if (job != null)
             {
-                if (job.GuildId == guild.Id && job.ChannelId == channel.Id)
-                {
-                    Core.Scheduler.JobList.Remove(job);
-                    Core.Scheduler.RunningJobs.Remove(job.Id);
-                    job.Stop();
-                    job.Delete();
-                    break;
-                }
+                Core.Scheduler.JobList.Remove(job);
+                Core.Scheduler.RunningJobs.Remove(job.Id);
+                job.Stop();
+                job.Delete();
             }
 
             lbxJobs.SelectedIndex = -1;
