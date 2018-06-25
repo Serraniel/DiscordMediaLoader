@@ -12,6 +12,13 @@ using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.AppCore.Classes
 {
+    internal enum JobState
+    {
+        Idle,
+        Scanning,
+        Listening
+    }
+
     public class Job
     {
         public int Id { get; set; }
@@ -20,6 +27,8 @@ namespace DML.AppCore.Classes
         public double KnownTimestamp { get; set; } = 0;
         private double StopTimestamp { get; set; } = 0;
         private bool IsValid { get; set; } = true;
+        internal JobState State { get; set; } = JobState.Idle;
+
 
         internal void Store()
         {
@@ -61,6 +70,10 @@ namespace DML.AppCore.Classes
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Performs scanning task of the job.
+        /// </summary>
+        /// <returns>Returns true if the newest messages have been scanned.</returns>
         internal async Task<bool> Scan()
         {
             Debug($"Starting scan of guild {GuildId} channel {ChannelId}...");

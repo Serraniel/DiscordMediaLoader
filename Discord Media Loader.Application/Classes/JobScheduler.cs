@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Discord;
 using DML.AppCore.Classes;
@@ -7,7 +8,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using DML.Application.Classes;
@@ -95,21 +95,29 @@ namespace DML.Application.Classes
             //foreach (var job in JobList)
             for (var i = JobList.Count - 1; i >= 0; i--)
             {
-                try
+                if (JobList[i].State == JobState.Idle)
                 {
-                    var job = JobList[i];
-                    Logger.Debug($"Checking job {job}");
-
-                    Task.Run(async () =>
+                    try
                     {
-                        var foundCount = await job.Scan();
-                        while (foundCount > 0)
-                            foundCount = await job.Scan();
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex.Message);
+                        var job = JobList[i];
+                        Logger.Debug($"Checking job {job.Id}");
+
+                        Task.Run(async () =>
+                        {
+                            var scanFinished = await job.Scan();
+                            Logger.Trace($"Scan result of {job.Id}: {scanFinished}");
+
+                            while (!scanFinished)
+                            {
+                                scanFinished = await job.Scan();
+                                Logger.Trace($"Scan result of {job.Id}: {scanFinished}");
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex.Message);
+                    }
                 }
             }
         }
