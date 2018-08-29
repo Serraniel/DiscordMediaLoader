@@ -82,7 +82,6 @@ namespace DML.Application.Classes
                         Logger.Trace("Created log folder.");
                     }
 
-
                     var logFile = Path.Combine(logFolder,
                         SweetUtils.LegalizeFilename($"{DateTime.Now.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern)}.log.zip"));
 
@@ -106,6 +105,18 @@ namespace DML.Application.Classes
                 {
                     Logger.Warn("Settings not found. Creating new one. This is normal on first start up...");
                     Settings = new Settings();
+                    Settings.Store();
+                }
+
+                if (Settings.ShowStartUpHints)
+                {
+                    if (MessageBox.Show(splash, "This tool is considered as a selfbot which may violate the Discord TOS. By using this tool you take the risk to get your account banned. Although this never happened yet (as far as I know) you have to confirm to this.\n\r\n\rDo you wish to continue?", "HOLD UP!!", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    {
+                        splash.Close();
+                        return;
+                    }
+
+                    Settings.ShowStartUpHints = false;
                     Settings.Store();
                 }
 
@@ -175,7 +186,7 @@ namespace DML.Application.Classes
                     if (!string.IsNullOrEmpty(Settings.LoginToken))
                     {
                         Logger.Debug("Trying to login with last known token...");
-                        loggedIn= await DMLClient.Login(Settings.LoginToken);
+                        loggedIn = await DMLClient.Login(Settings.LoginToken);
                     }
 
                     if (!loggedIn)
