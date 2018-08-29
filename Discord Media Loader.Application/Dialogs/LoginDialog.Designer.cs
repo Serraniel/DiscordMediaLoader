@@ -44,7 +44,7 @@
             this.pnlButtons.Controls.Add(this.btnAbort);
             this.pnlButtons.Controls.Add(this.btnOk);
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlButtons.Location = new System.Drawing.Point(0, 168);
+            this.pnlButtons.Location = new System.Drawing.Point(0, 189);
             this.pnlButtons.Name = "pnlButtons";
             this.pnlButtons.Size = new System.Drawing.Size(426, 51);
             this.pnlButtons.TabIndex = 0;
@@ -71,9 +71,11 @@
             // 
             // lbHowToToken
             // 
+            this.lbHowToToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbHowToToken.Location = new System.Drawing.Point(7, 58);
             this.lbHowToToken.Name = "lbHowToToken";
-            this.lbHowToToken.Size = new System.Drawing.Size(412, 87);
+            this.lbHowToToken.Size = new System.Drawing.Size(412, 128);
             this.lbHowToToken.TabIndex = 5;
             this.lbHowToToken.Text = resources.GetString("lbHowToToken.Text");
             // 
@@ -97,7 +99,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(426, 219);
+            this.ClientSize = new System.Drawing.Size(426, 240);
             this.Controls.Add(this.lbHowToToken);
             this.Controls.Add(this.edToken);
             this.Controls.Add(this.lbToken);
