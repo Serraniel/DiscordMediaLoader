@@ -1,6 +1,6 @@
 # Discord Media Loader
 
-# PROBABLY DISCONTINUED!! THIS PROJECT IS ON HOLD DUE TO DISCORD DOUBLING DOWN ON SELFBOTS (THAT DO VIOLATE TOS AFTER ALL). LATEST COMMIT SHOULD REMAIN STABLE!!
+## IMPORTANT: This selfbot may violate discord TOS. Use at own risk!!!
 
 *Discord Media Loader* is a small tool for downloading all attachments of *Discord* servers. 
 
