@@ -282,5 +282,12 @@ namespace DML.Application
             lbStatus.Text = DMLClient.Client.CurrentUser.Status.ToString();
             tmrTriggerRefresh.Stop();
         }
+
+        private void showTokenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(Core.Settings.LoginToken);
+            MessageBox.Show(this, "Your login token has been copied to your clipboard.", "Discord Media Loader",
+                MessageBoxButtons.OK);
+        }
     }
 }
