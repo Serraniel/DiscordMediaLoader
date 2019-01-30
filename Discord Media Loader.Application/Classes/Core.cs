@@ -193,7 +193,7 @@ namespace DML.Application.Classes
                         }
 
                     }
-                    catch (HttpException e)
+                    catch (HttpException)
                     {
                         Logger.Warn("HTTPException occured during login. Probably from login token.");
                     }
@@ -202,7 +202,10 @@ namespace DML.Application.Classes
                     {
                         Logger.Debug("Showing dialog for username and password...");
                         var loginDlg = new LoginDialog();
-                        loginDlg.ShowDialog();
+                        if (loginDlg.ShowDialog() != DialogResult.OK)
+                        {
+                            return;
+                        }
                     }
                 }
 
