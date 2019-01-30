@@ -192,7 +192,7 @@ namespace DML.Application.Classes
                         }
 
                     }
-                    catch (HttpException e)
+                    catch (HttpException)
                     {
                         Logger.Warn("HTTPException occured during login. Probably from login token.");
                     }
