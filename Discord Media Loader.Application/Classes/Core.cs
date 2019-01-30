@@ -183,13 +183,12 @@ namespace DML.Application.Classes
 
                 while (!loggedIn)
                 {
-                    var token = "abc";
                     try
                     {
                         if (!string.IsNullOrEmpty(Settings.LoginToken))
                         {
                             Logger.Debug("Trying to login with last known token...");
-                            loggedIn = await DMLClient.Login(token);
+                            loggedIn = await DMLClient.Login(Settings.LoginToken);
                         }
 
                     }
