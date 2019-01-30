@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Serraniel")]
 [assembly: AssemblyProduct("Discord Media Loader")]
-[assembly: AssemblyCopyright("Copyright © 2017 - 2018 by Serraniel")]
+[assembly: AssemblyCopyright("Copyright © 2017 - 2019 by Serraniel")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

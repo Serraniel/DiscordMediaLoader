@@ -1,11 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Runtime;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Discord;
+﻿using Discord;
+using Discord.Net;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Dialogs;
@@ -16,6 +10,13 @@ using SharpRaven.Data;
 using SweetLib.Utils;
 using SweetLib.Utils.Logger;
 using SweetLib.Utils.Logger.Memory;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Runtime;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Logger = SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application.Classes
@@ -175,7 +176,6 @@ namespace DML.Application.Classes
 
 
                 Logger.Info("Trying to log into discord...");
-                var abort = false;
 
                 DMLClient.Client.Connected += Client_Connected;
 
@@ -183,55 +183,30 @@ namespace DML.Application.Classes
 
                 while (!loggedIn)
                 {
-                    if (!string.IsNullOrEmpty(Settings.LoginToken))
+                    try
                     {
-                        Logger.Debug("Trying to login with last known token...");
-                        loggedIn = await DMLClient.Login(Settings.LoginToken);
+                        if (!string.IsNullOrEmpty(Settings.LoginToken))
+                        {
+                            Logger.Debug("Trying to login with last known token...");
+                            loggedIn = await DMLClient.Login(Settings.LoginToken);
+                        }
+
+                    }
+                    catch (HttpException)
+                    {
+                        Logger.Warn("HTTPException occured during login. Probably from login token.");
                     }
 
                     if (!loggedIn)
                     {
                         Logger.Debug("Showing dialog for username and password...");
                         var loginDlg = new LoginDialog();
-                        loginDlg.ShowDialog();
+                        if (loginDlg.ShowDialog() != DialogResult.OK)
+                        {
+                            return;
+                        }
                     }
                 }
-
-                /*while ((Client.LoginState != LoginState.LoggedIn || Client.ConnectionState!=ConnectionState.Connected) && !abort)
-                {
-                    Logger.Debug(Client.ConnectionState.ToString());
-                    Logger.Debug(Client.LoginState.ToString());
-
-                    Logger.Trace("Entering login loop.");
-
-                    try
-                    {
-                        if (Client.ConnectionState == ConnectionState.Connecting)
-                            continue;
-
-                        if (!string.IsNullOrEmpty(Settings.LoginToken))
-                        {
-                            Logger.Debug("Trying to login with last known token...");
-                            await Client.LoginAsync(TokenType.User, Settings.LoginToken);
-                            await Client.StartAsync();
-                            await Task.Delay(1000);
-                        }
-
-                    }
-                    catch (HttpException ex)
-                    {
-                        Logger.Warn($"Login seems to have failed or gone wrong: {ex.GetType().Name} - {ex.Message}");
-                    }
-
-                    if (Client.LoginState == LoginState.LoggedOut)
-                    {
-                        Settings.Password = string.Empty;
-                        Logger.Debug("Showing dialog for username and password...");
-                        var loginDlg = new LoginDialog();
-                        loginDlg.ShowDialog();
-                        Logger.Trace("Dialog closed.");
-                    }
-                }*/
 
                 Logger.Debug("Start checking for invalid jobs...");
 
@@ -248,12 +223,16 @@ namespace DML.Application.Classes
                     var isError = false;
                     var guild = FindServerById(job.GuildId);
                     if (guild == null)
+                    {
                         isError = true;
+                    }
                     else
                     {
                         var channel = FindChannelById(guild, job.ChannelId);
                         if (channel == null)
+                        {
                             isError = true;
+                        }
                     }
 
                     if (isError)
@@ -280,9 +259,11 @@ namespace DML.Application.Classes
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex.Message} occured at: {ex.StackTrace}");
+                Logger.Error($"{ex.Message} [{ex.GetType().Name}] occured at: {ex.StackTrace}");
                 if (MessageBox.Show($"An error occured while running Discord Media Loader:\n{ex.GetType().Name}: {ex.Message}\n\nDo you aggree to sending the error report to the creator of the tool?", "Discord Media Loader", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
                     Raven.Capture(new SentryEvent(ex));
+                }
             }
         }
 
