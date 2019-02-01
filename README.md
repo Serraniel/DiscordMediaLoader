@@ -4,7 +4,7 @@
 
 *Discord Media Loader* is a small tool for downloading all attachments of *Discord* servers. 
 
-**[Download](https://github.com/Serraniel/DiscordMediaLoader/releases)**
+**[Download](https://github.com/Serraniel/DiscordMediaLoader/releases)** **Build:** [![build status badge](https://ci.serraniel.com/app/rest/builds/buildType:(DiscordMediaLoader_BuildMaster)/statusIcon)](https://ci.serraniel.com/viewType.html?buildTypeId=DiscordMediaLoader_BuildMaster)
 
 
 ## License
