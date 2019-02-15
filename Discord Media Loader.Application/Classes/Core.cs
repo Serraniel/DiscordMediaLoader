@@ -95,8 +95,12 @@ namespace DML.Application.Classes
                     logMemory.ArchiveFile = logFile;
                 }
 
+                var databasePath = Path.Combine(DataDirectory, "config.db");
+#if DEBUG
+                databasePath = Path.Combine(DataDirectory, "config.debug.db");
+#endif
                 Logger.Debug("Loading database...");
-                Database = new LiteDatabase(Path.Combine(DataDirectory, "config.db"));
+                Database = new LiteDatabase(databasePath);
                 Database.Log.Logging += (message) => Logger.Trace($"LiteDB: {message}");
 
                 Logger.Debug("Loading settings collection out of database...");
@@ -277,7 +281,7 @@ namespace DML.Application.Classes
                 splash.Close();
 
                 Logger.Info("Starting scheduler...");
-                Scheduler.Start();
+                // Scheduler.Start();
 
                 System.Windows.Forms.Application.Run(new MainForm());
 
