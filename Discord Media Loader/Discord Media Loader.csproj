@@ -190,6 +190,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="..\..\Darkorbit Helper Program\src\Darkorbit Helper Program\Darkorbit Helper Program.licenseheader">
+      <Link>Darkorbit Helper Program.licenseheader</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
