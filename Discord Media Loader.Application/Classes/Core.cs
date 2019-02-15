@@ -1,11 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Runtime;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Discord;
+﻿using Discord;
+using Discord.Net;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Classes.RPC;
@@ -17,6 +11,13 @@ using SharpRaven.Data;
 using SweetLib.Utils;
 using SweetLib.Utils.Logger;
 using SweetLib.Utils.Logger.Memory;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Runtime;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Logger = SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application.Classes
@@ -86,7 +87,6 @@ namespace DML.Application.Classes
                         Logger.Trace("Created log folder.");
                     }
 
-
                     var logFile = Path.Combine(logFolder,
                         SweetUtils.LegalizeFilename($"{DateTime.Now.ToString(CultureInfo.CurrentCulture.DateTimeFormat.SortableDateTimePattern)}.log.zip"));
 
@@ -95,12 +95,12 @@ namespace DML.Application.Classes
                     logMemory.ArchiveFile = logFile;
                 }
 
-                Logger.Debug("Loading database...");
+                var databasePath = Path.Combine(DataDirectory, "config.db");
 #if DEBUG
-                Database = new LiteDatabase(Path.Combine(DataDirectory, "config.debug.db"));
-                Database.Log.Logging += (message) => Logger.Trace($"LiteDB: {message}");
-#else
-                Database = new LiteDatabase(Path.Combine(DataDirectory, "config.db"));
+                databasePath = Path.Combine(DataDirectory, "config.debug.db");
+#endif
+                Logger.Debug("Loading database...");
+                Database = new LiteDatabase(databasePath);
                 Database.Log.Logging += (message) => Logger.Trace($"LiteDB: {message}");
 #endif
 
@@ -115,6 +115,18 @@ namespace DML.Application.Classes
                 {
                     Logger.Warn("Settings not found. Creating new one. This is normal on first start up...");
                     Settings = new Settings();
+                    Settings.Store();
+                }
+
+                if (Settings.ShowStartUpHints)
+                {
+                    if (MessageBox.Show(splash, "This tool is considered as a selfbot which may violate the Discord TOS. By using this tool you take the risk to get your account banned. Although this never happened yet (as far as I know) you have to confirm to this.\n\r\n\rDo you wish to continue?", "HOLD UP!!", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                    {
+                        splash.Close();
+                        return;
+                    }
+
+                    Settings.ShowStartUpHints = false;
                     Settings.Store();
                 }
 
@@ -173,7 +185,6 @@ namespace DML.Application.Classes
 
 
                 Logger.Info("Trying to log into discord...");
-                var abort = false;
 
                 DMLClient.Client.Connected += Client_Connected;
 
@@ -181,17 +192,28 @@ namespace DML.Application.Classes
 
                 while (!loggedIn)
                 {
-                    if (!string.IsNullOrEmpty(Settings.LoginToken))
+                    try
                     {
-                        Logger.Debug("Trying to login with last known token...");
-                        loggedIn = await DMLClient.Login(Settings.LoginToken);
+                        if (!string.IsNullOrEmpty(Settings.LoginToken))
+                        {
+                            Logger.Debug("Trying to login with last known token...");
+                            loggedIn = await DMLClient.Login(Settings.LoginToken);
+                        }
+
+                    }
+                    catch (HttpException)
+                    {
+                        Logger.Warn("HTTPException occured during login. Probably from login token.");
                     }
 
                     if (!loggedIn)
                     {
                         Logger.Debug("Showing dialog for username and password...");
                         var loginDlg = new LoginDialog();
-                        loginDlg.ShowDialog();
+                        if (loginDlg.ShowDialog() != DialogResult.OK)
+                        {
+                            return;
+                        }
                     }
                 }
 
@@ -210,12 +232,16 @@ namespace DML.Application.Classes
                     var isError = false;
                     var guild = FindServerById(job.GuildId);
                     if (guild == null)
+                    {
                         isError = true;
+                    }
                     else
                     {
                         var channel = FindChannelById(guild, job.ChannelId);
                         if (channel == null)
+                        {
                             isError = true;
+                        }
                     }
 
                     if (isError)
@@ -281,9 +307,11 @@ namespace DML.Application.Classes
             }
             catch (Exception ex)
             {
-                Logger.Error($"{ex.Message} occured at: {ex.StackTrace}");
+                Logger.Error($"{ex.Message} [{ex.GetType().Name}] occured at: {ex.StackTrace}");
                 if (MessageBox.Show($"An error occured while running Discord Media Loader:\n{ex.GetType().Name}: {ex.Message}\n\nDo you aggree to sending the error report to the creator of the tool?", "Discord Media Loader", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
                     Raven.Capture(new SentryEvent(ex));
+                }
             }
         }
 

@@ -120,7 +120,9 @@
   <data name="lbHowToToken.Text" xml:space="preserve">
     <value>To find your login token please start Discord and press Ctrl + Shift + I shortcut. A browser inspector will open.
 Navigate into the "Application" tab and select "Local Storage" / "https://discordapp.com". If the right site keeps blank use "Session Storage" instead.
-Look for the token key and copy its value without the quotation marks.</value>
+Look for the token key and copy its value without the quotation marks.
+
+IF YOU CANNOT FIND YOUR TOKEN you can try pressing Ctrl + R while having the inspector open. While reloading you still should be able to grab the token. It may disappear after discord has finished loading.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

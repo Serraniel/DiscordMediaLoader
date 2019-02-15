@@ -8,8 +8,4 @@
     <PackageReference Include="Discord.Net" Version="1.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\SweetLib\SweetLib\SweetLib.csproj" />
-  </ItemGroup>
-
 </Project>
