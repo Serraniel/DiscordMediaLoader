@@ -102,7 +102,6 @@ namespace DML.Application.Classes
                 Logger.Debug("Loading database...");
                 Database = new LiteDatabase(databasePath);
                 Database.Log.Logging += (message) => Logger.Trace($"LiteDB: {message}");
-#endif
 
                 Logger.Debug("Loading settings collection out of database...");
                 var settingsDB = Database.GetCollection<Settings>("settings");
