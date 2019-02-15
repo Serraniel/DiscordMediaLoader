@@ -136,7 +136,7 @@ namespace DML.AppCore.Classes
                         Trace($"Updating lastId ({lastId}) to {m.Id}");
                         lastId = m.Id;
                     }
-                    
+
                     if (m.CreatedAt.UtcDateTime.ToUnixTimeStamp() <= StopTimestamp)
                     {
                         Debug("Found a message with a known timestamp...Stopping scan.");

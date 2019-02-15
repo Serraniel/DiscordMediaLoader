@@ -246,7 +246,7 @@ namespace DML.AppCore.Classes
                             fileName =
                                 fileName.Replace("%guild%", serverName)
                                     .Replace("%channel%", channelName)
-                                    .Replace("%timestamp%", message.CreatedAt.UtcDateTime.ToUnixTimeStamp().ToString(CultureInfo.InvariantCulture))
+                                    .Replace("%timestamp%", message.CreatedAt.UtcDateTime.ToUnixTimeStamp().ToString())
                                     .Replace("%name%", a.Filename)
                                     .Replace("%id%", a.Id.ToString());
                             

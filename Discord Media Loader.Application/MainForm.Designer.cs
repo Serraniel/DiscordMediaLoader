@@ -46,6 +46,11 @@
             this.cbGuild = new System.Windows.Forms.ComboBox();
             this.lbGuild = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.lbStatus = new System.Windows.Forms.ToolStripDropDownButton();
+            this.invisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.doNotDisturbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.doNotDenyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pgbProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.lbProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblVersionPlaceholder = new System.Windows.Forms.ToolStripStatusLabel();
@@ -57,12 +62,9 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.lbxJobs = new System.Windows.Forms.ListBox();
             this.tmrRefreshProgress = new System.Windows.Forms.Timer(this.components);
-            this.lbStatus = new System.Windows.Forms.ToolStripDropDownButton();
-            this.onlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.doNotDenyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.doNotDisturbToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.invisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tmrTriggerRefresh = new System.Windows.Forms.Timer(this.components);
+            this.showTokenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.pnlSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edThreadLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -254,6 +256,45 @@
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "statusStrip1";
             // 
+            // lbStatus
+            // 
+            this.lbStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.invisibleToolStripMenuItem,
+            this.doNotDisturbToolStripMenuItem,
+            this.doNotDenyToolStripMenuItem,
+            this.onlineToolStripMenuItem});
+            this.lbStatus.Name = "lbStatus";
+            this.lbStatus.Size = new System.Drawing.Size(13, 20);
+            this.lbStatus.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStripDropDownButton1_DropDownItemClicked);
+            // 
+            // invisibleToolStripMenuItem
+            // 
+            this.invisibleToolStripMenuItem.Name = "invisibleToolStripMenuItem";
+            this.invisibleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.invisibleToolStripMenuItem.Tag = "3";
+            this.invisibleToolStripMenuItem.Text = "Invisible";
+            // 
+            // doNotDisturbToolStripMenuItem
+            // 
+            this.doNotDisturbToolStripMenuItem.Name = "doNotDisturbToolStripMenuItem";
+            this.doNotDisturbToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.doNotDisturbToolStripMenuItem.Tag = "2";
+            this.doNotDisturbToolStripMenuItem.Text = "Do not disturb";
+            // 
+            // doNotDenyToolStripMenuItem
+            // 
+            this.doNotDenyToolStripMenuItem.Name = "doNotDenyToolStripMenuItem";
+            this.doNotDenyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.doNotDenyToolStripMenuItem.Tag = "1";
+            this.doNotDenyToolStripMenuItem.Text = "Idle";
+            // 
+            // onlineToolStripMenuItem
+            // 
+            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
+            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.onlineToolStripMenuItem.Tag = "0";
+            this.onlineToolStripMenuItem.Text = "Online";
+            // 
             // pgbProgress
             // 
             this.pgbProgress.Name = "pgbProgress";
@@ -267,19 +308,21 @@
             // lblVersionPlaceholder
             // 
             this.lblVersionPlaceholder.Name = "lblVersionPlaceholder";
-            this.lblVersionPlaceholder.Size = new System.Drawing.Size(426, 17);
+            this.lblVersionPlaceholder.Size = new System.Drawing.Size(459, 17);
             this.lblVersionPlaceholder.Spring = true;
             // 
             // lbVersion
             // 
             this.lbVersion.Name = "lbVersion";
-            this.lbVersion.Size = new System.Drawing.Size(118, 17);
-            this.lbVersion.Text = "v https://github.com";
+            this.lbVersion.Size = new System.Drawing.Size(54, 17);
+            this.lbVersion.Text = "VERSION";
             // 
             // btnDropDown
             // 
             this.btnDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnDropDown.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showTokenToolStripMenuItem,
+            this.toolStripSeparator2,
             this.visitGithubToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.btnDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -290,14 +333,14 @@
             // visitGithubToolStripMenuItem
             // 
             this.visitGithubToolStripMenuItem.Name = "visitGithubToolStripMenuItem";
-            this.visitGithubToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.visitGithubToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.visitGithubToolStripMenuItem.Text = "Visit Github";
             this.visitGithubToolStripMenuItem.Click += new System.EventHandler(this.visitGithubToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -341,49 +384,22 @@
             this.tmrRefreshProgress.Interval = 500;
             this.tmrRefreshProgress.Tick += new System.EventHandler(this.tmrRefreshProgress_Tick);
             // 
-            // lbStatus
-            // 
-            this.lbStatus.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.invisibleToolStripMenuItem,
-            this.doNotDisturbToolStripMenuItem,
-            this.doNotDenyToolStripMenuItem,
-            this.onlineToolStripMenuItem});
-            this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(13, 20);
-            this.lbStatus.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStripDropDownButton1_DropDownItemClicked);
-            // 
-            // onlineToolStripMenuItem
-            // 
-            this.onlineToolStripMenuItem.Name = "onlineToolStripMenuItem";
-            this.onlineToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.onlineToolStripMenuItem.Tag = "0";
-            this.onlineToolStripMenuItem.Text = "Online";
-            // 
-            // doNotDenyToolStripMenuItem
-            // 
-            this.doNotDenyToolStripMenuItem.Name = "doNotDenyToolStripMenuItem";
-            this.doNotDenyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.doNotDenyToolStripMenuItem.Tag = "1";
-            this.doNotDenyToolStripMenuItem.Text = "Idle";
-            // 
-            // doNotDisturbToolStripMenuItem
-            // 
-            this.doNotDisturbToolStripMenuItem.Name = "doNotDisturbToolStripMenuItem";
-            this.doNotDisturbToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.doNotDisturbToolStripMenuItem.Tag = "2";
-            this.doNotDisturbToolStripMenuItem.Text = "Do not disturb";
-            // 
-            // invisibleToolStripMenuItem
-            // 
-            this.invisibleToolStripMenuItem.Name = "invisibleToolStripMenuItem";
-            this.invisibleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.invisibleToolStripMenuItem.Tag = "3";
-            this.invisibleToolStripMenuItem.Text = "Invisible";
-            // 
             // tmrTriggerRefresh
             // 
             this.tmrTriggerRefresh.Interval = 5000;
             this.tmrTriggerRefresh.Tick += new System.EventHandler(this.tmrTriggerRefresh_Tick);
+            // 
+            // showTokenToolStripMenuItem
+            // 
+            this.showTokenToolStripMenuItem.Name = "showTokenToolStripMenuItem";
+            this.showTokenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showTokenToolStripMenuItem.Text = "Copy login token";
+            this.showTokenToolStripMenuItem.Click += new System.EventHandler(this.showTokenToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // MainForm
             // 
@@ -448,5 +464,7 @@
         private System.Windows.Forms.ToolStripMenuItem doNotDenyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem onlineToolStripMenuItem;
         private System.Windows.Forms.Timer tmrTriggerRefresh;
+        private System.Windows.Forms.ToolStripMenuItem showTokenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
