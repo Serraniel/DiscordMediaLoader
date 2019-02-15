@@ -1,4 +1,19 @@
-﻿namespace Discord_Media_Loader
+﻿#region LICENSE
+/**********************************************************************************************
+ * Copyright (C) 2019-2019 - All Rights Reserved
+ * 
+ * This file is part of "Discord Media Loader".
+ * The official repository is hosted at https://github.com/Serraniel/Darkorbit-Helper-Program
+ * 
+ * "Discord Media Loader" is licensed under European Union Public Licence V. 1.2.
+ * Full license is included in the project repository.
+ * 
+ * Users who edited FrmSplash.Designer.cs under the condition of the used license:
+ * - Serraniel (https://github.com/Serraniel)
+ **********************************************************************************************/
+#endregion
+
+namespace Discord_Media_Loader
 {
     partial class FrmSplash
     {

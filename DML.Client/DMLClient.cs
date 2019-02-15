@@ -1,4 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿#region LICENSE
+/**********************************************************************************************
+ * Copyright (C) 2017-2019 - All Rights Reserved
+ * 
+ * This file is part of "DML.Client".
+ * The official repository is hosted at https://github.com/Serraniel/DiscordMediaLoader
+ * 
+ * "DML.Client" is licensed under Apache 2.0.
+ * Full license is included in the project repository.
+ * 
+ * Users who edited DMLClient.cs under the condition of the used license:
+ * - Serraniel (https://github.com/Serraniel)
+ **********************************************************************************************/
+#endregion
+
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 
