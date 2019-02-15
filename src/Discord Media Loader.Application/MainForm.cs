@@ -64,16 +64,16 @@ namespace DML.Application
             lbVersion.Text = $"v{Assembly.GetExecutingAssembly().GetName().Version} Copyright © by Serraniel";
 
             Trace("Refreshing operating folder component...");
-            edOperatingFolder.Text = Core.Settings.OperatingFolder;
+            edOperatingFolder.Text = Core.Core.Settings.OperatingFolder;
 
             Trace("Refreshing name scheme component...");
-            edNameScheme.Text = Core.Settings.FileNameScheme;
+            edNameScheme.Text = Core.Core.Settings.FileNameScheme;
 
             Trace("Refreshing skip existing files component...");
-            cbSkipExisting.Checked = Core.Settings.SkipExistingFiles;
+            cbSkipExisting.Checked = Core.Core.Settings.SkipExistingFiles;
 
             Trace("Refreshing thread limit component...");
-            edThreadLimit.Value = Core.Settings.ThreadLimit;
+            edThreadLimit.Value = Core.Core.Settings.ThreadLimit;
 
             if (cbGuild.Items.Count == 0)
             {
@@ -88,7 +88,7 @@ namespace DML.Application
             Trace("Refreshing job list component...");
             var oldIndex = lbxJobs.SelectedIndex;
             lbxJobs.Items.Clear();
-            foreach (var job in Core.Scheduler.JobList)
+            foreach (var job in Core.Core.Scheduler.JobList)
             {
                 lbxJobs.Items.Add(new IdentifiedString<int>(job.Id, $"{FindServerById(job.GuildId)?.Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId)?.Name}"));
             }
@@ -107,19 +107,19 @@ namespace DML.Application
             }
 
             Trace("Updating operating folder...");
-            Core.Settings.OperatingFolder = edOperatingFolder.Text;
+            Core.Core.Settings.OperatingFolder = edOperatingFolder.Text;
 
             Trace("Updating name scheme...");
-            Core.Settings.FileNameScheme = edNameScheme.Text;
+            Core.Core.Settings.FileNameScheme = edNameScheme.Text;
 
             Trace("Updating skip existing files...");
-            Core.Settings.SkipExistingFiles = cbSkipExisting.Checked;
+            Core.Core.Settings.SkipExistingFiles = cbSkipExisting.Checked;
 
             Trace("Updating thread limit...");
-            Core.Settings.ThreadLimit = (int)edThreadLimit.Value;
+            Core.Core.Settings.ThreadLimit = (int)edThreadLimit.Value;
 
             Trace("Storing new settings...");
-            Core.Settings.Store();
+            Core.Core.Settings.Store();
 
             Info("New settings have been saved.");
         }
@@ -211,12 +211,12 @@ namespace DML.Application
                 ChannelId = ((IdentifiedString<ulong>)cbChannel.SelectedItem).Id
             };
 
-            if (!(from j in Core.Scheduler.JobList
+            if (!(from j in Core.Core.Scheduler.JobList
                   where j.GuildId == job.GuildId && j.ChannelId == job.ChannelId
                   select j).Any())
             {
                 job.Store();
-                Core.Scheduler.JobList.Add(job);
+                Core.Core.Scheduler.JobList.Add(job);
             }
 
             RefreshComponents();
@@ -234,11 +234,11 @@ namespace DML.Application
 
             var jobId = ((IdentifiedString<int>)lbxJobs.SelectedItem).Id;
 
-            var job = Core.Scheduler.JobList.FirstOrDefault(j => j.Id == jobId);
+            var job = Core.Core.Scheduler.JobList.FirstOrDefault(j => j.Id == jobId);
             if (job != null)
             {
-                Core.Scheduler.JobList.Remove(job);
-                Core.Scheduler.RunningJobs.Remove(job.Id);
+                Core.Core.Scheduler.JobList.Remove(job);
+                Core.Core.Scheduler.RunningJobs.Remove(job.Id);
                 job.Stop();
                 job.Delete();
             }
@@ -249,9 +249,9 @@ namespace DML.Application
 
         private void tmrRefreshProgress_Tick(object sender, System.EventArgs e)
         {
-            var scanned = Core.Scheduler.MessagesScanned;
-            var totalAttachments = Core.Scheduler.TotalAttachments;
-            var done = Core.Scheduler.AttachmentsDownloaded;
+            var scanned = Core.Core.Scheduler.MessagesScanned;
+            var totalAttachments = Core.Core.Scheduler.TotalAttachments;
+            var done = Core.Core.Scheduler.AttachmentsDownloaded;
 
             var progress = totalAttachments > 0 ? (int)(100 * done / totalAttachments) : 0;
             progress = Math.Min(Math.Max(0, progress), 100);
@@ -260,16 +260,16 @@ namespace DML.Application
 
             lbProgress.Text = $"Scanned: {scanned} Downloaded: {done} Open: {totalAttachments - done}";
 
-            if (Core.Settings.UseRPC)
+            if (Core.Core.Settings.UseRPC)
             {
-                Core.RpcPresence.details = "Downloading media files";
-                Core.RpcPresence.state = $"{done} / {totalAttachments} ({pgbProgress.Value}%)";
-                Core.RpcPresence.largeImageKey = "main";
-                Core.RpcPresence.largeImageText = "Visit discordmedialoader.net";
-                Core.RpcPresence.smallImageKey = "author";
-                Core.RpcPresence.smallImageText = "Made by Serraniel";
+                Core.Core.RpcPresence.details = "Downloading media files";
+                Core.Core.RpcPresence.state = $"{done} / {totalAttachments} ({pgbProgress.Value}%)";
+                Core.Core.RpcPresence.largeImageKey = "main";
+                Core.Core.RpcPresence.largeImageText = "Visit discordmedialoader.net";
+                Core.Core.RpcPresence.smallImageKey = "author";
+                Core.Core.RpcPresence.smallImageText = "Made by Serraniel";
 
-                Core.RpcUpdatePresence();
+                Core.Core.RpcUpdatePresence();
             }
         }
 
@@ -315,7 +315,7 @@ namespace DML.Application
 
         private void showTokenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(Core.Settings.LoginToken);
+            Clipboard.SetText(Core.Core.Settings.LoginToken);
             MessageBox.Show(this, "Your login token has been copied to your clipboard.", "Discord Media Loader",
                 MessageBoxButtons.OK);
         }

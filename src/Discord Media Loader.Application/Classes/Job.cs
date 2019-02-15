@@ -13,16 +13,16 @@
  **********************************************************************************************/
 #endregion
 
+using Discord;
+using Discord.WebSocket;
+using DML.Application.Classes;
+using DML.Application.Core;
+using DML.Client;
+using SweetLib.Utils.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord;
-using Discord.WebSocket;
-using DML.Application.Classes;
-using DML.Client;
-using SweetLib.Utils;
-using SweetLib.Utils.Extensions;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.AppCore.Classes
@@ -49,7 +49,7 @@ namespace DML.AppCore.Classes
         {
             Debug("Storing job to database...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = Application.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Adding new value...");
 
@@ -67,7 +67,7 @@ namespace DML.AppCore.Classes
         {
             Debug("Deleting job from database...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = Application.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Deleting value...");
             jobDb.Delete(Id);
@@ -111,7 +111,10 @@ namespace DML.AppCore.Classes
             }
 
             if (Math.Abs(StopTimestamp) < 0.4)
+            {
                 StopTimestamp = KnownTimestamp;
+            }
+
             Trace("Initialized scanning parameters.");
 
             while (!finished)
@@ -139,9 +142,11 @@ namespace DML.AppCore.Classes
                 foreach (var m in messages)
                 {
                     if (!IsValid)
+                    {
                         return false;
+                    }
 
-                    Core.Scheduler.MessagesScanned++;
+                    Application.Core.Core.Scheduler.MessagesScanned++;
 
                     Debug($"Processing message {m.Id}");
                     if (m.Id < lastId)
@@ -161,7 +166,7 @@ namespace DML.AppCore.Classes
                     if (m.Attachments.Count > 0)
                     {
                         result.Add(m);
-                        Core.Scheduler.TotalAttachments += (ulong)m.Attachments.Count;
+                        Application.Core.Core.Scheduler.TotalAttachments += (ulong)m.Attachments.Count;
                         Trace($"Added message {m.Id}");
                     }
                     Debug($"Finished message {m.Id}");
@@ -226,7 +231,7 @@ namespace DML.AppCore.Classes
         {
             Debug("Restoring jobs...");
             Trace("Getting jobs collection...");
-            var jobDb = Core.Database.GetCollection<Job>("jobs");
+            var jobDb = Application.Core.Core.Database.GetCollection<Job>("jobs");
 
             Trace("Creating new empty job list");
             return jobDb.FindAll();

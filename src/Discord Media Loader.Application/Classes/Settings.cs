@@ -37,7 +37,7 @@ namespace DML.Application.Classes
         public void Store()
         {
             Logger.Trace("Getting settings collection...");
-            var settingsDB = Core.Database.GetCollection<Settings>("settings");
+            var settingsDB = Core.Core.Database.GetCollection<Settings>("settings");
 
             Logger.Debug("Storing settings to database...");
 

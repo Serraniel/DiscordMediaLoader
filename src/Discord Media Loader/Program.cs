@@ -13,10 +13,10 @@
  **********************************************************************************************/
 #endregion
 
+using DML.Application.Core;
+using Nito.AsyncEx;
 using System;
 using System.Windows.Forms;
-using DML.Application.Classes;
-using Nito.AsyncEx;
 
 namespace Discord_Media_Loader
 {
@@ -31,7 +31,7 @@ namespace Discord_Media_Loader
             var splashScreen = new FrmSplash();
             if (splashScreen.ShowDialog() == DialogResult.OK)
             {
-               DoLaunch(paramStrings);
+                DoLaunch(paramStrings);
             }
             else
             {

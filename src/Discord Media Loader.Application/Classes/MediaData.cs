@@ -13,13 +13,13 @@
  **********************************************************************************************/
 #endregion
 
+using DML.Client;
+using SweetLib.Utils.Logger;
 using System;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using DML.Client;
-using SweetLib.Utils.Logger;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application.Classes
@@ -38,7 +38,7 @@ namespace DML.Application.Classes
         {
             Debug("Storing job to database...");
             Trace("Getting jobs collection...");
-            var db = Core.Database.GetCollection<MediaData>("media");
+            var db = Core.Core.Database.GetCollection<MediaData>("media");
 
             Trace("Adding new value...");
 
@@ -56,7 +56,7 @@ namespace DML.Application.Classes
         {
             Debug("Deleting job from database...");
             Trace("Getting jobs collection...");
-            var db = Core.Database.GetCollection<MediaData>("media");
+            var db = Core.Core.Database.GetCollection<MediaData>("media");
 
             Trace("Deleting value...");
             db.Delete(Id);
@@ -67,7 +67,7 @@ namespace DML.Application.Classes
             Trace("Beginning attachment download...");
 
             Debug("Building filename...");
-            var fileName = Path.Combine(Core.Settings.OperatingFolder, Core.Settings.FileNameScheme);
+            var fileName = Path.Combine(Core.Core.Settings.OperatingFolder, Core.Core.Settings.FileNameScheme);
 
             Debug($"Base filename: {fileName}");
 
@@ -88,7 +88,9 @@ namespace DML.Application.Classes
 
             Trace("Adding extension if required");
             if (extensionRequired)
+            {
                 fileName += Path.GetExtension(Filename);
+            }
 
             Debug($"Final filename: {fileName}");
 
@@ -104,7 +106,7 @@ namespace DML.Application.Classes
             Logger.Debug($"Downloaded attachment {Id}.");
 
 
-            Core.Scheduler.AttachmentsDownloaded++;
+            Core.Core.Scheduler.AttachmentsDownloaded++;
         }
     }
 }

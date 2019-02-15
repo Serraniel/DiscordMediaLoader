@@ -17,6 +17,7 @@ using Discord;
 using Discord.Net;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
+using DML.Application.Classes;
 using DML.Application.Classes.RPC;
 using DML.Application.Dialogs;
 using DML.Client;
@@ -35,7 +36,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Logger = SweetLib.Utils.Logger.Logger;
 
-namespace DML.Application.Classes
+namespace DML.Application.Core
 {
     public static class Core
     {
@@ -117,6 +118,8 @@ namespace DML.Application.Classes
                 Logger.Debug("Loading database...");
                 Database = new LiteDatabase(databasePath);
                 Database.Log.Logging += (message) => Logger.Trace($"LiteDB: {message}");
+
+                Migrator.CheckMigrations();
 
                 Logger.Debug("Loading settings collection out of database...");
                 var settingsDB = Database.GetCollection<Settings>("settings");
@@ -276,7 +279,7 @@ namespace DML.Application.Classes
                         job.Store();
                     }
                 }
-                
+
                 Settings.RescanRequired = false;
                 Settings.Store();
 

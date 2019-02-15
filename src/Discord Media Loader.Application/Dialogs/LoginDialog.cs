@@ -30,7 +30,7 @@ namespace DML.Application.Dialogs
         private void LoginDialog_Shown(object sender, EventArgs e)
         {
             Trace("Login dialog shown.");
-            edToken.Text = Core.Settings.LoginToken;
+            edToken.Text = Core.Core.Settings.LoginToken;
         }
 
         private void LoginDialog_FormClosing(object sender, FormClosingEventArgs e)
@@ -40,9 +40,9 @@ namespace DML.Application.Dialogs
                 return;
 
             Debug("Adjusting login settings...");
-            Core.Settings.LoginToken = edToken.Text;
+            Core.Core.Settings.LoginToken = edToken.Text;
 
-            Core.Settings.Store();
+            Core.Core.Settings.Store();
         }
 
         private void btnOk_Click(object sender, EventArgs e)
