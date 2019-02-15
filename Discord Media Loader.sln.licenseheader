@@ -1,0 +1,15 @@
+extensions: .cs .cpp .h
+#region LICENSE
+/**********************************************************************************************
+ * Copyright (C) 2017-%CurrentYear% - All Rights Reserved
+ * 
+ * This file is part of "%Project%".
+ * The official repository is hosted at https://github.com/Serraniel/DiscordMediaLoader
+ * 
+ * "%Project%" is licensed under Apache 2.0.
+ * Full license is included in the project repository.
+ * 
+ * Users who edited %FileName% under the condition of the used license:
+ * - Serraniel (https://github.com/Serraniel)
+ **********************************************************************************************/
+#endregion
