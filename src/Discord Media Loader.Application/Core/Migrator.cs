@@ -15,7 +15,6 @@
 
 
 using LiteDB;
-using SweetLib.Utils.Extensions;
 
 namespace DML.Application.Core
 {
@@ -27,7 +26,7 @@ namespace DML.Application.Core
         {
             var baseVersion = Core.Database.Engine.UserVersion;
 
-            for (var step = baseVersion; step <= Version; step++)
+            for (var step = (ushort)(baseVersion + 1); step <= Version; step++)
             {
                 Migrate(step);
             }
