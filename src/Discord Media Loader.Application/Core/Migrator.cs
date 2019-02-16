@@ -49,10 +49,11 @@ namespace DML.Application.Core
                         if (timestamp > 0)
                         {
                             pseudoId = timestamp - 1420070400000 << 22;
-                            pseudoId -= (1000 * 60 * 60 * 24) << 22; // substract one random day of pseudo id just in case the timestamp has errors
+                            pseudoId = pseudoId - (1000UL * 60 * 60 * 24 << 22); // substract one random day of pseudo id just in case the timestamp has errors
                         }
 
                         jobDoc["LastMessageId"] = pseudoId;
+                        jobDoc.Remove("KnownTimestamp");
 
                         Core.Database.Engine.Update("jobs", jobDoc);
                     }
