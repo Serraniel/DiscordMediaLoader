@@ -16,7 +16,6 @@
 using Discord;
 using Discord.WebSocket;
 using DML.Application.Classes;
-using DML.Application.Core;
 using DML.Client;
 using SweetLib.Utils.Extensions;
 using System;
@@ -39,7 +38,7 @@ namespace DML.AppCore.Classes
         public int Id { get; set; }
         public ulong GuildId { get; set; }
         public ulong ChannelId { get; set; }
-        public ulong LastMessageId { get; set; }
+        public ulong LastMessageId { get; set; } = 0;
         private bool IsValid { get; set; } = true;
         internal JobState State { get; set; } = JobState.Idle;
 
@@ -90,13 +89,10 @@ namespace DML.AppCore.Classes
         /// <returns>Returns true if the newest messages have been scanned.</returns>
         internal async Task<bool> Scan()
         {
-            /*
             Debug($"Starting scan of guild {GuildId} channel {ChannelId}...");
             var result = new List<IMessage>();
+            const ushort limit = 100;
 
-            var limit = 100;
-            var lastId = ulong.MaxValue;
-            var isFirst = true;
             var finished = false;
             var scanStartTimeStamp = DateTime.UtcNow;
 
@@ -110,35 +106,17 @@ namespace DML.AppCore.Classes
                 return true;
             }
 
-            if (Math.Abs(StopTimestamp) < 0.4)
-            {
-                StopTimestamp = KnownTimestamp;
-            }
-
             Trace("Initialized scanning parameters.");
-
             while (!finished)
             {
                 Trace("Entering scanning loop...");
                 var messages = new List<IMessage>();
 
                 Trace($"Downloading next {limit} messages...");
-                if (isFirst)
-                {
-                    var realMessages = await channel.GetMessagesAsync(limit).ToArray();
+                messages.AddRange((await channel.GetMessagesAsync(LastMessageId, Direction.After, limit).ToArray()).SelectMany(collection => collection));
 
-                    messages.AddRange(realMessages.SelectMany(realMessageArray => realMessageArray));
-                }
-                else
-                {
-                    var realMessages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray();
-
-                    messages.AddRange(realMessages.SelectMany(realMessageArray => realMessageArray));
-                }
-
-                Trace($"Downloaded {messages.Count} messages.");
-                isFirst = false;
-
+                Debug($"Downloaded {messages.Count} messages.");
+                Trace("Iterating messages...");
                 foreach (var m in messages)
                 {
                     if (!IsValid)
@@ -149,17 +127,10 @@ namespace DML.AppCore.Classes
                     Application.Core.Core.Scheduler.MessagesScanned++;
 
                     Debug($"Processing message {m.Id}");
-                    if (m.Id < lastId)
+                    if (m.Id > LastMessageId)
                     {
-                        Trace($"Updating lastId ({lastId}) to {m.Id}");
-                        lastId = m.Id;
-                    }
-
-                    if (m.CreatedAt.UtcDateTime.ToUnixTimeStamp() <= StopTimestamp)
-                    {
-                        Debug("Found a message with a known timestamp...Stopping scan.");
-                        finished = true;
-                        continue;
+                        Trace($"Updating lastId ({LastMessageId}) to {m.Id}");
+                        LastMessageId = m.Id;
                     }
 
                     Trace($"Message {m.Id} has {m.Attachments.Count} attachments.");
@@ -172,7 +143,7 @@ namespace DML.AppCore.Classes
                     Debug($"Finished message {m.Id}");
                 }
 
-                finished = finished || messages.Count < limit;
+                finished = messages.Count < limit;
             }
 
             Trace($"Downloaded all messages for guild {GuildId} channel {ChannelId}.");
@@ -180,48 +151,27 @@ namespace DML.AppCore.Classes
             Trace("Sorting messages...");
             result.Sort((a, b) => DateTime.Compare(a.CreatedAt.UtcDateTime, b.CreatedAt.UtcDateTime));
 
-            foreach (var r in result)
+            foreach (var message in result)
             {
-                foreach (var a in r.Attachments)
+                foreach (var attachment in message.Attachments)
                 {
                     var mediaData = new MediaData
                     {
-                        Id = a.Id,
-                        GuildId = (r.Channel as SocketTextChannel)?.Guild?.Id ?? 0,
-                        ChannelId = r.Channel.Id,
-                        DownloadSource = a.Url,
-                        Filename = a.Filename,
-                        TimeStamp = r.CreatedAt.UtcDateTime.ToUnixTimeStamp(),
-                        FileSize = a.Size
+                        Id = attachment.Id,
+                        GuildId = (message.Channel as SocketTextChannel)?.Guild?.Id ?? 0,
+                        ChannelId = message.Channel.Id,
+                        DownloadSource = attachment.Url,
+                        Filename = attachment.Filename,
+                        TimeStamp = message.CreatedAt.UtcDateTime.ToUnixTimeStamp(),
+                        FileSize = attachment.Size
                     };
                     mediaData.Store();
                 }
             }
-
-            if (result.Count > 0)
-            {
-                Trace("Updating StopTimestamp for next scan...");
-                StopTimestamp = result[result.Count - 1].CreatedAt.UtcDateTime.ToUnixTimeStamp();
-                KnownTimestamp = StopTimestamp;
-                Store();
-                return false;
-            }
-            else
-            {
-                // if we found any messages we remember the timestamp of starting so we don´t have to scan all past messages....
-                StopTimestamp = scanStartTimeStamp.ToUnixTimeStamp();
-                KnownTimestamp = StopTimestamp;
-                Store();
-
-                var realLastMessage = await channel.GetMessagesAsync(1).ToArray();
-                return scanStartTimeStamp > (realLastMessage.SelectMany(realLastMessageArray => realLastMessageArray)
-                                                 .FirstOrDefault()?.CreatedAt.UtcDateTime ??
-                                             scanStartTimeStamp);
-            }
+           
 
             Debug($"Fisnished scan of guild {GuildId} channel {ChannelId}.");
-            */
-            return false;
+            return true;
         }
 
         public void Stop()
