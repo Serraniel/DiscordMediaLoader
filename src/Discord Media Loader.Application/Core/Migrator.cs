@@ -14,6 +14,9 @@
 #endregion
 
 
+using System;
+using System.Collections.Generic;
+using DML.AppCore.Classes;
 using LiteDB;
 
 namespace DML.Application.Core
@@ -51,8 +54,8 @@ namespace DML.Application.Core
                             pseudoId = timestamp - 1420070400000 << 22;
                             pseudoId = pseudoId - (1000UL * 60 * 60 * 24 << 22); // substract one random day of pseudo id just in case the timestamp has errors
                         }
-
-                        jobDoc["LastMessageId"] = pseudoId;
+                        
+                        jobDoc["LastMessageId"] = Convert.ToInt64(pseudoId); // LiteDB maps (u)long to Int64
                         jobDoc.Remove("KnownTimestamp");
 
                         Core.Database.Engine.Update("jobs", jobDoc);
