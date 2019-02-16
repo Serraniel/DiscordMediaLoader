@@ -39,8 +39,7 @@ namespace DML.AppCore.Classes
         public int Id { get; set; }
         public ulong GuildId { get; set; }
         public ulong ChannelId { get; set; }
-        public double KnownTimestamp { get; set; } = 0;
-        private double StopTimestamp { get; set; } = 0;
+        public ulong LastMessageId { get; set; }
         private bool IsValid { get; set; } = true;
         internal JobState State { get; set; } = JobState.Idle;
 
@@ -91,6 +90,7 @@ namespace DML.AppCore.Classes
         /// <returns>Returns true if the newest messages have been scanned.</returns>
         internal async Task<bool> Scan()
         {
+            /*
             Debug($"Starting scan of guild {GuildId} channel {ChannelId}...");
             var result = new List<IMessage>();
 
@@ -220,6 +220,8 @@ namespace DML.AppCore.Classes
             }
 
             Debug($"Fisnished scan of guild {GuildId} channel {ChannelId}.");
+            */
+            return false;
         }
 
         public void Stop()

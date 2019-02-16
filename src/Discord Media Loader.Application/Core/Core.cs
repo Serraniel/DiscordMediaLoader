@@ -275,7 +275,7 @@ namespace DML.Application.Core
                     if (Settings.RescanRequired)
                     {
                         Logger.Info("Restting timestamps");
-                        job.KnownTimestamp = 0;
+                        job.LastMessageId = 0;
                         job.Store();
                     }
                 }

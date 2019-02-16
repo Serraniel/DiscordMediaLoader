@@ -31,7 +31,7 @@ namespace DML.Application.Classes
         public bool SkipExistingFiles { get; set; } = true;
         public int ThreadLimit { get; set; } = 50;
         public bool ShowStartUpHints { get; set; } = true;
-        public bool RescanRequired { get; set; } = true;
+        public bool RescanRequired { get; set; } = false;
         public bool UseRPC { get; set; } = false;
 
         public void Store()
