@@ -92,6 +92,7 @@ namespace DML.AppCore.Classes
             Debug($"Starting scan of guild {GuildId} channel {ChannelId}...");
             var result = new List<IMessage>();
             const ushort limit = 100;
+            State = JobState.Scanning;
 
             var finished = false;
             var scanStartTimeStamp = DateTime.UtcNow;

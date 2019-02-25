@@ -16,7 +16,6 @@
 using Discord;
 using DML.AppCore.Classes;
 using SweetLib.Utils.Logger;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,8 +29,10 @@ namespace DML.Application.Classes
 
         private bool Run { get; set; } = false;
         public List<Job> JobList { get; set; } = new List<Job>();
-        public Dictionary<int, Queue<IMessage>> RunningJobs = new Dictionary<int, Queue<IMessage>>();
+        public Dictionary<int, Queue<IMessage>> RunningJobs { get; } = new Dictionary<int, Queue<IMessage>>();
         internal int RunningThreads { get; set; } = 0;
+        internal Task SchedulerTask { get; private set; }
+        internal Task DownloadTask { get; private set; }
 
         internal ulong MessagesScanned
         {
@@ -87,44 +88,46 @@ namespace DML.Application.Classes
             }
         }
 
+        public void StartScheduler()
+        {
+            Logger.Info("Starting scheduler jobs");
+            SchedulerTask = Task.Run(() =>
+            {
+                PerformSchedulerTask();
+            });
+
+            DownloadTask = Task.Run(() =>
+            {
+                PerformDownloads();
+            });
+        }
+
         public void Stop()
         {
             Run = false;
         }
 
-        public void ScanAll()
+        private async void PerformSchedulerTask()
         {
-            Logger.Info("Started JobScheduler...");
-
-            Logger.Debug("Entering job list handler loop...");
-            //foreach (var job in JobList)
-            for (var i = JobList.Count - 1; i >= 0; i--)
+            Logger.Trace("SchedulerTask started");
+            foreach (var job in JobList)
             {
-                if (JobList[i].State == JobState.Idle)
+                if (job.State == JobState.Idle)
                 {
-                    try
-                    {
-                        var job = JobList[i];
-                        Logger.Debug($"Checking job {job.Id}");
-
-                        Task.Run(async () =>
-                        {
-                            var scanFinished = await job.Scan();
-                            Logger.Trace($"Scan result of {job.Id}: {scanFinished}");
-
-                            while (!scanFinished)
-                            {
-                                scanFinished = await job.Scan();
-                                Logger.Trace($"Scan result of {job.Id}: {scanFinished}");
-                            }
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex.Message);
-                    }
+                    // scan all old messages first
+                    Logger.Debug($"Starting scan for job {job.Id}");
+                    await job.Scan();
+                    job.State = JobState.Listening; // set to listening now
+                    Logger.Debug($"Scan for job {job.Id} finished");
                 }
             }
+            Logger.Trace("All jobs have been scanned");
+        }
+
+        private async void PerformDownloads()
+        {
+            Logger.Trace("SchedulerTask started");
+            // TODO 
         }
     }
 }

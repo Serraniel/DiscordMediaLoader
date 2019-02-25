@@ -280,8 +280,9 @@ namespace DML.Application.Core
                     }
                 }
 
-                Settings.RescanRequired = false;
-                Settings.Store();
+                // TODO 
+                // Settings.RescanRequired = false;
+                // Settings.Store();
 
                 if (Settings.UseRPC)
                 {
@@ -309,7 +310,7 @@ namespace DML.Application.Core
                 splash.Close();
 
                 Logger.Info("Starting scheduler...");
-                Scheduler.ScanAll();
+                Scheduler.StartScheduler();
 
                 System.Windows.Forms.Application.Run(new MainForm());
 
