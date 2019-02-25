@@ -14,7 +14,9 @@
 #endregion
 
 using Discord;
+using Discord.WebSocket;
 using DML.AppCore.Classes;
+using SweetLib.Utils.Extensions;
 using SweetLib.Utils.Logger;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -128,6 +130,43 @@ namespace DML.Application.Classes
         {
             Logger.Trace("SchedulerTask started");
             // TODO 
+        }
+
+        public Task HandleMessageReceived(SocketMessage msg)
+        {
+            Logger.Trace($"Received message: Id: {msg.Id}, Channel: {msg.Channel.Id}, Attachments: {msg.Attachments.Count}");
+
+            if (msg.Attachments.Count > 0)
+            {
+                foreach (var job in JobList)
+                {
+                    if (job.State != JobState.Listening || job.ChannelId != msg.Channel.Id)
+                    {
+                        continue;
+                    }
+
+                    Logger.Debug($"Job found [{job.Id}]");
+                    foreach (var attachment in msg.Attachments)
+                    {
+                        var mediaData = new MediaData
+                        {
+                            Id = attachment.Id,
+                            GuildId = (msg.Channel as SocketTextChannel)?.Guild?.Id ?? 0,
+                            ChannelId = msg.Channel.Id,
+                            DownloadSource = attachment.Url,
+                            Filename = attachment.Filename,
+                            TimeStamp = msg.CreatedAt.UtcDateTime.ToUnixTimeStamp(),
+                            FileSize = attachment.Size
+                        };
+                        mediaData.Store();
+                    }
+
+                    job.LastMessageId = msg.Id;
+                    job.Store();
+                }
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

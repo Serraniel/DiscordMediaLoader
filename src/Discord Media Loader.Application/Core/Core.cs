@@ -307,6 +307,8 @@ namespace DML.Application.Core
                     });
                 }
 
+                DMLClient.Client.MessageReceived += Scheduler.HandleMessageReceived;
+
                 splash.Close();
 
                 Logger.Info("Starting scheduler...");
