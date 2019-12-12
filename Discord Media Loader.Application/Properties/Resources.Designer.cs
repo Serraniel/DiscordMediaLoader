@@ -19,7 +19,7 @@ namespace DML.Application.Properties {
     // -Klasse über ein Tool wie ResGen oder Visual Studio automatisch generiert.
     // Um einen Member hinzuzufügen oder zu entfernen, bearbeiten Sie die .ResX-Datei und führen dann ResGen
     // mit der /str-Option erneut aus, oder Sie erstellen Ihr VS-Projekt neu.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -76,6 +76,33 @@ namespace DML.Application.Properties {
         internal static string AboutString {
             get {
                 return ResourceManager.GetString("AboutString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You can use the following placeholders for your filenames:
+        ///
+        ///%guild% -&gt; server name
+        ///%channel% -&gt; channel name
+        ///%timestamp% -&gt; message timestamp (Unix timestamp)
+        ///%name% -&gt; attachment filename
+        ///%username% -&gt; author name
+        ///%id% -&gt; attachment id (given by Discord)
+        ///%userid% -&gt; author id (given by discord) ähnelt.
+        /// </summary>
+        internal static string FileNameInfo {
+            get {
+                return ResourceManager.GetString("FileNameInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap info_icon {
+            get {
+                object obj = ResourceManager.GetObject("info_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

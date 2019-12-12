@@ -247,8 +247,10 @@ namespace DML.AppCore.Classes
                                     .Replace("%channel%", channelName)
                                     .Replace("%timestamp%", message.CreatedAt.UtcDateTime.ToUnixTimeStamp().ToString())
                                     .Replace("%name%", a.Filename)
-                                    .Replace("%id%", a.Id.ToString());
-                            
+                                    .Replace("%id%", a.Id.ToString())
+                                    .Replace("%userid%", message.Author.Id.ToString())
+                                    .Replace("%username%", message.Author.Username);
+
                             if (extensionRequired)
                                 fileName += Path.GetExtension(a.Filename);
 
