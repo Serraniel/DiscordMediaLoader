@@ -289,5 +289,10 @@ namespace DML.Application
             MessageBox.Show(this, "Your login token has been copied to your clipboard.", "Discord Media Loader",
                 MessageBoxButtons.OK);
         }
+
+        private void btnFileNameHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(Properties.Resources.FileNameInfo);
+        }
     }
 }

@@ -101,6 +101,7 @@
             this.btnFileNameHelp.Size = new System.Drawing.Size(25, 23);
             this.btnFileNameHelp.TabIndex = 8;
             this.btnFileNameHelp.UseVisualStyleBackColor = true;
+            this.btnFileNameHelp.Click += new System.EventHandler(this.btnFileNameHelp_Click);
             // 
             // lbThreadLimit
             // 

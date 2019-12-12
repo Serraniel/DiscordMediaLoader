@@ -80,6 +80,23 @@ namespace DML.Application.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You can use the following placeholders for your filenames:
+        ///
+        ///%guild% -&gt; server name
+        ///%channel% -&gt; channel name
+        ///%timestamp% -&gt; message timestamp (Unix timestamp)
+        ///%name% -&gt; attachment filename
+        ///%username% -&gt; author name
+        ///%id% -&gt; attachment id (given by Discord)
+        ///%userid% -&gt; author id (given by discord) ähnelt.
+        /// </summary>
+        internal static string FileNameInfo {
+            get {
+                return ResourceManager.GetString("FileNameInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap info_icon {
