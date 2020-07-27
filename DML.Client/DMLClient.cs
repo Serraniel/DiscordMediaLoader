@@ -6,7 +6,7 @@ namespace DML.Client
 {
     public static class DMLClient
     {
-        public static DiscordSocketClient Client { get; set; } = new DiscordSocketClient(new DiscordSocketConfig(){DefaultRetryMode = RetryMode.RetryRatelimit|RetryMode.RetryTimeouts});
+        public static DiscordSocketClient Client { get; set; } = new DiscordSocketClient(new DiscordSocketConfig() { DefaultRetryMode = RetryMode.RetryRatelimit | RetryMode.RetryTimeouts });
 
         public static async Task<bool> Login(string token)
         {

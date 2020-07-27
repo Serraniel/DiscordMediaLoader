@@ -95,7 +95,7 @@ namespace DML.AppCore.Classes
                 if (isFirst)
                 {
                     //messages = await channel.GetMessagesAsync(limit).ToArray() as SocketMessage[];
-                    var realMessages = await channel.GetMessagesAsync(limit).ToArray();
+                    var realMessages = await channel.GetMessagesAsync(limit).ToArrayAsync();
 
                     foreach (var realMessageArray in realMessages)
                     {
@@ -107,7 +107,7 @@ namespace DML.AppCore.Classes
                 }
                 else
                 {
-                    var realMessages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray();
+                    var realMessages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArrayAsync();
 
                     foreach (var realMessageArray in realMessages)
                     {
