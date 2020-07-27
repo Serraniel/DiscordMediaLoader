@@ -10,8 +10,7 @@ namespace DML.Client
 
         public static async Task<bool> Login(string token)
         {
-            // TODO: Fix Login with usertoken
-            //await Client.LoginAsync(TokenType.User, token);
+            await Client.LoginAsync(TokenType.User, token);
             await Client.StartAsync();
             await Task.Delay(1000);
 
