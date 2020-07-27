@@ -1,13 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord Media Loader", "Discord Media Loader\Discord Media Loader.csproj", "{EDC92554-DBC1-4F9C-9317-379A8BF441E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DML.Application", "Discord Media Loader.Application\DML.Application.csproj", "{C130DE6A-3237-42B5-BE9F-783D1CD104C6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DML.Client", "DML.Client\DML.Client.csproj", "{045EB4A1-34E7-47E0-867E-E10C40505095}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Net.Core", "libs\Discord.Net\src\Discord.Net.Core\Discord.Net.Core.csproj", "{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{451BDCAA-EC43-475E-8887-0F80EA605A73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Net.Analyzers", "libs\Discord.Net\src\Discord.Net.Analyzers\Discord.Net.Analyzers.csproj", "{99FB0F60-AEEC-4059-9605-6FA2D7408EFC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Net.Commands", "libs\Discord.Net\src\Discord.Net.Commands\Discord.Net.Commands.csproj", "{B3B30663-625D-452F-A3D7-57B381D021F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Net.Providers.WS4Net", "libs\Discord.Net\src\Discord.Net.Providers.WS4Net\Discord.Net.Providers.WS4Net.csproj", "{AD6116CD-1DC1-4FED-A2D5-0E72B553DD32}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Net.Rest", "libs\Discord.Net\src\Discord.Net.Rest\Discord.Net.Rest.csproj", "{103472C3-834D-4561-9395-6FEBFEB165AC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Net.Webhook", "libs\Discord.Net\src\Discord.Net.Webhook\Discord.Net.Webhook.csproj", "{58D6AEF3-5837-4601-A5D3-C6F11AC313B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Net.WebSocket", "libs\Discord.Net\src\Discord.Net.WebSocket\Discord.Net.WebSocket.csproj", "{58009F12-B2D9-4F1C-954B-A7CFEA17DBC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +43,46 @@ Global
 		{045EB4A1-34E7-47E0-867E-E10C40505095}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{045EB4A1-34E7-47E0-867E-E10C40505095}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{045EB4A1-34E7-47E0-867E-E10C40505095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99FB0F60-AEEC-4059-9605-6FA2D7408EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99FB0F60-AEEC-4059-9605-6FA2D7408EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99FB0F60-AEEC-4059-9605-6FA2D7408EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99FB0F60-AEEC-4059-9605-6FA2D7408EFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3B30663-625D-452F-A3D7-57B381D021F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3B30663-625D-452F-A3D7-57B381D021F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3B30663-625D-452F-A3D7-57B381D021F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3B30663-625D-452F-A3D7-57B381D021F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD6116CD-1DC1-4FED-A2D5-0E72B553DD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD6116CD-1DC1-4FED-A2D5-0E72B553DD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD6116CD-1DC1-4FED-A2D5-0E72B553DD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD6116CD-1DC1-4FED-A2D5-0E72B553DD32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{103472C3-834D-4561-9395-6FEBFEB165AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{103472C3-834D-4561-9395-6FEBFEB165AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{103472C3-834D-4561-9395-6FEBFEB165AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{103472C3-834D-4561-9395-6FEBFEB165AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58D6AEF3-5837-4601-A5D3-C6F11AC313B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58D6AEF3-5837-4601-A5D3-C6F11AC313B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58D6AEF3-5837-4601-A5D3-C6F11AC313B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58D6AEF3-5837-4601-A5D3-C6F11AC313B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58009F12-B2D9-4F1C-954B-A7CFEA17DBC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58009F12-B2D9-4F1C-954B-A7CFEA17DBC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58009F12-B2D9-4F1C-954B-A7CFEA17DBC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58009F12-B2D9-4F1C-954B-A7CFEA17DBC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8BD82FAE-47F7-41FD-A862-892C8AFF8C66} = {451BDCAA-EC43-475E-8887-0F80EA605A73}
+		{99FB0F60-AEEC-4059-9605-6FA2D7408EFC} = {451BDCAA-EC43-475E-8887-0F80EA605A73}
+		{B3B30663-625D-452F-A3D7-57B381D021F6} = {451BDCAA-EC43-475E-8887-0F80EA605A73}
+		{AD6116CD-1DC1-4FED-A2D5-0E72B553DD32} = {451BDCAA-EC43-475E-8887-0F80EA605A73}
+		{103472C3-834D-4561-9395-6FEBFEB165AC} = {451BDCAA-EC43-475E-8887-0F80EA605A73}
+		{58D6AEF3-5837-4601-A5D3-C6F11AC313B0} = {451BDCAA-EC43-475E-8887-0F80EA605A73}
+		{58009F12-B2D9-4F1C-954B-A7CFEA17DBC7} = {451BDCAA-EC43-475E-8887-0F80EA605A73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B742DE0-D6AF-4033-9605-863C32A7FFD8}

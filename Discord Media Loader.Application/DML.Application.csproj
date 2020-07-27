@@ -33,24 +33,6 @@
     <LangVersion>8</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Discord.Net.Commands, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discord.Net.Commands.2.2.0\lib\net461\Discord.Net.Commands.dll</HintPath>
-    </Reference>
-    <Reference Include="Discord.Net.Core, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discord.Net.Core.2.2.0\lib\net461\Discord.Net.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Discord.Net.Rest, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discord.Net.Rest.2.2.0\lib\net461\Discord.Net.Rest.dll</HintPath>
-    </Reference>
-    <Reference Include="Discord.Net.Rpc, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discord.Net.Rpc.1.0.2\lib\net45\Discord.Net.Rpc.dll</HintPath>
-    </Reference>
-    <Reference Include="Discord.Net.Webhook, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discord.Net.Webhook.2.2.0\lib\netstandard2.0\Discord.Net.Webhook.dll</HintPath>
-    </Reference>
-    <Reference Include="Discord.Net.WebSocket, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discord.Net.WebSocket.2.2.0\lib\net461\Discord.Net.WebSocket.dll</HintPath>
-    </Reference>
     <Reference Include="LiteDB, Version=3.1.0.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.3.1.0\lib\net35\LiteDB.dll</HintPath>
       <Private>True</Private>
@@ -232,6 +214,18 @@
     <ProjectReference Include="..\DML.Client\DML.Client.csproj">
       <Project>{045eb4a1-34e7-47e0-867e-e10c40505095}</Project>
       <Name>DML.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\Discord.Net\src\Discord.Net.Core\Discord.Net.Core.csproj">
+      <Project>{8bd82fae-47f7-41fd-a862-892c8aff8c66}</Project>
+      <Name>Discord.Net.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\Discord.Net\src\Discord.Net.Rest\Discord.Net.Rest.csproj">
+      <Project>{103472c3-834d-4561-9395-6febfeb165ac}</Project>
+      <Name>Discord.Net.Rest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\libs\Discord.Net\src\Discord.Net.WebSocket\Discord.Net.WebSocket.csproj">
+      <Project>{58009f12-b2d9-4f1c-954b-a7cfea17dbc7}</Project>
+      <Name>Discord.Net.WebSocket</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
