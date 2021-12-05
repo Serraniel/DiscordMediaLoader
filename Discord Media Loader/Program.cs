@@ -5,23 +5,19 @@ using Nito.AsyncEx;
 
 namespace Discord_Media_Loader
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
-        static void Main(string[] paramStrings)
+        private static void Main(string[] paramStrings)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             var splashScreen = new FrmSplash();
             if (splashScreen.ShowDialog() == DialogResult.OK)
-            {
-               DoLaunch(paramStrings);
-            }
+                DoLaunch(paramStrings);
             else
-            {
                 Application.Restart();
-            }
         }
 
         private static void DoLaunch(string[] paramStrings)
