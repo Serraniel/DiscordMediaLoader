@@ -1,37 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Discord;
 using Discord.WebSocket;
 using DML.AppCore.Classes;
 using DML.Application.Classes;
 using DML.Application.Helper;
+using DML.Application.Properties;
 using DML.Client;
-using static DML.Client.DMLClient;
 using static SweetLib.Utils.Logger.Logger;
 
 namespace DML.Application
 {
-    enum OnlineState
+    internal enum OnlineState
     {
         Online,
         Idle,
         DoNotDisturb,
         Invisible
     }
+
     public partial class MainForm : Form
     {
-        private bool IsInitialized { get; set; } = false;
         public MainForm()
         {
             InitializeComponent();
         }
 
-        private void MainForm_Shown(object sender, System.EventArgs e)
+        private bool IsInitialized { get; set; }
+
+        private void MainForm_Shown(object sender, EventArgs e)
         {
             Trace("MainForm shown executed.");
             RefreshComponents();
@@ -61,7 +61,8 @@ namespace DML.Application
             {
                 Trace("Adding guilds to component...");
 
-                cbGuild.Items.AddRange(DMLClient.Client.Guilds.Where(g => g.Name != null).OrderBy(g => g.Name).Select(g => new IdentifiedString<ulong>(g.Id, g.Name)).ToArray());
+                cbGuild.Items.AddRange(DMLClient.Client.Guilds.Where(g => g.Name != null).OrderBy(g => g.Name)
+                    .Select(g => new IdentifiedString<ulong>(g.Id, g.Name)).ToArray());
 
                 cbGuild.SelectedIndex = 0;
                 Trace("Guild component initialized.");
@@ -71,15 +72,14 @@ namespace DML.Application
             var oldIndex = lbxJobs.SelectedIndex;
             lbxJobs.Items.Clear();
             foreach (var job in Core.Scheduler.JobList)
-            {
-                lbxJobs.Items.Add(new IdentifiedString<int>(job.Id, $"{FindServerById(job.GuildId)?.Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId)?.Name}"));
-            }
+                lbxJobs.Items.Add(new IdentifiedString<int>(job.Id,
+                    $"{FindServerById(job.GuildId)?.Name}:{FindChannelById(FindServerById(job.GuildId), job.ChannelId)?.Name}"));
             lbxJobs.SelectedIndex = oldIndex;
 
             lbStatus.Text = DMLClient.Client.CurrentUser.Status.ToString();
         }
 
-        private void DoSomethingChanged(object sender, System.EventArgs e)
+        private void DoSomethingChanged(object sender, EventArgs e)
         {
             Debug($"DoSomethingChanged excuted by {sender}.");
             if (!IsInitialized)
@@ -98,7 +98,7 @@ namespace DML.Application
             Core.Settings.SkipExistingFiles = cbSkipExisting.Checked;
 
             Trace("Updating thread limit...");
-            Core.Settings.ThreadLimit = (int)edThreadLimit.Value;
+            Core.Settings.ThreadLimit = (int) edThreadLimit.Value;
 
             Trace("Storing new settings...");
             Core.Settings.Store();
@@ -106,7 +106,7 @@ namespace DML.Application
             Info("New settings have been saved.");
         }
 
-        private void btnSearchFolders_Click(object sender, System.EventArgs e)
+        private void btnSearchFolders_Click(object sender, EventArgs e)
         {
             Trace("Operating folder button pressed.");
             using (var browserDialog = new FolderBrowserDialog())
@@ -149,7 +149,7 @@ namespace DML.Application
             return (from c in server.TextChannels where c.Id == id select c).FirstOrDefault();
         }
 
-        private void cbGuild_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void cbGuild_SelectedIndexChanged(object sender, EventArgs e)
         {
             Trace("Guild index changed.");
             Debug("Updating channel dropdown component...");
@@ -157,7 +157,7 @@ namespace DML.Application
             UseWaitCursor = true;
             try
             {
-                var guild = FindServerById(((IdentifiedString<ulong>)cbGuild.SelectedItem).Id);
+                var guild = FindServerById(((IdentifiedString<ulong>) cbGuild.SelectedItem).Id);
 
                 if (guild != null)
                 {
@@ -166,7 +166,8 @@ namespace DML.Application
 
                     Trace("Adding new channels...");
 
-                    cbChannel.Items.AddRange(guild.TextChannels.OrderBy(c => c.Position).Select(c => new IdentifiedString<ulong>(c.Id, c.Name)).ToArray());
+                    cbChannel.Items.AddRange(guild.TextChannels.OrderBy(c => c.Position)
+                        .Select(c => new IdentifiedString<ulong>(c.Id, c.Name)).ToArray());
 
                     Trace($"Added {cbChannel.Items.Count} channels.");
 
@@ -185,17 +186,17 @@ namespace DML.Application
             Debug("Finished updating channel dropdown component.");
         }
 
-        private void btnAddJob_Click(object sender, System.EventArgs e)
+        private void btnAddJob_Click(object sender, EventArgs e)
         {
             var job = new Job
             {
-                GuildId = ((IdentifiedString<ulong>)cbGuild.SelectedItem).Id,
-                ChannelId = ((IdentifiedString<ulong>)cbChannel.SelectedItem).Id
+                GuildId = ((IdentifiedString<ulong>) cbGuild.SelectedItem).Id,
+                ChannelId = ((IdentifiedString<ulong>) cbChannel.SelectedItem).Id
             };
 
             if (!(from j in Core.Scheduler.JobList
-                  where j.GuildId == job.GuildId && j.ChannelId == job.ChannelId
-                  select j).Any())
+                where j.GuildId == job.GuildId && j.ChannelId == job.ChannelId
+                select j).Any())
             {
                 job.Store();
                 Core.Scheduler.JobList.Add(job);
@@ -204,7 +205,7 @@ namespace DML.Application
             RefreshComponents();
         }
 
-        private void btnDelete_Click(object sender, System.EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
             Trace("Deleting job pressed.");
 
@@ -214,7 +215,7 @@ namespace DML.Application
                 MessageBox.Show("No job has been seleted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            var jobId = ((IdentifiedString<int>)lbxJobs.SelectedItem).Id;
+            var jobId = ((IdentifiedString<int>) lbxJobs.SelectedItem).Id;
 
             var job = Core.Scheduler.JobList.FirstOrDefault(j => j.Id == jobId);
             if (job != null)
@@ -229,13 +230,13 @@ namespace DML.Application
             RefreshComponents();
         }
 
-        private void tmrRefreshProgress_Tick(object sender, System.EventArgs e)
+        private void tmrRefreshProgress_Tick(object sender, EventArgs e)
         {
             var scanned = Core.Scheduler.MessagesScanned;
             var totalAttachments = Core.Scheduler.TotalAttachments;
             var done = Core.Scheduler.AttachmentsDownloaded;
 
-            var progress = totalAttachments > 0 ? (int)(100 * done / totalAttachments) : 0;
+            var progress = totalAttachments > 0 ? (int) (100 * done / totalAttachments) : 0;
             progress = Math.Min(Math.Max(0, progress), 100);
             pgbProgress.Maximum = 100;
             pgbProgress.Value = progress;
@@ -243,19 +244,19 @@ namespace DML.Application
             lbProgress.Text = $"Scanned: {scanned} Downloaded: {done} Open: {totalAttachments - done}";
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(Properties.Resources.AboutString);
+            MessageBox.Show(Resources.AboutString);
         }
 
-        private void visitGithubToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void visitGithubToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("https://github.com/Serraniel/DiscordMediaLoader/");
         }
 
         private async void toolStripDropDownButton1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            OnlineState state = (OnlineState)Convert.ToInt32(e.ClickedItem.Tag);
+            var state = (OnlineState) Convert.ToInt32(e.ClickedItem.Tag);
 
             lbStatus.Text = state.ToString();
             tmrTriggerRefresh.Start();
@@ -292,7 +293,7 @@ namespace DML.Application
 
         private void btnFileNameHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(Properties.Resources.FileNameInfo);
+            MessageBox.Show(Resources.FileNameInfo);
         }
     }
 }

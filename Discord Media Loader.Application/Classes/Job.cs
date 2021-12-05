@@ -6,7 +6,6 @@ using Discord;
 using Discord.WebSocket;
 using DML.Application.Classes;
 using DML.Client;
-using SweetLib.Utils;
 using SweetLib.Utils.Extensions;
 using static SweetLib.Utils.Logger.Logger;
 
@@ -18,7 +17,7 @@ namespace DML.AppCore.Classes
         public ulong GuildId { get; set; }
         public ulong ChannelId { get; set; }
         public double KnownTimestamp { get; set; } = 0;
-        private double StopTimestamp { get; set; } = 0;
+        private double StopTimestamp { get; set; }
         private bool IsValid { get; set; } = true;
 
         internal void Store()
@@ -30,13 +29,9 @@ namespace DML.AppCore.Classes
             Trace("Adding new value...");
 
             if (jobDb.Find(x => x.ChannelId == ChannelId && x.GuildId == GuildId).Any())
-            {
                 jobDb.Update(this);
-            }
             else
-            {
                 jobDb.Insert(this);
-            }
         }
 
         public void Delete()
@@ -98,27 +93,20 @@ namespace DML.AppCore.Classes
                     var realMessages = await channel.GetMessagesAsync(limit).ToArrayAsync();
 
                     foreach (var realMessageArray in realMessages)
-                    {
-                        foreach (var realMessage in realMessageArray)
-                        {
-                            messages.Add(realMessage);
-                        }
-                    }
+                    foreach (var realMessage in realMessageArray)
+                        messages.Add(realMessage);
                 }
                 else
                 {
                     var realMessages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArrayAsync();
 
                     foreach (var realMessageArray in realMessages)
-                    {
-                        foreach (var realMessage in realMessageArray)
-                        {
-                            messages.Add(realMessage);
-                        }
-                    }
+                    foreach (var realMessage in realMessageArray)
+                        messages.Add(realMessage);
 
                     //messages = await channel.GetMessagesAsync(lastId, Direction.Before, limit).ToArray() as SocketMessage[];
                 }
+
                 Trace($"Downloaded {messages.Count} messages.");
 
                 isFirst = false;
@@ -148,14 +136,16 @@ namespace DML.AppCore.Classes
                     if (m.Attachments.Count > 0)
                     {
                         result.Add(m);
-                        Core.Scheduler.TotalAttachments += (ulong)m.Attachments.Count;
+                        Core.Scheduler.TotalAttachments += (ulong) m.Attachments.Count;
                         Trace($"Added message {m.Id}");
                     }
+
                     Debug($"Finished message {m.Id}");
                 }
 
                 finished = finished || messages.Count < limit;
             }
+
             Trace($"Downloaded all messages for guild {GuildId} channel {ChannelId}.");
 
             Trace("Sorting messages...");

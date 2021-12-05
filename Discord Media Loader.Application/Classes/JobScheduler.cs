@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using DML.Application.Classes;
-using SweetLib.Utils;
 using SweetLib.Utils.Extensions;
 using SweetLib.Utils.Logger;
 
@@ -15,14 +14,14 @@ namespace DML.AppCore.Classes
 {
     public class JobScheduler
     {
-        private ulong messageScanned = 0;
-        private ulong totalAttachments = 0;
-        private ulong attachmentsDownloaded = 0;
-
-        private bool Run { get; set; } = false;
-        public List<Job> JobList { get; set; } = new List<Job>();
+        private ulong attachmentsDownloaded;
+        private ulong messageScanned;
         public Dictionary<int, Queue<IMessage>> RunningJobs = new Dictionary<int, Queue<IMessage>>();
-        internal int RunningThreads { get; set; } = 0;
+        private ulong totalAttachments;
+
+        private bool Run { get; set; }
+        public List<Job> JobList { get; set; } = new List<Job>();
+        internal int RunningThreads { get; set; }
 
         internal ulong MessagesScanned
         {
@@ -91,7 +90,6 @@ namespace DML.AppCore.Classes
             {
                 Logger.Info("Started JobScheduler...");
                 while (Run)
-                {
                     try
                     {
                         Logger.Debug("Entering job list handler loop...");
@@ -108,6 +106,7 @@ namespace DML.AppCore.Classes
                                 Logger.Trace("Checking if job is already performed...");
                                 hasJob = RunningJobs.ContainsKey(job.Id);
                             }
+
                             Logger.Trace("Unlocked scheduler.");
 
                             if (!hasJob)
@@ -121,6 +120,7 @@ namespace DML.AppCore.Classes
                                     Logger.Trace("Adding job to running jobs.");
                                     RunningJobs.Add(job.Id, queue);
                                 }
+
                                 Logger.Trace("Unlocked scheduler.");
 
                                 Logger.Trace("Issuing job message scan...");
@@ -130,10 +130,7 @@ namespace DML.AppCore.Classes
                                     continue;
 
                                 Logger.Trace($"Adding {messages.Count} messages to queue...");
-                                foreach (var msg in messages)
-                                {
-                                    queue.Enqueue(msg);
-                                }
+                                foreach (var msg in messages) queue.Enqueue(msg);
                                 Logger.Trace($"Added {queue.Count} messages to queue.");
 
                                 if (messages.Count != queue.Count)
@@ -155,6 +152,7 @@ namespace DML.AppCore.Classes
                                         RunningThreads++;
                                         startedDownload = true;
                                     }
+
                                     Logger.Trace("Unlocked scheduler.");
                                 }
 
@@ -167,7 +165,6 @@ namespace DML.AppCore.Classes
                     {
                         Logger.Error(ex.Message);
                     }
-                }
             });
         }
 
@@ -184,6 +181,7 @@ namespace DML.AppCore.Classes
                     Logger.Warn($"Associating job not found! JobId: {jobId}");
                     return;
                 }
+
                 Logger.Trace("Found job.");
 
                 Queue<IMessage> queue;
@@ -196,8 +194,10 @@ namespace DML.AppCore.Classes
                         Logger.Warn($"Queue for job {jobId} not found!");
                         return;
                     }
+
                     Logger.Trace("Queue found.");
                 }
+
                 Logger.Trace("Unlocked scheduler.");
 
                 Logger.Debug($"Messages to process for job {jobId}: {queue.Count}");
@@ -212,8 +212,10 @@ namespace DML.AppCore.Classes
                             Logger.Warn($"Queue for job {jobId} not found!");
                             return;
                         }
+
                         Logger.Trace("Continue working...");
                     }
+
                     Logger.Trace("Unlocked scheduler.");
 
                     Logger.Trace("Dequeueing message...");
@@ -221,7 +223,6 @@ namespace DML.AppCore.Classes
 
                     Logger.Debug($"Attachments for message {message.Id}: {message.Attachments.Count}");
                     foreach (var a in message.Attachments)
-                    {
                         try
                         {
                             var fileName = Path.Combine(Core.Settings.OperatingFolder, Core.Settings.FileNameScheme);
@@ -236,11 +237,13 @@ namespace DML.AppCore.Classes
                             if (socketTextChannel != null)
                             {
                                 serverName = socketTextChannel.Guild.Name;
-                                serverName = Path.GetInvalidFileNameChars().Aggregate(serverName, (current, c) => current.Replace(c, ' '));
+                                serverName = Path.GetInvalidFileNameChars()
+                                    .Aggregate(serverName, (current, c) => current.Replace(c, ' '));
                             }
 
                             var channelName = message.Channel.Name;
-                            channelName = Path.GetInvalidFileNameChars().Aggregate(channelName, (current, c) => current.Replace(c, ' '));
+                            channelName = Path.GetInvalidFileNameChars()
+                                .Aggregate(channelName, (current, c) => current.Replace(c, ' '));
 
                             fileName =
                                 fileName.Replace("%guild%", serverName)
@@ -287,7 +290,6 @@ namespace DML.AppCore.Classes
                         {
                             AttachmentsDownloaded++;
                         }
-                    }
                 }
             }
             finally
@@ -300,6 +302,7 @@ namespace DML.AppCore.Classes
                     Logger.Trace("Decreasing thread count...");
                     RunningThreads--;
                 }
+
                 Logger.Trace("Unlocked scheduler.");
             }
         }
