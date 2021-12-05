@@ -86,7 +86,8 @@ namespace DML.Application.Properties {
         ///%channel% -&gt; channel name
         ///%timestamp% -&gt; message timestamp (Unix timestamp)
         ///%name% -&gt; attachment filename
-        ///%username% -&gt; author name
+        ///%username% -&gt; author username
+        ///%nickname% -&gt; author nickname (if unassigned, username will be used)
         ///%id% -&gt; attachment id (given by Discord)
         ///%userid% -&gt; author id (given by discord) ähnelt.
         /// </summary>
