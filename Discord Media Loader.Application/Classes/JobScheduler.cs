@@ -232,6 +232,7 @@ namespace DML.AppCore.Classes
                             var extensionRequired = !fileName.EndsWith("%name%");
 
                             var serverName = "unknown";
+                            string nickname = null;
 
                             var socketTextChannel = message.Channel as SocketTextChannel;
                             if (socketTextChannel != null)
@@ -239,6 +240,7 @@ namespace DML.AppCore.Classes
                                 serverName = socketTextChannel.Guild.Name;
                                 serverName = Path.GetInvalidFileNameChars()
                                     .Aggregate(serverName, (current, c) => current.Replace(c, ' '));
+                                nickname = socketTextChannel.GetUser(message.Author.Id).Nickname;
                             }
 
                             var channelName = message.Channel.Name;
@@ -252,7 +254,9 @@ namespace DML.AppCore.Classes
                                     .Replace("%name%", a.Filename)
                                     .Replace("%id%", a.Id.ToString())
                                     .Replace("%userid%", message.Author.Id.ToString())
-                                    .Replace("%username%", message.Author.Username);
+                                    .Replace("%username%", message.Author.Username)
+                                    .Replace("%nickname%",
+                                        !string.IsNullOrEmpty(nickname) ? nickname : message.Author.Username);
 
                             if (extensionRequired)
                                 fileName += Path.GetExtension(a.Filename);
