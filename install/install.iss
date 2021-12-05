@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Discord Media Loader"
-#define MyAppVersion "1.4.0.0"
+#define MyAppVersion "1.5.0.0"
 #define MyAppPublisher "Serraniel"
 #define MyAppURL "https://github.com/Serraniel/DiscordMediaLoader"
 #define MyAppExeName "Discord Media Loader.exe"
@@ -39,36 +39,66 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 6.1; Check: not IsAdminInstallMode
 
 [Files]
-Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.Application.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.Application.dll.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.Application.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.Core.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.Core.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.Rest.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.Rest.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.Rest.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.WebSocket.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.WebSocket.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord.Net.WebSocket.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\DML.Client.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\DML.Client.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\LiteDB.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\LiteDB.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Bcl.AsyncInterfaces.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Extensions.DependencyInjection.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Extensions.DependencyInjection.Abstractions.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Extensions.DependencyInjection.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Extensions.DependencyInjection.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Win32.Primitives.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Win32.Registry.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Microsoft.Win32.Registry.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\netstandard.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Context.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Context.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Coordination.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Coordination.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Interop.WaitHandles.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Interop.WaitHandles.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Oop.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Oop.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Tasks.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.AsyncEx.Tasks.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.Cancellation.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.Cancellation.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.Collections.Deque.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.Collections.Deque.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.Disposables.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Nito.Disposables.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Octokit.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Octokit.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\SharpRaven.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\SweetLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\SweetLib.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.AppContext.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Buffers.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Collections.Concurrent.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Collections.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Collections.Immutable.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Collections.Immutable.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Collections.NonGeneric.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Collections.Specialized.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.ComponentModel.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -80,6 +110,7 @@ Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media L
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Diagnostics.Contracts.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Diagnostics.Debug.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Diagnostics.DiagnosticSource.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Diagnostics.DiagnosticSource.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Diagnostics.FileVersionInfo.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Diagnostics.Process.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Diagnostics.StackTrace.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -92,7 +123,6 @@ Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media L
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Globalization.Calendars.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Globalization.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Globalization.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Interactive.Async.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.Compression.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.Compression.ZipFile.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -104,12 +134,12 @@ Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media L
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.MemoryMappedFiles.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.Pipes.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.UnmanagedMemoryStream.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.Async.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.Expressions.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.Parallel.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.Queryable.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Memory.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Net.Http.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Net.NameResolution.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Net.NetworkInformation.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -122,6 +152,7 @@ Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media L
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Net.WebSockets.Client.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Net.WebSockets.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Numerics.Vectors.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Numerics.Vectors.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.ObjectModel.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Reflection.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Reflection.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -130,6 +161,7 @@ Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media L
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Resources.ResourceManager.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Resources.Writer.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Runtime.CompilerServices.Unsafe.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Runtime.CompilerServices.VisualC.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Runtime.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Runtime.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -156,6 +188,7 @@ Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media L
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Threading.Overlapped.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Threading.Tasks.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Threading.Tasks.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Threading.Tasks.Extensions.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Threading.Tasks.Parallel.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Threading.Thread.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Threading.ThreadPool.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -167,10 +200,6 @@ Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media L
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Xml.XmlSerializer.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Xml.XPath.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Xml.XPath.XDocument.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.Application.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\Discord Media Loader.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -180,4 +209,6 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+
 
