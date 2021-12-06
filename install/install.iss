@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Discord Media Loader"
-#define MyAppVersion "1.5.0.0"
+#define MyAppVersion "1.5.1.0"
 #define MyAppPublisher "Serraniel"
 #define MyAppURL "https://github.com/Serraniel/DiscordMediaLoader"
 #define MyAppExeName "Discord Media Loader.exe"
@@ -134,6 +134,8 @@ Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media L
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.MemoryMappedFiles.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.Pipes.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.IO.UnmanagedMemoryStream.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.Async.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.Async.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.Expressions.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Daniel\Documents\Projects\Discord Media Loader\Discord Media Loader\bin\Release\System.Linq.Parallel.dll"; DestDir: "{app}"; Flags: ignoreversion
