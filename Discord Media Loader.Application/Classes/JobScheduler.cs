@@ -251,7 +251,13 @@ namespace DML.AppCore.Classes
                                             socketTextChannel.GetUser(message.Author
                                                 .Id); // can be null if user left the server
                                         if (serverUser != null)
+                                        {
                                             nickname = serverUser.Nickname;
+
+                                            if (!string.IsNullOrEmpty(nickname))
+                                                nickname = Path.GetInvalidFileNameChars()
+                                                    .Aggregate(nickname, (current, c) => current.Replace(c, ' '));
+                                        }
                                     }
                                 }
                             }
@@ -261,6 +267,12 @@ namespace DML.AppCore.Classes
                             channelName = Path.GetInvalidFileNameChars()
                                 .Aggregate(channelName, (current, c) => current.Replace(c, ' '));
 
+                            // fetch username
+                            var username = message.Author.Username;
+                            username = Path.GetInvalidFileNameChars()
+                                .Aggregate(username, (current, c) => current.Replace(c, ' '));
+
+
                             fileName =
                                 fileName.Replace("%guild%", serverName)
                                     .Replace("%channel%", channelName)
@@ -268,9 +280,9 @@ namespace DML.AppCore.Classes
                                     .Replace("%name%", a.Filename)
                                     .Replace("%id%", a.Id.ToString())
                                     .Replace("%userid%", message.Author.Id.ToString())
-                                    .Replace("%username%", message.Author.Username)
+                                    .Replace("%username%", username)
                                     .Replace("%nickname%",
-                                        !string.IsNullOrEmpty(nickname) ? nickname : message.Author.Username);
+                                        !string.IsNullOrEmpty(nickname) ? nickname : username);
 
                             if (extensionRequired)
                                 fileName += Path.GetExtension(a.Filename);
