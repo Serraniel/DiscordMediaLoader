@@ -234,18 +234,44 @@ namespace DML.AppCore.Classes
                             var serverName = "unknown";
                             string nickname = null;
 
-                            var socketTextChannel = message.Channel as SocketTextChannel;
-                            if (socketTextChannel != null)
+                            if (fileName.Contains("%guildid%") || fileName.Contains("%nickname%"))
                             {
-                                serverName = socketTextChannel.Guild.Name;
-                                serverName = Path.GetInvalidFileNameChars()
-                                    .Aggregate(serverName, (current, c) => current.Replace(c, ' '));
-                                nickname = socketTextChannel.GetUser(message.Author.Id).Nickname;
+                                var socketTextChannel = message.Channel as SocketTextChannel;
+                                if (socketTextChannel != null)
+                                {
+                                    // fetch servername
+                                    serverName = socketTextChannel.Guild.Name;
+                                    serverName = Path.GetInvalidFileNameChars()
+                                        .Aggregate(serverName, (current, c) => current.Replace(c, ' '));
+
+                                    // fetch nickname
+                                    if (fileName.Contains("%nickname%"))
+                                    {
+                                        var serverUser =
+                                            socketTextChannel.GetUser(message.Author
+                                                .Id); // can be null if user left the server
+                                        if (serverUser != null)
+                                        {
+                                            nickname = serverUser.Nickname;
+
+                                            if (!string.IsNullOrEmpty(nickname))
+                                                nickname = Path.GetInvalidFileNameChars()
+                                                    .Aggregate(nickname, (current, c) => current.Replace(c, ' '));
+                                        }
+                                    }
+                                }
                             }
 
+                            // fetch channelname
                             var channelName = message.Channel.Name;
                             channelName = Path.GetInvalidFileNameChars()
                                 .Aggregate(channelName, (current, c) => current.Replace(c, ' '));
+
+                            // fetch username
+                            var username = message.Author.Username;
+                            username = Path.GetInvalidFileNameChars()
+                                .Aggregate(username, (current, c) => current.Replace(c, ' '));
+
 
                             fileName =
                                 fileName.Replace("%guild%", serverName)
@@ -254,9 +280,9 @@ namespace DML.AppCore.Classes
                                     .Replace("%name%", a.Filename)
                                     .Replace("%id%", a.Id.ToString())
                                     .Replace("%userid%", message.Author.Id.ToString())
-                                    .Replace("%username%", message.Author.Username)
+                                    .Replace("%username%", username)
                                     .Replace("%nickname%",
-                                        !string.IsNullOrEmpty(nickname) ? nickname : message.Author.Username);
+                                        !string.IsNullOrEmpty(nickname) ? nickname : username);
 
                             if (extensionRequired)
                                 fileName += Path.GetExtension(a.Filename);
