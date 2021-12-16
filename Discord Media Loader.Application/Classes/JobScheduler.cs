@@ -234,19 +234,29 @@ namespace DML.AppCore.Classes
                             var serverName = "unknown";
                             string nickname = null;
 
-                            var socketTextChannel = message.Channel as SocketTextChannel;
-                            if (socketTextChannel != null)
+                            if (fileName.Contains("%guildid%") || fileName.Contains("%nickname%"))
                             {
-                                serverName = socketTextChannel.Guild.Name;
-                                serverName = Path.GetInvalidFileNameChars()
-                                    .Aggregate(serverName, (current, c) => current.Replace(c, ' '));
+                                var socketTextChannel = message.Channel as SocketTextChannel;
+                                if (socketTextChannel != null)
+                                {
+                                    // fetch servername
+                                    serverName = socketTextChannel.Guild.Name;
+                                    serverName = Path.GetInvalidFileNameChars()
+                                        .Aggregate(serverName, (current, c) => current.Replace(c, ' '));
 
-                                var serverUser =
-                                    socketTextChannel.GetUser(message.Author.Id); // can be null if user left the server
-                                if (serverUser != null)
-                                    nickname = serverUser.Nickname;
+                                    // fetch nickname
+                                    if (fileName.Contains("%nickname%"))
+                                    {
+                                        var serverUser =
+                                            socketTextChannel.GetUser(message.Author
+                                                .Id); // can be null if user left the server
+                                        if (serverUser != null)
+                                            nickname = serverUser.Nickname;
+                                    }
+                                }
                             }
 
+                            // fetch channelname
                             var channelName = message.Channel.Name;
                             channelName = Path.GetInvalidFileNameChars()
                                 .Aggregate(channelName, (current, c) => current.Replace(c, ' '));
