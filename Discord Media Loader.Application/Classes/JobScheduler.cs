@@ -240,7 +240,11 @@ namespace DML.AppCore.Classes
                                 serverName = socketTextChannel.Guild.Name;
                                 serverName = Path.GetInvalidFileNameChars()
                                     .Aggregate(serverName, (current, c) => current.Replace(c, ' '));
-                                nickname = socketTextChannel.GetUser(message.Author.Id).Nickname;
+
+                                var serverUser =
+                                    socketTextChannel.GetUser(message.Author.Id); // can be null if user left the server
+                                if (serverUser != null)
+                                    nickname = serverUser.Nickname;
                             }
 
                             var channelName = message.Channel.Name;
