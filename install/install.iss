@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Discord Media Loader"
-#define MyAppVersion "1.5.2.0"
+#define MyAppVersion "1.5.3.0"
 #define MyAppPublisher "Serraniel"
 #define MyAppURL "https://github.com/Serraniel/DiscordMediaLoader"
 #define MyAppExeName "Discord Media Loader.exe"
