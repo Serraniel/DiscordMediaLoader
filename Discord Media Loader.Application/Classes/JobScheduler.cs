@@ -234,7 +234,7 @@ namespace DML.AppCore.Classes
                             var serverName = "unknown";
                             string nickname = null;
 
-                            if (fileName.Contains("%guildid%") || fileName.Contains("%nickname%"))
+                            if (fileName.Contains("%guild%") || fileName.Contains("%nickname%"))
                             {
                                 var socketTextChannel = message.Channel as SocketTextChannel;
                                 if (socketTextChannel != null)
