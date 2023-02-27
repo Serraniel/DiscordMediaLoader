@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="1.0.2" />
     <PackageReference Include="Discord.Net.Commands" Version="1.0.2" />
-    <PackageReference Include="LiteDB" Version="3.1.0" />
+    <PackageReference Include="LiteDB" Version="5.0.13" />
   </ItemGroup>
 
   <ItemGroup>
