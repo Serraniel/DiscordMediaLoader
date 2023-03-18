@@ -34,8 +34,10 @@ namespace DML.Application.Classes
 
         public static async Task Run(string[] paramStrings)
         {
+#if !DEBUG
             try
             {
+#endif
                 var splash = new FrmInternalSplash();
                 splash.Show();
                 System.Windows.Forms.Application.DoEvents();
@@ -256,16 +258,19 @@ namespace DML.Application.Classes
 
                 Logger.Info("Stopping scheduler...");
                 Scheduler.Stop();
+#if !DEBUG
             }
             catch (Exception ex)
             {
+
                 Logger.Error($"{ex.Message} [{ex.GetType().Name}] occured at: {ex.StackTrace}");
                 if (MessageBox.Show($"An error occured while running Discord Media Loader:\n{ex.GetType().Name}: {ex.Message}\n\nDo you aggree to sending the error report to the creator of the tool?", "Discord Media Loader", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     Raven.Capture(new SentryEvent(ex));
                 }
             }
-        }
+#endif
+            }
 
         private static Task Client_Connected()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using DML.Application.Classes;
+using Nito.AsyncEx;
 
 namespace Discord_Media_Loader
 {
@@ -22,7 +23,7 @@ namespace Discord_Media_Loader
 
         private static void DoLaunch(string[] paramStrings)
         {
-            Core.Run(paramStrings);
+            AsyncContext.Run(() => Core.Run(paramStrings));
         }
     }
 }
