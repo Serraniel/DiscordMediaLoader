@@ -14,13 +14,14 @@ namespace Discord_Media_Loader.Helper
 
         internal static async Task<Version> GetReleaseVersion()
         {
-            var github = new GitHubClient(new ProductHeaderValue("DiscordMedialLoader"));
+           var github = new GitHubClient(new ProductHeaderValue("DiscordMedialLoader"));
 
             var tag =
                (await github.Repository.Release.GetAll("Serraniel", "DiscordMediaLoader")).Where(x => x.Prerelease == false).OrderByDescending(x => x.CreatedAt).First().TagName.Replace("v", "") ?? "";
 
             var version = new Version(tag);
             return version;
+            return null;
         }
 
         internal static async Task<string> DownloadLatestReleaseVersion()
