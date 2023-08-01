@@ -1,14 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.33920.267
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord Media Loader", "Discord Media Loader\Discord Media Loader.csproj", "{EDC92554-DBC1-4F9C-9317-379A8BF441E8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DML.Application", "Discord Media Loader.Application\DML.Application.csproj", "{C130DE6A-3237-42B5-BE9F-783D1CD104C6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DML.Client", "DML.Client\DML.Client.csproj", "{045EB4A1-34E7-47E0-867E-E10C40505095}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Net.Core", "libs\Discord.Net\src\Discord.Net.Core\Discord.Net.Core.csproj", "{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{451BDCAA-EC43-475E-8887-0F80EA605A73}"
@@ -31,18 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EDC92554-DBC1-4F9C-9317-379A8BF441E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDC92554-DBC1-4F9C-9317-379A8BF441E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDC92554-DBC1-4F9C-9317-379A8BF441E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDC92554-DBC1-4F9C-9317-379A8BF441E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C130DE6A-3237-42B5-BE9F-783D1CD104C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C130DE6A-3237-42B5-BE9F-783D1CD104C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C130DE6A-3237-42B5-BE9F-783D1CD104C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C130DE6A-3237-42B5-BE9F-783D1CD104C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{045EB4A1-34E7-47E0-867E-E10C40505095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{045EB4A1-34E7-47E0-867E-E10C40505095}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{045EB4A1-34E7-47E0-867E-E10C40505095}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{045EB4A1-34E7-47E0-867E-E10C40505095}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BD82FAE-47F7-41FD-A862-892C8AFF8C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
